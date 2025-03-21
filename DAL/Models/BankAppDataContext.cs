@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using BankApplication.appsettings.json;
+
 
 namespace DAL.Models;
 
