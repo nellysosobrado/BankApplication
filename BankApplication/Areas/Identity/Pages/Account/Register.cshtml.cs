@@ -21,6 +21,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BankApplication.Areas.Identity.Pages.Account
 {
+    [Authorize(Roles = "Admin")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -125,7 +126,19 @@ namespace BankApplication.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+
                     _logger.LogInformation("User created a new account with password.");
+
+                    if (Input.UserRole == null)
+                    {
+                        await _userManager.AddToRoleAsync(
+                            user, "Cashier");
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, Input.UserRole);
+                    }
+
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

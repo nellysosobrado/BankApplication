@@ -31,6 +31,7 @@ namespace DAL.Models
         {
             AddUserIfNotExists("richard.chalk@systementor.se", "Hejsan123#", new string[] { "Admin" });
             AddUserIfNotExists("richard.chalk@customer.systementor.se", "Hejsan123#", new string[] { "Cashier" });
+            AddUserIfNotExists("richard.chalk@customertest.systementor.se", "Hejsan123#", new string[] { "Cashier" });
         }
 
         //Here you can update your user roles
@@ -38,6 +39,8 @@ namespace DAL.Models
         {
             AddRoleIfNotExisting("Admin");
             AddRoleIfNotExisting("Cashier");
+            AddRoleIfNotExisting("Customer");
+
         }
 
         private void AddRoleIfNotExisting(string roleName)
