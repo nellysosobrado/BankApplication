@@ -397,10 +397,10 @@ namespace DAL.Migrations
                 table: "PermenentOrder",
                 column: "AccountId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Transactions_AccountId",
-                table: "Transactions",
-                column: "AccountId");
+            //migrationBuilder.CreateIndex(
+            //    name: "IX_Transactions_AccountId",
+            //    table: "Transactions",
+            //    column: "AccountId");
         }
 
         /// <inheritdoc />
