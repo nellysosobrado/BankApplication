@@ -34,7 +34,12 @@
             <input asp-for="Input.UserRole" type="radio" value="Cashier" />
             <label asp-for="Input.UserRole">Cashier</label> <br />
 
-            <button id="registerSubmit" type="submit" class="w-100 btn get-started-btn"><i class="fas fa-plus-circle"></i> Register</button>
+            @* @if(User.IsInRole("Admin")) *@
+            @* { *@
+            @*     <button id="registerSubmit" type="submit" class="w-100 btn get-started-btn"><i class="fas fa-plus-circle"></i> Register</button> *@
+            @* } *@
+
+           
 
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
