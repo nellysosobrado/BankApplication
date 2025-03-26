@@ -73,13 +73,6 @@
             </nav>
 
             @* <a class="btn-getstarted" href="#about">Get Started</a> *@
-            <a class="btn-getstarted" href="#about">Get Started</a>
-            <a class="btn-getstarted" asp-area="Identity" asp-page="/Account/Login">
-                <i class="bi bi-person"></i> Logga in
-            </a>
-            <a class="btn-getstarted" asp-page="/Account/Login">
-                <i class="bi bi-box-arrow-in-right"></i> Logga in
-            </a>
 
             @if (User.Identity.IsAuthenticated)
             {
