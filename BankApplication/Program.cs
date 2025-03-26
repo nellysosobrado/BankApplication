@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DAL.Models;
+using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +18,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddRoles<IdentityRole>() // Implements Role-based authorization
     .AddEntityFrameworkStores<BankAppDataContext>();
 
-builder.Services.AddRazorPages();
-builder.Services.AddTransient<DataInitializer>();
+builder.Services.AddRazorPages(); // Add Razor Pages services
+builder.Services.AddTransient<DataInitializer>();// Register the DataInitializer
+builder.Services.AddScoped<IStatsService, StatsService>(); // Register the StatsService
 
 var app = builder.Build();
 

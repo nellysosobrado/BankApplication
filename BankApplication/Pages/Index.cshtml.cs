@@ -1,20 +1,24 @@
+using BankApplication.ViewModels; 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Services;
 
 namespace BankApplication.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly IStatsService _statsService;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(IStatsService statsService)
         {
-            _logger = logger;
+            _statsService = statsService;
         }
 
-        public void OnGet()
-        {
+        public List<CountryStatsViewModel> CountryStats { get; set; }
 
+        public async Task OnGetAsync()
+        {
+            CountryStats = (await _statsService.GetCountryStatsAsync()).ToList();
         }
     }
 }
