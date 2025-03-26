@@ -3575,3 +3575,64 @@ section,
   color: color-mix(in srgb, var(--default-color), transparent 60%);
   font-size: 14px;
 }
+/*--------------------------------------------------------------
+# Auth Navigation Styles
+--------------------------------------------------------------*/
+.nav-auth-item {
+    margin-left: 1rem;
+}
+
+.nav-auth-link {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    color: #fff;
+    background-color: var(--primary-color);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+    .nav-auth-link:hover {
+        background-color: var(--primary-hover-color);
+        color: #fff;
+    }
+
+.nav-auth-text {
+    margin-left: 0.5rem;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 1199.98px) {
+    .nav-auth-item {
+        margin: 0;
+        width: 100%;
+    }
+
+    .nav-auth-link {
+        justify-content: flex-start;
+        padding: 0.5rem 1rem;
+        width: 100%;
+        background: none;
+        color: var(--nav-dropdown-color);
+        border-radius: 0;
+    }
+
+        .nav-auth-link:hover {
+            background: none;
+            color: var(--nav-dropdown-hover-color);
+        }
+
+            /* Hide icon in all states - important! */
+            .nav-auth-link i.bi-box-arrow-in-right,
+            .nav-auth-link:hover i.bi-box-arrow-in-right,
+            .nav-auth-link:active i.bi-box-arrow-in-right,
+            .nav-auth-link:focus i.bi-box-arrow-in-right {
+                display: none !important;
+            }
+
+    .nav-auth-text {
+        display: inline !important;
+        margin-left: 0;
+    }
+}
