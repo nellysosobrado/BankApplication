@@ -1,7 +1,7 @@
 ﻿@page
 @model LoginModel
-
 @{
+    Layout = "_Layout";  
     ViewData["Title"] = "Logga in";
 }
 
@@ -19,7 +19,6 @@
                         <div class="mb-3">
                             <label asp-for="Input.Email" class="form-label">E-post</label>
                             <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
                                 <input asp-for="Input.Email" class="form-control" placeholder="ange@din-epost.se" />
                             </div>
                             <span asp-validation-for="Input.Email" class="text-danger small"></span>
@@ -28,7 +27,7 @@
                         <div class="mb-4">
                             <label asp-for="Input.Password" class="form-label">Lösenord</label>
                             <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+     
                                 <input asp-for="Input.Password" class="form-control" placeholder="Ditt lösenord" />
                             </div>
                             <span asp-validation-for="Input.Password" class="text-danger small"></span>
