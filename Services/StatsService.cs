@@ -21,42 +21,25 @@ namespace Services
 
         public async Task<IEnumerable<CountryStatsViewModel>> GetCountryStatsAsync()
         {
-            //groups customers by country and calculates statistics
-            var countryStats = await _context.Customers
-                .Where(c => c.CountryCode != null)
-                .GroupBy(c => new { c.CountryCode, c.Country })
-                .Select(g => new
-                {
-                    CountryCode = g.Key.CountryCode,
-                    CountryName = g.Key.Country,
-                    CustomerCount = g.Count(),
-                    AccountCount = _context.Dispositions
-                        .Count(d => g.Select(c => c.CustomerId).Contains(d.CustomerId)),
-                    TotalBalance = _context.Dispositions
-                        .Where(d => g.Select(c => c.CustomerId).Contains(d.CustomerId))
-                        .Join(_context.Accounts,
-                            d => d.AccountId,
-                            a => a.AccountId,
-                            (d, a) => a.Balance)
-                        .Sum()
-                })
-                .ToListAsync();
+            var query = from c in _context.Customers
+                        where c.CountryCode != null
+                        join d in _context.Dispositions on c.CustomerId equals d.CustomerId
+                        join a in _context.Accounts on d.AccountId equals a.AccountId
+                        group new { c, a } by new { c.CountryCode, c.Country } into g
+                        select new CountryStatsViewModel
+                        {
+                            CountryCode = g.Key.CountryCode.ToLower(),
+                            CountryName = g.Key.Country,
+                            CustomerCount = g.Select(x => x.c.CustomerId).Distinct().Count(),
+                            AccountCount = g.Select(x => x.a.AccountId).Distinct().Count(),
+                            TotalBalance = g.Sum(x => x.a.Balance),
+                            Currency = GetCurrencyForCountryStatic(g.Key.CountryCode)
+                        };
 
-            //maps to ViewModel in order to return the data
-            var result = countryStats.Select(cs => new CountryStatsViewModel
-            {
-                CountryCode = cs.CountryCode?.ToLower() ?? "unknown",
-                CountryName = cs.CountryName ?? "Okänt land",
-                CustomerCount = cs.CustomerCount,
-                AccountCount = cs.AccountCount,
-                TotalBalance = cs.TotalBalance,
-                Currency = GetCurrencyForCountry(cs.CountryCode)
-            });
-
-            return result;
+            return await query.OrderByDescending(x => x.CustomerCount).ToListAsync();
         }
 
-        private string GetCurrencyForCountry(string countryCode)
+        private static string GetCurrencyForCountryStatic(string countryCode)
         {
             return countryCode?.ToUpper() switch
             {
@@ -64,7 +47,7 @@ namespace Services
                 "NO" => "NOK",
                 "DK" => "DKK",
                 "FI" => "EUR",
-                _ => "USD" // Fallback valuta
+                _ => "USD"
             };
         }
     }
