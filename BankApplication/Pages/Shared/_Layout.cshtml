@@ -47,55 +47,7 @@
                 <ul>
                     <li><a asp-page="/Index" class="@(Context.Request.Path == "/" ? "active" : "")">Home</a></li>
 
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li class="dropdown">
-                            <a href="#"><span>Bank</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                            <ul>
-                                <li><a asp-page="/Customers/Index">Customers</a></li>
-                                <li><a asp-page="/Accounts/Index">Accounts</a></li>
-                                <li><a asp-page="/Transactions/Index">Transactions</a></li>
-                            </ul>
-                        </li>
-                    }
-
-                    @* <li><a href="#contact">Contact</a></li> *@
-
-                    <!-- Integrated Login/User Profile -->
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li class="dropdown nav-auth-item">
-                            <a href="#" class="nav-auth-link dropdown-toggle" data-bs-toggle="dropdown">
-                                <i class="bi bi-person-circle"></i>
-                                <span class="nav-auth-text d-none d-lg-inline">@User.Identity.Name</span>
-                                <i class="bi bi-chevron-down d-none d-lg-inline ms-1"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
-                                        <i class="bi bi-person me-2"></i>Min profil
-                                    </a>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" method="post">
-                                        <button type="submit" class="dropdown-item">
-                                            <i class="bi bi-box-arrow-right me-2"></i>Log out
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-auth-item">
-                            <a asp-area="Identity" asp-page="/Account/Login" class="nav-auth-link">
-                                <i class="bi bi-box-arrow-in-right"></i>
-                                <span class="nav-auth-text d-none d-lg-inline">Log in</span>
-                            </a>
-                        </li>
-                    }
+                    <partial name="_LoginPartial" />
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
