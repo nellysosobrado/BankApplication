@@ -21,6 +21,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddRazorPages(); // Add Razor Pages services
 builder.Services.AddTransient<DataInitializer>();// Register the DataInitializer
 builder.Services.AddScoped<IStatsService, StatsService>(); // Register the StatsService
+builder.Services.AddScoped<ICustomerService, CustomerService>();//Register the service CustomerService to get our customers data
 
 var app = builder.Build();
 

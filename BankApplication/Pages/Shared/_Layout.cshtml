@@ -8,6 +8,8 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
 
+  
+
 
 
     <!-- Favicons -->
@@ -46,6 +48,21 @@
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <li><a asp-page="/Index" class="@(Context.Request.Path == "/" ? "active" : "")">Home</a></li>
+                    <li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                        <li>
+                            <a asp-page="/Customers"
+                               class="@(Context.Request.Path == "/Customers" ? "active" : "")">
+                                Customers
+                            </a>
+                        </li>
+   
+                        }
+                       
+                    </li>
+
+
 
                     <partial name="_LoginPartial" />
                 </ul>

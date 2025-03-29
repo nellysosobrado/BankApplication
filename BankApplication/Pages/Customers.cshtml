@@ -1,0 +1,168 @@
+﻿@page
+@model Pages.CustomersModel
+@{
+    ViewData["Title"] = "Kundlista";
+}
+
+@section Styles {
+    <style>
+        .header {
+            background: #37517e;
+        }
+
+        .container.mt-4 {
+            padding-top: 80px; 
+        }
+    </style>
+}
+
+
+<div class="container mt-4">
+    <h1>Kundlista</h1>
+
+    <form method="get" class="mb-4">
+        <div class="input-group">
+            <input type="text" class="form-control" asp-for="SearchTerm" placeholder="Sök på namn eller stad">
+            <button type="submit" class="btn btn-primary">Sök</button>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">
+                        Kundnummer
+                        <a asp-page="/Customers"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-sortColumn="CustomerId"
+                           asp-route-sortOrder="asc"
+                           class="sort-link">
+                            <i class="fas fa-angle-up @(Model.SortColumn == "CustomerId" && Model.SortOrder == "asc" ? "text-white" : "text-muted")"></i>
+                        </a>
+                        <a asp-page="/Customers"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-sortColumn="CustomerId"
+                           asp-route-sortOrder="desc"
+                           class="sort-link">
+                            <i class="fas fa-angle-down @(Model.SortColumn == "CustomerId" && Model.SortOrder == "desc" ? "text-white" : "text-muted")"></i>
+                        </a>
+                    </th>
+                    <th scope="col">
+                        Personnummer
+                        <a asp-page="/Customers"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-sortColumn="Personnummer"
+                           asp-route-sortOrder="asc"
+                           class="sort-link">
+                            <i class="fas fa-angle-up @(Model.SortColumn == "Personnummer" && Model.SortOrder == "asc" ? "text-white" : "text-muted")"></i>
+                        </a>
+                        <a asp-page="/Customers"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-sortColumn="Personnummer"
+                           asp-route-sortOrder="desc"
+                           class="sort-link">
+                            <i class="fas fa-angle-down @(Model.SortColumn == "Personnummer" && Model.SortOrder == "desc" ? "text-white" : "text-muted")"></i>
+                        </a>
+                    </th>
+                    <th scope="col">
+                        Namn
+                        <a asp-page="/Customers"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-sortColumn="Name"
+                           asp-route-sortOrder="asc"
+                           class="sort-link">
+                            <i class="fas fa-angle-up @(Model.SortColumn == "Name" && Model.SortOrder == "asc" ? "text-white" : "text-muted")"></i>
+                        </a>
+                        <a asp-page="/Customers"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-sortColumn="Name"
+                           asp-route-sortOrder="desc"
+                           class="sort-link">
+                            <i class="fas fa-angle-down @(Model.SortColumn == "Name" && Model.SortOrder == "desc" ? "text-white" : "text-muted")"></i>
+                        </a>
+                    </th>
+                    <th scope="col">
+                        Adress
+                        <a asp-page="/Customers"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-sortColumn="Address"
+                           asp-route-sortOrder="asc"
+                           class="sort-link">
+                            <i class="fas fa-angle-up @(Model.SortColumn == "Address" && Model.SortOrder == "asc" ? "text-white" : "text-muted")"></i>
+                        </a>
+                        <a asp-page="/Customers"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-sortColumn="Address"
+                           asp-route-sortOrder="desc"
+                           class="sort-link">
+                            <i class="fas fa-angle-down @(Model.SortColumn == "Address" && Model.SortOrder == "desc" ? "text-white" : "text-muted")"></i>
+                        </a>
+                    </th>
+                    <th scope="col">
+                        Stad
+                        <a asp-page="/Customers"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-sortColumn="City"
+                           asp-route-sortOrder="asc"
+                           class="sort-link">
+                            <i class="fas fa-angle-up @(Model.SortColumn == "City" && Model.SortOrder == "asc" ? "text-white" : "text-muted")"></i>
+                        </a>
+                        <a asp-page="/Customers"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-sortColumn="City"
+                           asp-route-sortOrder="desc"
+                           class="sort-link">
+                            <i class="fas fa-angle-down @(Model.SortColumn == "City" && Model.SortOrder == "desc" ? "text-white" : "text-muted")"></i>
+                        </a>
+                    </th>
+                    <th scope="col">Åtgärder</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in Model.Customers.Items)
+                {
+                    <tr>
+                        <td>@customer.CustomerId</td>
+                        <td>@customer.Personnummer</td>
+                        <td>@customer.Name</td>
+                        <td>@customer.Address</td>
+                        <td>@customer.City</td>
+                        <td>
+                            <a asp-page="/Customer" asp-route-id="@customer.CustomerId" class="btn btn-sm btn-primary">Visa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @{
+        var prevDisabled = !Model.Customers.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.Customers.HasNextPage ? "disabled" : "";
+    }
+
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <a asp-page="./Customers"
+           asp-route-searchTerm="@Model.SearchTerm"
+           asp-route-sortColumn="@Model.SortColumn"
+           asp-route-sortOrder="@Model.SortOrder"
+           asp-route-pageIndex="@(Model.Customers.PageIndex - 1)"
+           class="btn btn-primary @prevDisabled">
+            <i class="fas fa-chevron-left"></i> Föregående
+        </a>
+        <span class="text-muted">Sida @Model.Customers.PageIndex av @Model.Customers.TotalPages</span>
+        <a asp-page="./Customers"
+           asp-route-searchTerm="@Model.SearchTerm"
+           asp-route-sortColumn="@Model.SortColumn"
+           asp-route-sortOrder="@Model.SortOrder"
+           asp-route-pageIndex="@(Model.Customers.PageIndex + 1)"
+           class="btn btn-primary @nextDisabled">
+            Nästa <i class="fas fa-chevron-right"></i>
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+}

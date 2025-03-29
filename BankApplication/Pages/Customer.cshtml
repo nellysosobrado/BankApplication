@@ -1,0 +1,37 @@
+﻿@page
+@model Pages.CustomerModel
+@{
+}
+
+
+<h1>Kunddetaljer</h1>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Customer.Name</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@Model.Customer.CustomerId</h6>
+
+        <dl class="row">
+            <dt class="col-sm-3">Personnummer</dt>
+            <dd class="col-sm-9">@Model.Customer.Personnummer</dd>
+
+            <dt class="col-sm-3">Adress</dt>
+            <dd class="col-sm-9">@Model.Customer.Address</dd>
+
+            <dt class="col-sm-3">Postnummer</dt>
+            <dd class="col-sm-9">@Model.Customer.PostalCode</dd>
+
+            <dt class="col-sm-3">Stad</dt>
+            <dd class="col-sm-9">@Model.Customer.City</dd>
+
+            <dt class="col-sm-3">Land</dt>
+            <dd class="col-sm-9">@Model.Customer.Country</dd>
+
+            <dt class="col-sm-3">Telefon</dt>
+            <dd class="col-sm-9">@Model.Customer.Phone</dd>
+
+        </dl>
+
+        <a asp-page="/Customers" class="btn btn-secondary">Tillbaka till listan</a>
+    </div>
+</div>
