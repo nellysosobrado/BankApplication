@@ -5,21 +5,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Services.DTOs;
 
 namespace Services
 {
-    public interface ICustomerService
-    {
-        Task<PaginatedList<CustomerViewModel>> SearchCustomersAsync(
-            string searchTerm,
-            string sortColumn,
-            string sortOrder,
-            int pageIndex = 1,
-            int pageSize = 50);
-        Task<CustomerDetailViewModel> GetCustomerByIdAsync(int id);
-        Task<IEnumerable<CustomerViewModel>> GetRecentCustomersAsync(int count = 5);
-    }
-
+    //public interface ICustomerService
+    //{
+    //    Task<PaginatedList<CustomerViewModel>> SearchCustomersAsync(
+    //        string searchTerm,
+    //        string sortColumn,
+    //        string sortOrder,
+    //        int pageIndex = 1,
+    //        int pageSize = 50);
+    //    Task<CustomerDetailViewModel> GetCustomerByIdAsync(int id);
+    //    Task<IEnumerable<CustomerViewModel>> GetRecentCustomersAsync(int count = 5);
+    //}
     public class CustomerService : ICustomerService
     {
         private readonly BankAppDataContext _dbContext;
@@ -30,7 +30,7 @@ namespace Services
             _dbContext = dbContext;
         }
 
-        public async Task<PaginatedList<CustomerViewModel>> SearchCustomersAsync(
+        public async Task<PaginatedCustomerResult> SearchCustomersAsync(
             string searchTerm,
             string sortColumn,
             string sortOrder,
@@ -76,56 +76,64 @@ namespace Services
             var items = await query
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
-                .Select(c => new CustomerViewModel
+                .Select(c => new CustomerListDto
                 {
-                    CustomerId = c.CustomerId.ToString(), // Convert to string
-                    Personnummer = c.NationalId ?? "N/A",
-                    Name = c.Givenname + " " + c.Surname,
-                    Address = c.Streetaddress,
+                    CustomerId = c.CustomerId,
+                    NationalId = c.NationalId ?? "N/A",
+                    FullName = c.Givenname + " " + c.Surname,
+                    Streetaddress = c.Streetaddress,
                     City = c.City,
-                    Phone = c.Telephonenumber ?? "N/A"
+                    Telephonenumber = c.Telephonenumber ?? "N/A"
                 })
                 .ToListAsync();
 
-            return new PaginatedList<CustomerViewModel>(items, totalCount, pageIndex, pageSize);
+            return new PaginatedCustomerResult
+            {
+                Customers = items,
+                TotalCount = totalCount,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
         }
 
-        public async Task<CustomerDetailViewModel> GetCustomerByIdAsync(int id)
+        public async Task<CustomerDto> GetCustomerByIdAsync(int id)
         {
             return await _dbContext.Customers
                 .AsNoTracking()
                 .Where(c => c.CustomerId == id)
-                .Select(c => new CustomerDetailViewModel
+                .Select(c => new CustomerDto
                 {
-                    CustomerId = c.CustomerId.ToString(), // Convert to string
-                    Personnummer = c.NationalId ?? "N/A",
-                    Name = c.Givenname + " " + c.Surname,
-                    Address = c.Streetaddress,
+                    CustomerId = c.CustomerId,
+                    NationalId = c.NationalId ?? "N/A",
+                    Givenname = c.Givenname,
+                    Surname = c.Surname,
+                    Streetaddress = c.Streetaddress,
                     City = c.City,
-                    PostalCode = c.Zipcode,
+                    Zipcode = c.Zipcode,
                     Country = c.Country,
-                    Phone = c.Telephonenumber ?? "N/A",
-                    EmailAddress = c.Emailaddress ?? "N/A", // Changed to match view model
-                    // Remove Gender and Birthday if not in view model
+                    Telephonenumber = c.Telephonenumber ?? "N/A",
+                    Emailaddress = c.Emailaddress ?? "N/A"
                 })
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<CustomerViewModel>> GetRecentCustomersAsync(int count = 5)
+        public async Task<IEnumerable<CustomerListDto>> GetRecentCustomersAsync(int count = 5)
         {
             return await _dbContext.Customers
                 .AsNoTracking()
                 .OrderByDescending(c => c.CustomerId)
                 .Take(count)
-                .Select(c => new CustomerViewModel
+                .Select(c => new CustomerListDto
                 {
-                    CustomerId = c.CustomerId.ToString(), // Convert to string
-                    Name = c.Givenname + " " + c.Surname,
+                    CustomerId = c.CustomerId,
+                    FullName = c.Givenname + " " + c.Surname,
                     City = c.City
                 })
                 .ToListAsync();
         }
     }
+
+
 
     public class PaginatedList<T>
     {
