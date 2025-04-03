@@ -1,0 +1,82 @@
+﻿@page
+@model BankApplication.Pages.DashboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+
+    Layout = null; // Explicit ange att vi inte använder layout
+
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Länka till asset2-resurser -->
+    <link rel="stylesheet" href="~/asset2/css/site.css" asp-append-version="true">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+
+    <div class="grid-container">
+        <header class="header">
+            <div class="header__search">
+                <input type=text placeholder="search">
+                <i class="bx bx-search"></i>
+            </div>
+            <div class="header__avatar">Login etc etc</div>
+        </header>
+        <aside class="sidenav">
+            <div class="sidenav__logo">
+                <i class="bx bxl-c-plus-plus"></i>
+                <span class="sidenav__logo_name">SHAdmin</span>
+            </div>
+            <ul class="sidenav__list">
+                <li class="sidenav__list-item active">
+                    <a href="#">
+                        <i class="bx bx-list-ul"></i>
+                        Bla bla
+                    </a>
+                </li>
+
+                <li class="sidenav__list-item">
+                    <a asp-page="/Person/Index">
+                        <i class='bx bxs-face'></i>
+                        Personer
+                    </a>
+                </li>
+                <li class="sidenav__list-item">
+                    <a href="#">
+                        <i class="bx bx-pie-chart-alt-2"></i>
+                        Statistics
+                    </a>
+                </li>
+                <li class="sidenav__list-item">
+                    <a href="#">
+                        <i class="bx bx-cog"></i>
+                        Settings
+                    </a>
+                </li>
+                <li class="sidenav__list-item">
+                    <a href="#">
+                        <i class="bx bx-log-out"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <footer class="footer">
+            <div class="footer__copyright">&copy; 2021 Systementor AB</div>
+            <div class="footer__signature">Made with love by Stefan Holmberg</div>
+        </footer>
+    </div>
+
+
+    <!-- JavaScript-filer -->
+    <script src="~/asset2/js/site.js" asp-append-version="true"></script>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+</body>
+</html>

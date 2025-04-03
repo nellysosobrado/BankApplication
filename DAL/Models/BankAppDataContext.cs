@@ -31,6 +31,7 @@ public partial class BankAppDataContext : IdentityDbContext
     public virtual DbSet<PermenentOrder> PermenentOrders { get; set; }
 
     public virtual DbSet<Transaction> Transactions { get; set; }
+    public DbSet<Person> Person { get; set; }
 
     //public virtual DbSet<User> Users { get; set; }
 

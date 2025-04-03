@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using DAL.Models;
 using Services;
 using Services.Interface;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,17 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>() // Implements Role-based authorization
     .AddEntityFrameworkStores<BankAppDataContext>();
+
+//builder.Services.ConfigureApplicationCookie(options =>
+//{
+//    options.LoginPath = "/Identity/Account/Login";
+//    options.Events.OnSignedIn = async context =>
+//    {
+//        // Tvinga omdirigering till Dashboard, ignorera ReturnUrl
+//        context.Response.Redirect("/Dashboard");
+//        await Task.CompletedTask;
+//    };
+//});
 
 builder.Services.AddRazorPages(); // Add Razor Pages services
 builder.Services.AddTransient<DataInitializer>();// Register the DataInitializer
