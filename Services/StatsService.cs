@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DAL.Models;
 using BankApplication.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Services.Interface;
 
 namespace Services
 {

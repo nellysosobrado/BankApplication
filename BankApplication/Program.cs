@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DAL.Models;
 using Services;
+using Services.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
