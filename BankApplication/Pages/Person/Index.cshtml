@@ -1,0 +1,42 @@
+﻿@page
+@using Microsoft.EntityFrameworkCore.Metadata.Conventions
+@model IndexModel
+@{
+    ViewData["Title"] = "Personer";
+    Layout = "_DashboardLayout";
+      <!-- Använd din dashboard-layout -->
+}
+<!-- Lägg till CSS om den inte redan finns i layout -->
+<link rel="stylesheet" href="~/asset2/css/site.css" />
+
+<div class="card">
+    <div class="card-header">
+        <h1>Alla personer</h1>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <tr>
+                <th>Namn</th>
+                <th>Email</th>
+                <th>City</th>
+                <th></th>
+            </tr>
+            @foreach (var person in Model.Persons)
+            {
+                <tr>
+                    <td>@person.Name</td>
+                    <td>@person.Email</td>
+                    <td>@person.City</td>
+                    <td>
+                        <a asp-page="Edit" asp-route-personId="@person.Id"><i class='bx bx-edit'></i></a>
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <a class="btn" asp-page="New">Create new</a>
+    </div>
+</div>
+
+<!-- Lägg till JS i slutet -->
+<script src="~/asset2/js/site.js"></script>

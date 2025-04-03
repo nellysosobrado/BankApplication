@@ -9,14 +9,79 @@
     <link rel="stylesheet" href="~/asset2/css/site.css" asp-append-version="true">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>@ViewData["Title"]</title>
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <div class="grid-container">
-        <!-- All din gemensamma HTML här -->
+        <!-- Header -->
+        <header class="header">
+            <div class="header__search">
+                <input type="text" placeholder="Search..." id="globalSearch">
+                <i class="bx bx-search"></i>
+            </div>
+            <div class="header__avatar">
+                <i class='bx bx-user-circle'></i>
+                <span>Admin</span>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidenav">
+            <div class="sidenav__logo">
+                <i class='bx bxs-dashboard'></i>
+                <span class="sidenav__logo_name">Dashboard</span>
+            </div>
+            <ul class="sidenav__list">
+                <li class="sidenav__list-item @(ViewContext.RouteData.Values["Page"]?.ToString() == "/Index" ? "active" : "")">
+                    <a asp-page="/Index">
+                        <i class='bx bx-home'></i>
+                        <span>Hem</span>
+                    </a>
+                </li>
+                <li class="sidenav__list-item @(ViewContext.RouteData.Values["Page"]?.ToString() == "/Person/Index" ? "active" : "")">
+                    <a asp-page="/Person/Index">
+                        <i class='bx bx-user'></i>
+                        <span>Personer</span>
+                    </a>
+                </li>
+                <li class="sidenav__list-item">
+                    <a href="#">
+                        <i class="bx bx-pie-chart-alt-2"></i>
+                        Statistics
+                    </a>
+                </li>
+                <li class="sidenav__list-item">
+                    <a href="#">
+                        <i class="bx bx-cog"></i>
+                        Settings
+                    </a>
+                </li>
+                <li class="sidenav__list-item">
+                    <a href="#">
+                        <i class="bx bx-log-out"></i>
+                        Logout
+                    </a>
+                </li>
+                <!-- Fler menyalternativ -->
+            </ul>
+
+        </aside>
+
+        <!-- Main Content -->
         <main class="main">
-            @RenderBody()  <!-- Här kommer sidans innehåll -->
+            @RenderBody()
         </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div>&copy; @DateTime.Now.Year Your Company</div>
+        </footer>
     </div>
-    <script src="~/asset2/js/site.js"></script>
+
+    <!-- Globala JS-filer -->
+    <script src="~/asset2/js/site.js" asp-append-version="true"></script>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

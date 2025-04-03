@@ -35,6 +35,9 @@ builder.Services.AddRazorPages(); // Add Razor Pages services
 builder.Services.AddTransient<DataInitializer>();// Register the DataInitializer
 builder.Services.AddScoped<IStatsService, StatsService>(); // Register the StatsService
 builder.Services.AddScoped<ICustomerService, CustomerService>();//Register the service CustomerService to get our customers data
+// In Program.cs (or Startup.cs in older versions)
+builder.Services.AddScoped<IPersonService, PersonService>(); // Register the StatsService
+
 
 var app = builder.Build();
 
