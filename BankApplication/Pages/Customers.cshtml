@@ -2,23 +2,12 @@
 @model Pages.CustomersModel
 @{
     ViewData["Title"] = "Kundlista";
-}
-
-@section Styles {
-    <style>
-        .header {
-            background: #37517e;
-        }
-
-        .container.mt-4 {
-            padding-top: 80px; 
-        }
-    </style>
+    Layout = "_DashboardLayout";
 }
 
 
 <div class="container mt-4">
-    <h1>Kundlista</h1>
+    <h1>Customers</h1>
 
     <form method="get" class="mb-4">
         <div class="input-group">
@@ -32,7 +21,7 @@
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">
-                        Kundnummer
+                        CustomerId
                         <a asp-page="/Customers"
                            asp-route-searchTerm="@Model.SearchTerm"
                            asp-route-sortColumn="CustomerId"

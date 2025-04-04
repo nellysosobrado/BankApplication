@@ -21,7 +21,7 @@
             </div>
             <div class="header__avatar">
                 <i class='bx bx-user-circle'></i>
-                <span>Admin</span>
+                <span class="nav-auth-text d-none d-lg-inline">@User.Identity?.Name</span>
             </div>
         </header>
 
@@ -33,7 +33,7 @@
             </div>
             <ul class="sidenav__list">
                 <li class="sidenav__list-item @(ViewContext.RouteData.Values["Page"]?.ToString() == "/Index" ? "active" : "")">
-                    <a asp-page="/Index">
+                    <a asp-page="">
                         <i class='bx bx-home'></i>
                         <span>Hem</span>
                     </a>
@@ -52,18 +52,35 @@
                 </li>
 
                 <li class="sidenav__list-item">
+                    <a asp-page="/Customers">
+                        <i class="bx bx-pie-chart-alt-2"></i>
+                        Customers
+                    </a>
+                </li>
+                @* Admin can use the CRUD function *@
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="sidenav__list-item">
+                        <a asp-page="">
+                            <i class="bx bx-pie-chart-alt-2"></i>
+                            Manage Accounts
+                        </a>
+                    </li>
+                }
+
+                <li class="sidenav__list-item">
                     <a href="#">
                         <i class="bx bx-cog"></i>
                         Settings
                     </a>
                 </li>
                 <li class="sidenav__list-item">
-                    <a href="#">
+                    <a href="#" onclick="document.getElementById('logoutForm').submit()">
                         <i class="bx bx-log-out"></i>
                         Logout
                     </a>
+                    <form id="logoutForm" method="post" asp-page="/Account/Logout" asp-area="Identity" style="display:none;"></form>
                 </li>
-                <!-- Fler menyalternativ -->
             </ul>
 
         </aside>
