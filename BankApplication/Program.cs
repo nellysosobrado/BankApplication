@@ -37,7 +37,7 @@ builder.Services.AddScoped<IStatsService, StatsService>(); // Register the Stats
 builder.Services.AddScoped<ICustomerService, CustomerService>();//Register the service CustomerService to get our customers data
 // In Program.cs (or Startup.cs in older versions)
 builder.Services.AddScoped<IPersonService, PersonService>(); // Register the StatsService
-
+builder.Services.AddTransient<IAccountService, AccountService>();//Register the service AccountService to get our accounts data
 
 var app = builder.Build();
 
