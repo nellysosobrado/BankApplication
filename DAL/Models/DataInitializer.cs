@@ -39,7 +39,6 @@ namespace DAL.Models
         {
             AddRoleIfNotExisting("Admin");
             AddRoleIfNotExisting("Cashier");
-            AddRoleIfNotExisting("Customer");
 
         }
 
