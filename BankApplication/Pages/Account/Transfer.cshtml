@@ -1,0 +1,30 @@
+﻿@page
+@model BankApplication.Pages.Account.TransferModel
+@{
+    ViewData["Title"] = "Transfer";
+    Layout = "_DashboardLayout";
+}
+<link rel="stylesheet" href="~/assets2/css/site.css">
+<script src="~/assets2/js/site.css.js"></script>
+
+<h1>Transfer</h1>
+<h3>Current Balance: @Model.Balance kr</h3>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Amount">Amount</label>
+        <input class="form-control" asp-for="Amount" />
+        <span class="field-validation-error" asp-validation-for="Amount"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="TargetAccountId">Recipient Account Number</label>
+        <input class="form-control" asp-for="TargetAccountId" />
+        <span class="field-validation-error" asp-validation-for="TargetAccountId"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Comment">Comment (Optional)</label>
+        <input class="form-control" asp-for="Comment" />
+        <span class="field-validation-error" asp-validation-for="Comment"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Transfer</button>
+</form>
