@@ -34,6 +34,8 @@ namespace BankApplication.Pages
 
         public async Task OnGetAsync(int pageIndex = 1)
         {
+
+
             Customers = await _customerService.SearchCustomersAsync(
                 searchTerm: SearchTerm,
                 sortColumn: SortColumn,

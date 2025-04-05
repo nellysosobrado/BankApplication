@@ -21,11 +21,11 @@ namespace Services
         }
 
         public async Task<PaginatedList<CustomerViewModel>> SearchCustomersAsync(
-            string searchTerm,
-            string sortColumn,
-            string sortOrder,
-            int pageIndex = 1,
-            int pageSize = DefaultPageSize)
+    string searchTerm,
+    string sortColumn,
+    string sortOrder,
+    int pageIndex = 1,
+    int pageSize = DefaultPageSize)
         {
             // Validate parameters
             if (pageIndex < 1) pageIndex = 1;
@@ -36,11 +36,19 @@ namespace Services
             // Search functionality (case-insensitive)
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                query = query.Where(c =>
-                    EF.Functions.Like(c.Givenname + " " + c.Surname, $"%{searchTerm}%") ||
-                    EF.Functions.Like(c.City, $"%{searchTerm}%") ||
-                    EF.Functions.Like(c.Streetaddress, $"%{searchTerm}%") ||
-                    EF.Functions.Like(c.NationalId, $"%{searchTerm}%"));
+                // Try to parse searchTerm as CustomerId (int)
+                if (int.TryParse(searchTerm, out int customerId))
+                {
+                    query = query.Where(c => c.CustomerId == customerId);
+                }
+                else
+                {
+                    query = query.Where(c =>
+                        EF.Functions.Like(c.Givenname + " " + c.Surname, $"%{searchTerm}%") ||
+                        EF.Functions.Like(c.City, $"%{searchTerm}%") ||
+                        EF.Functions.Like(c.Streetaddress, $"%{searchTerm}%") ||
+                        EF.Functions.Like(c.NationalId, $"%{searchTerm}%"));
+                }
             }
 
             // Sorting implementation
