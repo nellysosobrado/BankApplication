@@ -42,7 +42,7 @@
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
-            <a asp-page="/Index" class="logo d-flex align-items-center me-auto">
+            <a asp-page="/Dashboard" class="logo d-flex align-items-center me-auto">
                 <h1 class="sitename">Bank</h1>
             </a>
 
@@ -56,6 +56,12 @@
                             <a asp-page="/Customers"
                                class="@(Context.Request.Path == "/Customers" ? "active" : "")">
                                 Customers
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-page="/Dashboard"
+                               class="@(Context.Request.Path == "/Customers" ? "active" : "")">
+                                Dashboard
                             </a>
                         </li>
                        
