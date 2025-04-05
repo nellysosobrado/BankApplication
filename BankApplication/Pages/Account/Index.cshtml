@@ -21,16 +21,16 @@
             @foreach (var acc in Model.Accounts)
             {
                 <tr>
-                    <td>@acc.AccountNo</td>
+                    <td>@acc.AccountId</td>
                     <td>@acc.Balance</td>
                     <td>
-                        <a asp-page="Withdraw" asp-route-accountId="@acc.Id"><i class='bx bx-money-withdraw'></i></a>
+                        <a asp-page="Withdraw" asp-route-accountId="@acc.AccountId"><i class='bx bx-money-withdraw'></i></a>
                     </td>
                     <td>
-                        <a asp-page="Deposit" asp-route-accountId="@acc.Id"><i class='bx bx-plus-circle'></i></a>
+                        <a asp-page="Deposit" asp-route-accountId="@acc.AccountId"><i class='bx bx-plus-circle'></i></a>
                     </td>
                     <td>
-                        <a asp-page="Transfer" asp-route-accountId="@acc.Id"><i class='bx bx-transfer'></i></a>
+                        <a asp-page="Transfer" asp-route-accountId="@acc.AccountId"><i class='bx bx-transfer'></i></a>
                     </td>
                     
                 </tr>

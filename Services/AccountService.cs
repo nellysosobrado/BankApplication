@@ -26,7 +26,7 @@ namespace Services
             return _dbContext.Accounts
                 .Select(a => new AccountViewModel
                 {
-                    Id = a.AccountId,
+                    AccountId = a.AccountId,
                     AccountNo = a.AccountNo,
                     Balance = a.Balance
                 }).ToList();
