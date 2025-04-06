@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BankApplication.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Services.Interface;
 
@@ -6,30 +7,32 @@ namespace BankApplication.Pages.Person
 {
     public class IndexModel : PageModel
     {
-        private readonly IPersonService _personService;
-        public List<PersonViewModel> Persons { get; set; }
+        //private readonly IPersonService _personService;
+        private readonly ICustomerService _customerService;
+        //public List<PersonViewModel> Persons { get; set; }
+        public List<CustomerViewModel> Customers { get; set; }
 
-        public class PersonViewModel
+        public class CustomerViewModel
         {
-            public int Id { get; set; }       
+            public int Id { get; set; }
             public string Name { get; set; }
             public string City { get; set; }
             public string Email { get; set; }
         }
 
-        public IndexModel(IPersonService personService)
+        public IndexModel(ICustomerService customerService)
         {
-            _personService = personService;
+            _customerService = customerService;
         }
 
         public void OnGet()
         {
-            Persons = _personService.GetPersons().Select(r => new PersonViewModel
+            Customers = _customerService.GetCustomer().Select(r => new CustomerViewModel
             {
                 City = r.City,
-                Id = r.Id,
-                Name = r.Name,
-                Email = r.Email
+                Id = r.CustomerId,
+                Name = r.Givenname,
+                Email = r.Emailaddress
             }).ToList();
         }
 

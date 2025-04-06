@@ -1,0 +1,92 @@
+﻿@page
+@model BankApplication.Pages.Customer.CreateModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_DashboardLayout";
+}
+<link rel="stylesheet" href="~/asset2/css/site.css">
+
+<div class="card">
+    <div class="card-header">
+        <h1>Ny kund</h1>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            <div class="row"> 
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Givenname">Förnamn</label>
+                        <input class="form-control" asp-for="Givenname">
+                        <span asp-validation-for="Givenname" class="field-validation-error"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Surname">Efternamn</label>
+                        <input class="form-control" asp-for="Surname">
+                        <span asp-validation-for="Surname" class="field-validation-error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender">Kön</label>
+                <select class="form-control" asp-for="Gender">
+                    <option value="Male">Man</option>
+                    <option value="Female">Kvinna</option>
+                    <option value="Other">Annat</option>
+                </select>
+                <span asp-validation-for="Gender" class="field-validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Emailaddress">E-post</label>
+                <input class="form-control" asp-for="Emailaddress" type="email">
+                <span asp-validation-for="Emailaddress" class="field-validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Streetaddress">Gatuadress</label>
+                <input class="form-control" asp-for="Streetaddress">
+                <span asp-validation-for="Streetaddress" class="field-validation-error"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Zipcode">Postnummer</label>
+                        <input class="form-control" asp-for="Zipcode">
+                        <span asp-validation-for="Zipcode" class="field-validation-error"></span>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label asp-for="City">Stad</label>
+                        <input class="form-control" asp-for="City">
+                        <span asp-validation-for="City" class="field-validation-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CountryCode">Landskod</label>
+                <input class="form-control" asp-for="CountryCode" maxlength="2">
+                <span asp-validation-for="CountryCode" class="field-validation-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Country">Country</label>
+                <input class="form-control" asp-for="Country" >
+                <span asp-validation-for="Country" class="field-validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Birthday">Födelsedatum</label>
+                <input class="form-control" asp-for="Birthday" type="date">
+                <span asp-validation-for="Birthday" class="field-validation-error"></span>
+            </div>
+
+            <button type="submit" class="btn">Save</button>
+        </form>
+    </div>
+</div>
+
+<script src="~/asset2/js/site.js"></script>

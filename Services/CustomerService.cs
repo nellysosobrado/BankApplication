@@ -19,6 +19,33 @@ namespace Services
         {
             _dbContext = dbContext;
         }
+        //CReate
+        public IEnumerable<Customer> GetCustomer()
+        {
+            return _dbContext.Customers;
+        }
+
+        public int SaveNew(Customer customer)
+        {
+            customer.Registered = DateTime.UtcNow;
+            customer.LastModified = DateTime.UtcNow;
+            _dbContext.Customers.Add(customer);
+            _dbContext.SaveChanges();
+            return customer.CustomerId;
+        }
+
+        public void Update(Customer customer)
+        {
+            customer.LastModified = DateTime.UtcNow;
+            _dbContext.SaveChanges();
+        }
+
+        public Customer GetCustomer(int customerId)
+        {
+            return _dbContext.Customers.First(e => e.CustomerId == customerId);
+        }
+
+        //end of create
 
         public async Task<PaginatedList<CustomerViewModel>> SearchCustomersAsync(
     string searchTerm,
@@ -144,4 +171,7 @@ namespace Services
         public bool HasPreviousPage => PageIndex > 1;
         public bool HasNextPage => PageIndex < TotalPages;
     }
+
+
+
 }

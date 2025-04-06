@@ -1,8 +1,7 @@
 ﻿@page
-@using Microsoft.EntityFrameworkCore.Metadata.Conventions
 @model IndexModel
 @{
-    ViewData["Title"] = "Personer";
+    ViewData["Title"] = "Index";
     Layout = "_DashboardLayout";
       <!-- Använd din dashboard-layout -->
 }
@@ -21,20 +20,20 @@
                 <th>City</th>
                 <th></th>
             </tr>
-            @foreach (var person in Model.Persons)
+            @foreach (var customer in Model.Customers)
             {
                 <tr>
-                    <td>@person.Name</td>
-                    <td>@person.Email</td>
-                    <td>@person.City</td>
+                    <td>@customer.Name</td>
+                    <td>@customer.Email</td>
+                    <td>@customer.City</td>
                     <td>
-                        <a asp-page="Edit" asp-route-personId="@person.Id"><i class='bx bx-edit'></i></a>
+                        <a asp-page="Edit" asp-route-personId="@customer.Id"><i class='bx bx-edit'></i></a>
                     </td>
                 </tr>
             }
         </table>
 
-        <a class="btn" asp-page="New">Create new</a>
+        <a class="btn" asp-page="/Customer/Create">Create new</a>
     </div>
 </div>
 

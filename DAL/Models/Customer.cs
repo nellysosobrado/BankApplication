@@ -34,4 +34,7 @@ public partial class Customer
     public string? Emailaddress { get; set; }
 
     public virtual ICollection<Disposition> Dispositions { get; set; } = new List<Disposition>();
+    public DateTime Registered { get; set; }
+    public DateTime LastModified { get; set; }
+
 }
