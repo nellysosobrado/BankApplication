@@ -1,7 +1,7 @@
 ﻿@page
-@model BankApplication.Pages.Customer.CreateModel
+@model BankApplication.Pages.Customer.UpdateModel
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Update";
     Layout = "_DashboardLayout";
 }
 <link rel="stylesheet" href="~/asset2/css/site.css">
@@ -12,7 +12,7 @@
     </div>
     <div class="card-body">
         <form method="post">
-            <div class="row"> 
+            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="Givenname">Givenname</label>
@@ -74,7 +74,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Country">Country</label>
-                <input class="form-control" asp-for="Country" >
+                <input class="form-control" asp-for="Country">
                 <span asp-validation-for="Country" class="field-validation-error"></span>
             </div>
 

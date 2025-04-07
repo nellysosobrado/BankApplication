@@ -14,10 +14,18 @@ namespace BankApplication.Pages.Person
 
         public class CustomerViewModel
         {
-            public int Id { get; set; }
-            public string Name { get; set; }
+            public int CustomerId { get; set; }
+            public string Givenname { get; set; }
             public string City { get; set; }
-            public string Email { get; set; }
+            public string Emailaddress { get; set; }
+            public string Surname { get; set; }
+            public string Gender { get; set; }
+            public DateOnly? Birthday { get; set; }
+            public string Streetaddress { get; set; }
+            public string Zipcode { get; set; }
+            public string Country { get; set; }
+            public string CountryCode { get; set; }
+
         }
 
         public IndexModel(ICustomerService customerService)
@@ -30,9 +38,15 @@ namespace BankApplication.Pages.Person
             Customers = _customerService.GetCustomer().Select(r => new CustomerViewModel
             {
                 City = r.City,
-                Id = r.CustomerId,
-                Name = r.Givenname,
-                Email = r.Emailaddress
+                CustomerId = r.CustomerId,
+                Givenname = r.Givenname,
+                Emailaddress = r.Emailaddress,
+                Surname = r.Surname,
+                Gender = r.Gender,
+                Birthday = r.Birthday,
+                Streetaddress = r.Streetaddress,
+                Zipcode = r.Zipcode,
+                Country = r.Country,
             }).ToList();
         }
 

@@ -42,7 +42,8 @@ namespace Services
 
         public Customer GetCustomer(int customerId)
         {
-            return _dbContext.Customers.First(e => e.CustomerId == customerId);
+            //return _dbContext.Customers.First(e => e.CustomerId == customerId);
+            return _dbContext.Customers.FirstOrDefault(e => e.CustomerId == customerId);
         }
 
         //end of create

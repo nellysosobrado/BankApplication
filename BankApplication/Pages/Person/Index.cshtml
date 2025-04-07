@@ -23,11 +23,19 @@
             @foreach (var customer in Model.Customers)
             {
                 <tr>
-                    <td>@customer.Name</td>
-                    <td>@customer.Email</td>
+                    <td>@customer.Givenname</td>
+                    <td>@customer.Surname</td>
+                    <td>@customer.Gender</td>
+                    <td>@customer.Birthday</td>
+                    <td>@customer.CustomerId</td>
+                    <td>@customer.Emailaddress</td>
                     <td>@customer.City</td>
+                    <td>@customer.Streetaddress</td>
+                    <td>@customer.Zipcode</td>
+                    <td>@customer.Country</td>
+                    <td>@customer.CountryCode</td>
                     <td>
-                        <a asp-page="Edit" asp-route-personId="@customer.Id"><i class='bx bx-edit'></i></a>
+                        <a asp-page="/Customer/Update" asp-route-CustomerId="@customer.CustomerId"><i class='bx bx-edit'></i></a>
                     </td>
                 </tr>
             }

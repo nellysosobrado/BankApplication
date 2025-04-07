@@ -31,6 +31,7 @@ namespace BankApplication.Pages.Customer
         [DataType(DataType.Date)]
         public DateOnly? Birthday { get; set; }
 
+
         // Address Information
         [StringLength(100)]
         [Required(ErrorMessage = "Gatuadress är obligatorisk")]
