@@ -48,7 +48,6 @@ namespace BankApplication.Pages.Customer
             Country = customerDB.Country;
             Emailaddress = customerDB.Emailaddress;
             Zipcode = customerDB.Zipcode;
-            //Salary = customerDB.Salary;
             Streetaddress = customerDB.Streetaddress;
         }
         public IActionResult OnPost(int customerId)
@@ -81,7 +80,7 @@ namespace BankApplication.Pages.Customer
                 customerDB.CountryCode = CountryCode;
                 customerDB.Emailaddress = Emailaddress;
                 customerDB.Zipcode = Zipcode;
-                //Salary = personDb.Salary;
+
                 customerDB.Streetaddress = Streetaddress;
 
 

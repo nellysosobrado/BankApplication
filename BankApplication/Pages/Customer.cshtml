@@ -1,40 +1,104 @@
 ﻿@page
-@model Pages.CustomerModel
+@model CustomerModel
 @{
-    ViewData["Title"] = "Accounts";
-    Layout = "_DashboardLayout";
+    ViewData["Title"] = "Kunddetaljer";
+
 }
-<link rel="stylesheet" href="~/asset2/css/site.css">
-<script src="~/asset2/js/site.js"></script>
+<link rel="stylesheet" href="~/asset2/css/site.css" />
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h2>Kundinformation</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h4>@Model.Customer.Name</h4>
+                    <p class="text-muted">Kundnummer: @Model.Customer.CustomerId</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <div class="alert alert-success">
+                        <h5>Totalt saldo: @Model.TotalBalance.ToString("C")</h5>
+                    </div>
+                </div>
+            </div>
 
-<h1>Kunddetaljer</h1>
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Personnummer</dt>
+                        <dd class="col-sm-8">@Model.Customer.Personnummer</dd>
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">@Model.Customer.Name</h5>
-        <h6 class="card-subtitle mb-2 text-muted">@Model.Customer.CustomerId</h6>
+                        <dt class="col-sm-4">Adress</dt>
+                        <dd class="col-sm-8">@Model.Customer.Address</dd>
 
-        <dl class="row">
-            <dt class="col-sm-3">Personnummer</dt>
-            <dd class="col-sm-9">@Model.Customer.Personnummer</dd>
+                        <dt class="col-sm-4">Postnummer</dt>
+                        <dd class="col-sm-8">@Model.Customer.PostalCode</dd>
 
-            <dt class="col-sm-3">Adress</dt>
-            <dd class="col-sm-9">@Model.Customer.Address</dd>
+                        <dt class="col-sm-4">Ort</dt>
+                        <dd class="col-sm-8">@Model.Customer.City</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Land</dt>
+                        <dd class="col-sm-8">@Model.Customer.Country</dd>
 
-            <dt class="col-sm-3">Postnummer</dt>
-            <dd class="col-sm-9">@Model.Customer.PostalCode</dd>
+                        <dt class="col-sm-4">Telefon</dt>
+                        <dd class="col-sm-8">@Model.Customer.Phone</dd>
 
-            <dt class="col-sm-3">Stad</dt>
-            <dd class="col-sm-9">@Model.Customer.City</dd>
+                        <dt class="col-sm-4">E-post</dt>
+                        <dd class="col-sm-8">@Model.Customer.EmailAddress</dd>
+                    </dl>
+                </div>
+            </div>
 
-            <dt class="col-sm-3">Land</dt>
-            <dd class="col-sm-9">@Model.Customer.Country</dd>
+            <h4 class="mt-4">Konton</h4>
+            @if (Model.Customer.Dispositions.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Kontonummer</th>
+                                <th>Frequency</th>
+                                <th>Saldo</th>
+                                <th>Kontostatus</th>
+                                <th>Skapat datum</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var disp in Model.Customer.Dispositions)
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-page="/AccountTransactions" asp-route-accountId="@disp.Account.AccountId">
+                                            @disp.Account.AccountId
+                                        </a>
+                                    </td>
 
-            <dt class="col-sm-3">Telefon</dt>
-            <dd class="col-sm-9">@Model.Customer.Phone</dd>
+                                    <td>@disp.Account.Frequency</td>
+                                    <td>@disp.Account.Balance.ToString("C")</td>
+                                    <td>@disp.Type</td>
+                                    <td>@disp.Account.CreatedDate.ToString("yyyy-MM-dd")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">Inga konton finns registrerade</div>
+            }
 
-        </dl>
-
-        <a asp-page="/Customers" class="btn btn-secondary">Tillbaka till listan</a>
+            <div class="mt-4">
+                <a asp-page="/Customers" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Tillbaka till kundlistan
+                </a>
+            </div>
+        </div>
     </div>
 </div>
+
+<script src="~/asset2/js/site.js"></script>

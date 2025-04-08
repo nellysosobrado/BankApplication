@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Services.Interface;
+using Services.ViewModels;
 
 namespace Services
 {
@@ -115,27 +116,42 @@ namespace Services
 
             return new PaginatedList<CustomerViewModel>(items, totalCount, pageIndex, pageSize);
         }
-
         public async Task<CustomerDetailViewModel> GetCustomerByIdAsync(int id)
         {
             return await _dbContext.Customers
                 .AsNoTracking()
+                .Include(c => c.Dispositions)
+                    .ThenInclude(d => d.Account)
                 .Where(c => c.CustomerId == id)
                 .Select(c => new CustomerDetailViewModel
                 {
-                    CustomerId = c.CustomerId.ToString(), // Convert to string
+                    CustomerId = c.CustomerId.ToString(),
                     Personnummer = c.NationalId ?? "N/A",
-                    Name = c.Givenname + " " + c.Surname,
+                    Name = $"{c.Givenname} {c.Surname}",
                     Address = c.Streetaddress,
                     City = c.City,
                     PostalCode = c.Zipcode,
                     Country = c.Country,
                     Phone = c.Telephonenumber ?? "N/A",
-                    EmailAddress = c.Emailaddress ?? "N/A", // Changed to match view model
-                    // Remove Gender and Birthday if not in view model
+                    EmailAddress = c.Emailaddress ?? "N/A",
+                    Dispositions = c.Dispositions
+                        .Where(d => d.Type == "OWNER")
+                        .Select(d => new DispositionViewModel
+                        {
+                            DispositionId = d.DispositionId,
+                            Type = d.Type,
+                            Account = new AccountViewModel
+                            {
+                                AccountId = d.Account.AccountId,
+                                Balance = d.Account.Balance,
+                                Frequency = d.Account.Frequency,
+                                CreatedDate = d.Account.Created.ToDateTime(TimeOnly.MinValue)
+                            }
+                        }).ToList()
                 })
                 .FirstOrDefaultAsync();
         }
+
 
         public async Task<IEnumerable<CustomerViewModel>> GetRecentCustomersAsync(int count = 5)
         {
