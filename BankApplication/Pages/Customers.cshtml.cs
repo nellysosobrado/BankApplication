@@ -11,9 +11,10 @@ namespace BankApplication.Pages
     [Authorize]
     public class CustomersModel : PageModel
     {
-        private readonly ICustomerService _customerService;
+        private readonly ICustomerQueryService _customerService;
+        //private readonly ICustomerService _customerService;
 
-        public CustomersModel(ICustomerService customerService)
+        public CustomersModel(ICustomerQueryService customerService)
         {
             _customerService = customerService;
         }

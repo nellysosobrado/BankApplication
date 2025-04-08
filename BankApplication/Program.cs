@@ -34,7 +34,13 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddRazorPages(); // Add Razor Pages services
 builder.Services.AddTransient<DataInitializer>();// Register the DataInitializer
 builder.Services.AddScoped<IStatsService, StatsService>(); // Register the StatsService
-builder.Services.AddScoped<ICustomerService, CustomerService>();//Register the service CustomerService to get our customers data
+
+//builder.Services.AddScoped<ICustomerService, CustomerService>();//Register the service CustomerService to get our customers data
+builder.Services.AddScoped<ICustomerQueryService, CustomerQueryService>();
+builder.Services.AddScoped<ICustomerCommandService, CustomerCommandService>();
+builder.Services.AddScoped<ICustomerSorter, CustomerSorter>();
+
+
 // In Program.cs (or Startup.cs in older versions)
 builder.Services.AddScoped<IPersonService, PersonService>(); // Register the StatsService
 builder.Services.AddTransient<IAccountService, AccountService>();//Register the service AccountService to get our accounts data

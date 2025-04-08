@@ -11,15 +11,19 @@ namespace BankApplication.Pages
 {
     public class CustomerModel : PageModel
     {
-        private readonly ICustomerService _customerService;
+        //private readonly ICustomerService _customerService;
+        private readonly ICustomerQueryService _customerService;
         private readonly ILogger<CustomerModel> _logger;
+
 
         public CustomerDetailViewModel Customer { get; set; }
         public decimal TotalBalance { get; set; }
 
-        public CustomerModel(ICustomerService customerService, ILogger<CustomerModel> logger)
+        public CustomerModel( ILogger<CustomerModel> logger, ICustomerQueryService customerService)
         {
+            //_customerService = customerService;
             _customerService = customerService;
+
             _logger = logger;
         }
 
