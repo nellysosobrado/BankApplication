@@ -20,12 +20,7 @@ namespace BankApplication.ViewModels
             public List<DispositionViewModel> Dispositions { get; set; } = new();
         }
 
-        public class DispositionViewModel
-        {
-            public int DispositionId { get; set; }
-            public string Type { get; set; }
-            public AccountViewModel Account { get; set; }
-        }
+
 
     
 }
