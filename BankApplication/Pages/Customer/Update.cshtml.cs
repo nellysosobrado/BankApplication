@@ -1,94 +1,82 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Services.Interface;
+using Services;
 using System.ComponentModel.DataAnnotations;
+using DAL.Models;
 
 namespace BankApplication.Pages.Customer
 {
     [BindProperties]
     public class UpdateModel : PageModel
     {
-        private readonly ICustomerService _customerService;
+        private readonly ICustomerCommandService _commandService;
 
-        public UpdateModel( ICustomerService customerService)
+        public UpdateModel(ICustomerCommandService commandService)
         {
-
-            _customerService = customerService;
+            _commandService = commandService;
         }
+
+        [HiddenInput]
+        public int CustomerId { get; set; }
 
         [MaxLength(100)][Required] public string Givenname { get; set; }
         [MaxLength(100)][Required] public string Surname { get; set; }
         [StringLength(100)] public string Gender { get; set; }
 
-
-
         [StringLength(100)] public string Streetaddress { get; set; }
         [StringLength(10)] public string Zipcode { get; set; }
         [StringLength(2)] public string CountryCode { get; set; }
-        public string Country { get; set; } // Default value
-        //[Range(0, 100000, ErrorMessage = "Skriv ett tal mellan 0 och 100000")]
-        // public decimal Salary { get; set; }
-        //[DataType(DataType.Date)]
-        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public string Country { get; set; }
+
         [DataType(DataType.Date)]
         public DateOnly? Birthday { get; set; }
+
         [StringLength(50)][Required] public string City { get; set; }
         [StringLength(150)][EmailAddress] public string Emailaddress { get; set; }
 
-        public void OnGet(int customerId)
+        public IActionResult OnGet(int customerId)
         {
-            var customerDB = _customerService.GetCustomer(customerId);
-            Givenname = customerDB.Givenname;
-            Surname = customerDB.Surname;
-            Gender = customerDB.Gender;
+            var customer = _commandService.GetCustomer(customerId);
+            if (customer == null) return NotFound();
 
-            Birthday = customerDB.Birthday;
-            City = customerDB.City;
-            CountryCode = customerDB.CountryCode;
-            Country = customerDB.Country;
-            Emailaddress = customerDB.Emailaddress;
-            Zipcode = customerDB.Zipcode;
-            Streetaddress = customerDB.Streetaddress;
-        }
-        public IActionResult OnPost(int customerId)
-        {
-            Console.WriteLine($"Modell är giltig: {ModelState.IsValid}");
+            CustomerId = customer.CustomerId;
+            Givenname = customer.Givenname;
+            Surname = customer.Surname;
+            Gender = customer.Gender;
+            Birthday = customer.Birthday;
+            City = customer.City;
+            CountryCode = customer.CountryCode;
+            Country = customer.Country;
+            Emailaddress = customer.Emailaddress;
+            Zipcode = customer.Zipcode;
+            Streetaddress = customer.Streetaddress;
 
-            if (!ModelState.IsValid)
-            {
-                // Logga alla valideringsfel
-                foreach (var entry in ModelState)
-                {
-                    if (entry.Value.Errors.Count > 0)
-                    {
-                        Console.WriteLine($"Fält: {entry.Key}, Fel: {string.Join(", ", entry.Value.Errors.Select(e => e.ErrorMessage))}");
-                    }
-                }
-            }
-              //testing
-            Console.WriteLine($"Modell är giltig: {ModelState.IsValid}");
-            Console.WriteLine($"Givenname: {Givenname}, Surname: {Surname}, Email: {Emailaddress}, BirthdayString: {Birthday}");
-            if (ModelState.IsValid)
-            {
-                var customerDB = _customerService.GetCustomer(customerId);
-                customerDB.Givenname = Givenname;
-                customerDB.Surname = Surname;
-                customerDB.Gender = Gender;
-
-                customerDB.Birthday = Birthday;
-                customerDB.City = City;
-                customerDB.CountryCode = CountryCode;
-                customerDB.Emailaddress = Emailaddress;
-                customerDB.Zipcode = Zipcode;
-
-                customerDB.Streetaddress = Streetaddress;
-
-
-                _customerService.Update(customerDB);
-
-                return RedirectToPage("/Person/Index");
-            }
             return Page();
+        }
+
+        public IActionResult OnPost()
+        {
+            if (!ModelState.IsValid)
+                return Page();
+
+            var customer = _commandService.GetCustomer(CustomerId);
+            if (customer == null) return NotFound();
+
+            customer.Givenname = Givenname;
+            customer.Surname = Surname;
+            customer.Gender = Gender;
+            customer.Birthday = Birthday;
+            customer.City = City;
+            customer.CountryCode = CountryCode;
+            customer.Emailaddress = Emailaddress;
+            customer.Zipcode = Zipcode;
+            customer.Streetaddress = Streetaddress;
+            customer.Country = Country;
+            customer.LastModified = DateTime.UtcNow;
+
+            _commandService.UpdateCustomer(customer);
+
+            return RedirectToPage("/Person/Index");
         }
     }
 }
