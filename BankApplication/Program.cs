@@ -41,6 +41,8 @@ builder.Services.AddScoped<ICustomerCommandService, CustomerCommandService>();
 builder.Services.AddScoped<ICustomerSorter, CustomerSorter>();
 
 
+
+
 // In Program.cs (or Startup.cs in older versions)
 builder.Services.AddScoped<IPersonService, PersonService>(); // Register the StatsService
 builder.Services.AddTransient<IAccountService, AccountService>();//Register the service AccountService to get our accounts data

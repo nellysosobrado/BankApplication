@@ -3,15 +3,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Services.Interface;
 using System.ComponentModel.DataAnnotations;
 using DAL.Models;
+using Services;
 
 namespace BankApplication.Pages.Customer
 {
     [BindProperties]
     public class CreateModel : PageModel
     {
-        private readonly ICustomerService _customerService;
+        private readonly ICustomerCommandService _customerService;
 
-        public CreateModel(ICustomerService customerService)
+
+        public CreateModel(ICustomerCommandService customerService)
         {
             _customerService = customerService;
         }
@@ -82,7 +84,8 @@ namespace BankApplication.Pages.Customer
                     LastModified = DateTime.UtcNow
                 };
 
-                _customerService.SaveNew(customer);
+                //_customerService.SaveNew(customer);
+                _customerService.CreateCustomer(customer);
                 return RedirectToPage("/Person/Index");
             }
             return Page();
