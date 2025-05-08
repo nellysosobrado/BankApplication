@@ -1,7 +1,8 @@
 ﻿using BankApplication.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Services; // Ändrat till rätt namespace där ICustomerQueryService finns
+using Services; 
+using System.Linq;
 
 namespace BankApplication.Pages.Person
 {
@@ -11,6 +12,23 @@ namespace BankApplication.Pages.Person
 
         public List<CustomerViewModel> Customers { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public string SearchTerm { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string SortColumn { get; set; } = "Name";
+
+        [BindProperty(SupportsGet = true)]
+        public string SortOrder { get; set; } = "asc";
+
+        [BindProperty(SupportsGet = true)]
+        public int PageSize { get; set; } = 50;
+
+        [BindProperty(SupportsGet = true)]
+        public int PageIndex { get; set; } = 1;
+
+        public int TotalPages { get; set; }
+
         public IndexModel(ICustomerQueryService customerQueryService)
         {
             _customerQueryService = customerQueryService;
@@ -18,7 +36,8 @@ namespace BankApplication.Pages.Person
 
         public void OnGet()
         {
-            Customers = _customerQueryService
+
+            var allCustomers = _customerQueryService
                 .GetAllCustomers()
                 .Select(r => new CustomerViewModel
                 {
@@ -33,8 +52,36 @@ namespace BankApplication.Pages.Person
                     Zipcode = r.Zipcode,
                     Country = r.Country,
                     CountryCode = r.CountryCode
-                }).ToList();
+                })
+                .ToList();
+
+
+            if (!string.IsNullOrEmpty(SearchTerm))
+            {
+                allCustomers = allCustomers
+                    .Where(c =>
+
+                        (int.TryParse(SearchTerm, out var id) && c.CustomerId == id) ||
+                        c.Givenname.Equals(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                        c.Surname.Equals(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                        c.City.Equals(SearchTerm, StringComparison.OrdinalIgnoreCase)
+                    )
+                    .ToList();
+            }
+
+            var totalCustomers = allCustomers.Count();
+            TotalPages = (int)Math.Ceiling((double)totalCustomers / PageSize);
+
+
+            Customers = allCustomers
+                .Skip((PageIndex - 1) * PageSize) 
+                .Take(PageSize)                  
+                .ToList();
+
+            ViewData["TotalPages"] = TotalPages;
         }
+
+
 
         public class CustomerViewModel
         {

@@ -1,41 +1,39 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Manage Accounts";
     Layout = "_DashboardLayout";
-      <!-- Använd din dashboard-layout -->
 }
-<!-- Lägg till CSS om den inte redan finns i layout -->
-<link rel="stylesheet" href="~/asset2/css/site.css" />
+
+<form method="get" class="mb-4">
+    <div class="input-group">
+        <input type="text" class="form-control" asp-for="SearchTerm" placeholder="Search on CustomerId, Name or City">
+        <button type="submit" class="btn btn-primary">Sök</button>
+    </div>
+</form>
 
 <div class="card">
     <div class="card-header">
-        <h1>Alla personer</h1>
+        <h1>Manage Accounts</h1>
     </div>
     <div class="card-body">
         <table class="table">
             <tr>
+                <th>CustomerId</th>
                 <th>Namn</th>
-                <th>Email</th>
-                <th>City</th>
                 <th></th>
             </tr>
             @foreach (var customer in Model.Customers)
             {
                 <tr>
-                    <td>@customer.Givenname</td>
-                    <td>@customer.Surname</td>
-                    <td>@customer.Gender</td>
-                    <td>@customer.Birthday</td>
                     <td>@customer.CustomerId</td>
-                    <td>@customer.Emailaddress</td>
-                    <td>@customer.City</td>
-                    <td>@customer.Streetaddress</td>
-                    <td>@customer.Zipcode</td>
-                    <td>@customer.Country</td>
-                    <td>@customer.CountryCode</td>
+                    <td>@customer.Givenname @customer.Surname</td>
                     <td>
                         <a asp-page="/Customer/Update" asp-route-CustomerId="@customer.CustomerId"><i class='bx bx-edit'></i></a>
+                    </td>
+
+                    <td>
+                        <a asp-page="/Customer" asp-route-id="@customer.CustomerId"><i class='bx bx-info-circle'></i></a>
                     </td>
                 </tr>
             }
@@ -45,5 +43,27 @@
     </div>
 </div>
 
-<!-- Lägg till JS i slutet -->
-<script src="~/asset2/js/site.js"></script>
+@{
+    var prevDisabled = Model.PageIndex == 1 ? "disabled" : "";
+    var nextDisabled = Model.PageIndex == (int)ViewData["TotalPages"] ? "disabled" : "";
+}
+
+<div class="d-flex justify-content-between align-items-center mt-3">
+    <a asp-page="./Customers"
+       asp-route-searchTerm="@Model.SearchTerm"
+       asp-route-sortColumn="@Model.SortColumn"
+       asp-route-sortOrder="@Model.SortOrder"
+       asp-route-pageIndex="@(Model.PageIndex - 1)"
+       class="btn btn-primary @prevDisabled">
+        <i class="fas fa-chevron-left"></i> Föregående
+    </a>
+    <span class="text-muted">Sida @Model.PageIndex av @ViewData["TotalPages"]</span>
+    <a asp-page="./Customers"
+       asp-route-searchTerm="@Model.SearchTerm"
+       asp-route-sortColumn="@Model.SortColumn"
+       asp-route-sortOrder="@Model.SortOrder"
+       asp-route-pageIndex="@(Model.PageIndex + 1)"
+       class="btn btn-primary @nextDisabled">
+        Nästa <i class="fas fa-chevron-right"></i>
+    </a>
+</div>

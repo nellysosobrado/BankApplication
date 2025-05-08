@@ -10,18 +10,18 @@ namespace DAL.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            // Lägg till kolumnerna i Customers-tabellen
+
             migrationBuilder.AddColumn<DateTime>(
                 name: "Registered",
                 table: "Customers",
                 nullable: false,
-                defaultValue: DateTime.Now);  // Eller ett annat defaultvärde om du vill
+                defaultValue: DateTime.Now);  
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "LastModified",
                 table: "Customers",
                 nullable: false,
-                defaultValue: DateTime.Now);  // Eller ett annat defaultvärde om du vill
+                defaultValue: DateTime.Now);  
         
 
         }
@@ -29,7 +29,7 @@ namespace DAL.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            // Ta bort kolumnerna om migrationen rullas tillbaka
+
             migrationBuilder.DropColumn(
                 name: "Registered",
                 table: "Customers");
