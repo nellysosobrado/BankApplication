@@ -39,7 +39,7 @@ builder.Services.AddScoped<IStatsService, StatsService>(); // Register the Stats
 builder.Services.AddScoped<ICustomerQueryService, CustomerQueryService>();
 builder.Services.AddScoped<ICustomerCommandService, CustomerCommandService>();
 builder.Services.AddScoped<ICustomerSorter, CustomerSorter>();
-
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 
 

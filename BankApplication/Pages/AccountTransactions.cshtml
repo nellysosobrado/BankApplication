@@ -1,68 +1,86 @@
 ﻿@page
 @model BankApplication.Pages.AccountModel
 @{
-    ViewData["Title"] = "Transactions";
+    ViewData["Title"] = "Kontoinformation";
     Layout = "_DashboardLayout";
 }
 
+<div class="card shadow mb-4">
+    <div class="card-header bg-primary text-white">
+        <h2 class="mb-0">Konto: @Model.Account.AccountId</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Saldo:</strong> @Model.Account.Balance.ToString("C")</p>
+    </div>
+</div>
 
-<h2>Konto: @Model.Account.AccountId</h2>
-<p>Saldo: @Model.Account.Balance.ToString("C")</p>
+<div class="card shadow mb-4">
+    <div class="card-header bg-light">
+        <h5 class="mb-0">Transaktioner</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped" id="transactionTable">
+            <thead>
+                <tr>
+                    <th>Datum</th>
+                    <th>Typ</th>
+                    <th>Operation</th>
+                    <th>Belopp</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model.Transactions)
+                {
+                    <tr>
+                        <td>@t.Date.ToString("yyyy-MM-dd")</td>
+                        <td>@t.Type</td>
+                        <td>@t.Operation</td>
+                        <td>@t.Amount.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Datum</th>
-            <th>Typ</th>
-            <th>Operation</th>
-            <th>Belopp</th>
-            <th>Saldo</th>
-        </tr>
-    </thead>
-    <tbody id="transactionList">
-        @foreach (var t in Model.Account.Transactions)
+        <!-- Ladda fler-knapp -->
+        @if (Model.Transactions.Count == Model.PageSize)
         {
-            <tr>
-                <td>@t.Date.ToString("yyyy-MM-dd")</td>
-                <td>@t.Type</td>
-                <td>@t.Operation</td>
-                <td>@t.Amount.ToString("C")</td>
-                <td>@t.Balance.ToString("C")</td>
-            </tr>
+            <button id="loadMoreBtn" class="btn btn-primary" data-skip="@Model.PageSize">
+                Ladda fler
+            </button>
         }
-    </tbody>
-</table>
-
-<button id="loadMoreBtn" class="btn btn-primary">Ladda fler</button>
+    </div>
+</div>
 
 @section Scripts {
-<script>
-    let skip = 20;
-    const accountId = @Model.Account.AccountId;
+    <script>
+        document.getElementById('loadMoreBtn')?.addEventListener('click', function () {
+            let skip = parseInt(this.getAttribute('data-skip'));
+            let accountId = @Model.Account.AccountId;
 
-           document.getElementById("loadMoreBtn").addEventListener("click", function () {
+            // Ladda fler transaktioner via AJAX
             fetch(`/Account?handler=LoadMore&accountId=${accountId}&skip=${skip}`)
                 .then(response => response.json())
                 .then(data => {
-                    const tbody = document.getElementById("transactionList");
+                    const tbody = document.querySelector('#transactionTable tbody');
                     data.transactions.forEach(t => {
-                        const row = document.createElement("tr");
+                        const row = document.createElement('tr');
                         row.innerHTML = `
                             <td>${new Date(t.date).toLocaleDateString()}</td>
                             <td>${t.type}</td>
                             <td>${t.operation}</td>
                             <td>${t.amount.toLocaleString('sv-SE', { style: 'currency', currency: 'SEK' })}</td>
-                            <td>${t.balance.toLocaleString('sv-SE', { style: 'currency', currency: 'SEK' })}</td>
                         `;
                         tbody.appendChild(row);
                     });
 
-                    skip += data.transactions.length;
+                    // Uppdatera knappen med nya skip-värdet
                     if (!data.hasMore) {
-                        document.getElementById("loadMoreBtn").style.display = 'none';
+                        document.getElementById('loadMoreBtn').style.display = 'none';
+                    } else {
+                        document.getElementById('loadMoreBtn').setAttribute('data-skip', skip + 20);
                     }
-                });
+                })
+                .catch(error => console.error('Error:', error));
         });
-
-</script>
+    </script>
 }

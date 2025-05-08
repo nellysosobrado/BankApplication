@@ -20,7 +20,13 @@ namespace BankApplication.Pages
         [BindProperty(SupportsGet = true)]
         public int AccountId { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public int PageIndex { get; set; } = 1; // Default page index
+
+        public int PageSize { get; set; } = 20; // Number of transactions per page
         public AccountViewModel Account { get; set; }
+        public List<TransactionViewModel> Transactions { get; set; }
+        public int TotalTransactions { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -30,26 +36,36 @@ namespace BankApplication.Pages
 
             if (account == null) return NotFound();
 
+            TotalTransactions = await _bankAppDataContext.Transactions
+                .Where(t => t.AccountId == AccountId)
+                .CountAsync();
+
+            // Konvertera DateOnly till DateTime (sätt tiden till 00:00:00)
+            Transactions = await _bankAppDataContext.Transactions
+                .Where(t => t.AccountId == AccountId)
+                .OrderByDescending(t => t.Date)
+                .Skip((PageIndex - 1) * PageSize)
+                .Take(PageSize)
+                .Select(t => new TransactionViewModel
+                {
+                    TransactionId = t.TransactionId,
+                    Type = t.Type,
+                    Operation = t.Operation,
+                    Amount = t.Amount,
+                    Balance = t.Balance,
+                    Date = t.Date.ToDateTime(new TimeOnly(0, 0)) // Omvandla DateOnly till DateTime
+                }).ToListAsync();
+
             Account = new AccountViewModel
             {
                 AccountId = account.AccountId,
                 Balance = account.Balance,
                 Frequency = account.Frequency,
-                Transactions = account.Transactions
-                    .OrderByDescending(t => t.Date)
-                    .Take(20)
-                    .Select(t => new TransactionViewModel
-                    {
-                        TransactionId = t.TransactionId,
-                        Type = t.Type,
-                        Operation = t.Operation,
-                        Amount = t.Amount,
-                        Balance = t.Balance
-                    }).ToList()
             };
 
             return Page();
         }
+
         public async Task<IActionResult> OnGetLoadMore(int accountId, int skip)
         {
             const int pageSize = 20;
@@ -61,42 +77,9 @@ namespace BankApplication.Pages
             var totalCount = await query.CountAsync();
             var transactions = await query.Skip(skip).Take(pageSize).ToListAsync();
 
-            var paginatedTransactions = new PaginatedList<Transaction>(
-                transactions,
-                totalCount,
-                skip / pageSize + 1, // PageIndex, beräknat från skip
-                pageSize
-            );
+            var paginatedTransactions = new PaginatedList<Transaction>(transactions, totalCount, skip / pageSize + 1, pageSize);
 
-            // Skicka tillbaka både transaktionerna och information om det finns fler sidor
             return new JsonResult(new { transactions = paginatedTransactions.Items, hasMore = paginatedTransactions.HasNextPage });
         }
-
-
-
-
-
-
-
-
-        //public async Task<IActionResult> OnGetLoadMoreAsync(int accountId, int skip)
-        //{
-        //    var transactions = await _bankAppDataContext.Transactions
-        //        .Where(t => t.AccountId == accountId)
-        //        .OrderByDescending(t => t.Date)
-        //        .Skip(skip)
-        //        .Take(20)
-        //        .Select(t => new TransactionViewModel
-        //        {
-        //            TransactionId = t.TransactionId,
-        //            Type = t.Type,
-        //            Operation = t.Operation,
-        //            Amount = t.Amount,
-        //            Balance = t.Balance
-        //        })
-        //        .ToListAsync();  
-
-        //    return new JsonResult(transactions);
-        //}
     }
 }
