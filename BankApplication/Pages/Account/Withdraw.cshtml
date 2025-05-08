@@ -4,10 +4,12 @@
     ViewData["Title"] = "Withdraw";
     Layout = "_DashboardLayout";
 }
+
 <link rel="stylesheet" href="~/assets2/css/din-fil.css">
 <script src="~/assets2/js/din-fil.js"></script>
 <h1>Withdraw</h1>
 <h3>Balance: @Model.Balance kr</h3>
+
 <form method="post">
     <input type="hidden" asp-for="Balance" /> 
     <div class="form-group">
@@ -17,5 +19,6 @@
     </div>
     <button type="submit" class="btn btn-primary">Withdraw</button>
 </form>
+
 
 

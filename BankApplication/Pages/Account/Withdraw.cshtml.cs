@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Services.Interface;
 using System.ComponentModel.DataAnnotations;
@@ -15,34 +15,32 @@ namespace BankApplication.Pages.Account
             _accountService = accountService;
         }
 
-        [Range(100, 10000)]
+        [Range(100, 10000, ErrorMessage = "Amount must be between 100 and 10 000")]
         public decimal Amount { get; set; }
 
         public decimal Balance { get; set; }
+
         public void OnGet(int accountId)
         {
             var accountDb = _accountService.GetAccount(accountId);
             Balance = accountDb.Balance;
-
-            // Option 2 - Cleaner?
-            // Balance = _accountService.GetAccount(accountId).Balance;
         }
 
         public IActionResult OnPost(int accountId)
         {
-            var accountDb = _accountService.GetAccount(accountId);
-            if (accountDb.Balance < Amount)
+            if (!ModelState.IsValid)
+                return Page();
+
+            if (!_accountService.TryWithdraw(accountId, Amount, out string errorMessage))
             {
-                ModelState.AddModelError("Amount", "You don't have that much money!");
+                ModelState.AddModelError(nameof(Amount), errorMessage);
+                OnGet(accountId);
+                return Page();
             }
 
-            if (ModelState.IsValid)
-            {
-                accountDb.Balance -= Amount;
-                _accountService.Update(accountDb);
-                return RedirectToPage("Index");
-            }
-            return Page();
+            return RedirectToPage("Index");
         }
+
+
     }
 }

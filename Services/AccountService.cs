@@ -17,6 +17,34 @@ namespace Services
         {
             _dbContext = dbContext;
         }
+        public bool TryWithdraw(int accountId, decimal amount, out string errorMessage)
+        {
+            var account = GetAccount(accountId);
+            if (account == null)
+            {
+                errorMessage = "Account not found.";
+                return false;
+            }
+
+            if (amount <= 0)
+            {
+                errorMessage = "Withdrawal amount must be greater than zero.";
+                return false;
+            }
+
+            if (account.Balance < amount)
+            {
+                errorMessage = "Insufficient funds in the account.";
+                return false;
+            }
+
+            account.Balance -= amount;
+            Update(account);
+
+            errorMessage = null;
+            return true;
+        }
+
         public List<Account> GetAccounts()
         {
             return _dbContext.Accounts.ToList();

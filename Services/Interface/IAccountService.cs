@@ -14,8 +14,10 @@ namespace Services.Interface
         List<AccountViewModel> GetAccountViewModels();
         void Update(Account account);
         Account GetAccount(int accountId);
+        bool TryWithdraw(int accountId, decimal amount, out string errorMessage);
 
-        
+
+
     }
 
 }
