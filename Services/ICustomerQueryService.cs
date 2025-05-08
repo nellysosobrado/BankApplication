@@ -18,6 +18,7 @@ namespace Services
         Task<CustomerDetailViewModel> GetCustomerByIdAsync(int customerId);
         Task<PaginatedList<CustomerViewModel>> SearchCustomersAsync(
         string searchTerm, string sortColumn, string sortOrder, int pageIndex, int pageSize);
+
     }
 
     public interface ICustomerCommandService//Create, Update, Delete

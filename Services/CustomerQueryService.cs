@@ -22,6 +22,8 @@ namespace Services
             _sorter = sorter;
         }
 
+
+
         public IEnumerable<Customer> GetAllCustomers() => _context.Customers;
 
         public async Task<CustomerDetailViewModel> GetCustomerByIdAsync(int customerId)

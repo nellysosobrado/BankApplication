@@ -1,10 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Services;
+using Services.Interface;
 using BankApplication.ViewModels;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Services.Interface;
+using Services;
 
 namespace BankApplication.Pages
 {
@@ -12,7 +12,6 @@ namespace BankApplication.Pages
     public class CustomersModel : PageModel
     {
         private readonly ICustomerQueryService _customerService;
-        //private readonly ICustomerService _customerService;
 
         public CustomersModel(ICustomerQueryService customerService)
         {
@@ -23,25 +22,26 @@ namespace BankApplication.Pages
         public string SearchTerm { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public string SortColumn { get; set; } = "Name"; // Default sort column
+        public string SortColumn { get; set; } = "Name";
 
         [BindProperty(SupportsGet = true)]
-        public string SortOrder { get; set; } = "asc"; // Default sort order
+        public string SortOrder { get; set; } = "asc";
 
         [BindProperty(SupportsGet = true)]
-        public int PageSize { get; set; } = 50; // Default page size
+        public int PageSize { get; set; } = 50;
+
+        [BindProperty(SupportsGet = true)]
+        public int PageIndex { get; set; } = 1;
 
         public PaginatedList<CustomerViewModel> Customers { get; set; }
 
-        public async Task OnGetAsync(int pageIndex = 1)
+        public async Task OnGetAsync()
         {
-
-
             Customers = await _customerService.SearchCustomersAsync(
                 searchTerm: SearchTerm,
                 sortColumn: SortColumn,
                 sortOrder: SortOrder,
-                pageIndex: pageIndex,
+                pageIndex: PageIndex,
                 pageSize: PageSize);
         }
     }
