@@ -1,6 +1,8 @@
 ﻿@page
 @model BankApplication.Pages.AccountModel
 @{
+    ViewData["Title"] = "Transactions";
+    Layout = "_DashboardLayout";
 }
 
 
@@ -38,27 +40,29 @@
     let skip = 20;
     const accountId = @Model.Account.AccountId;
 
-    document.getElementById("loadMoreBtn").addEventListener("click", function () {
-        fetch(`/Account?handler=LoadMore&accountId=${accountId}&skip=${skip}`)
-            .then(response => response.json())
-            .then(data => {
-                const tbody = document.getElementById("transactionList");
-                data.forEach(t => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${new Date(t.date).toLocaleDateString()}</td>
-                        <td>${t.type}</td>
-                        <td>${t.operation}</td>
-                        <td>${t.amount.toLocaleString('sv-SE', { style: 'currency', currency: 'SEK' })}</td>
-                        <td>${t.balance.toLocaleString('sv-SE', { style: 'currency', currency: 'SEK' })}</td>
-                    `;
-                    tbody.appendChild(row);
+           document.getElementById("loadMoreBtn").addEventListener("click", function () {
+            fetch(`/Account?handler=LoadMore&accountId=${accountId}&skip=${skip}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById("transactionList");
+                    data.transactions.forEach(t => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${new Date(t.date).toLocaleDateString()}</td>
+                            <td>${t.type}</td>
+                            <td>${t.operation}</td>
+                            <td>${t.amount.toLocaleString('sv-SE', { style: 'currency', currency: 'SEK' })}</td>
+                            <td>${t.balance.toLocaleString('sv-SE', { style: 'currency', currency: 'SEK' })}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+
+                    skip += data.transactions.length;
+                    if (!data.hasMore) {
+                        document.getElementById("loadMoreBtn").style.display = 'none';
+                    }
                 });
-                skip += data.length;
-                if (data.length < 20) {
-                    document.getElementById("loadMoreBtn").style.display = 'none';
-                }
-            });
-    });
+        });
+
 </script>
 }
