@@ -55,7 +55,7 @@ namespace Services
                 .Select(a => new AccountViewModel
                 {
                     AccountId = a.AccountId,
-                    AccountNo = a.AccountNo,
+                   // AccountNo = a.AccountNo,
                     Balance = a.Balance
                 }).ToList();
         }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(BankAppDataContext))]
-    [Migration("20250403130349_addedperson")]
-    partial class addedperson
+    [Migration("20250508161645_RemoveAccountNoColumn")]
+    partial class RemoveAccountNoColumn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -140,9 +140,15 @@ namespace DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("NationalId")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime>("Registered")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Streetaddress")
                         .IsRequired()

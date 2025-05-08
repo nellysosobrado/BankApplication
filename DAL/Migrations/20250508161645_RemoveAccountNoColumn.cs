@@ -5,10 +5,18 @@
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class AccountNumber : Migration
+    public partial class RemoveAccountNoColumn : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            //migrationBuilder.DropColumn(
+            //    name: "AccountNo",
+            //    table: "Accounts");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
                 name: "AccountNo",
@@ -16,14 +24,6 @@ namespace DAL.Migrations
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "AccountNo",
-                table: "Accounts");
         }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,6 +17,7 @@ namespace DAL.Migrations
             //    {
             //        AccountId = table.Column<int>(type: "int", nullable: false)
             //            .Annotation("SqlServer:Identity", "1, 1"),
+            //        AccountNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
             //        Frequency = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
             //        Created = table.Column<DateOnly>(type: "date", nullable: false),
             //        Balance = table.Column<decimal>(type: "decimal(13,2)", nullable: false)
@@ -83,12 +84,36 @@ namespace DAL.Migrations
             //        NationalId = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
             //        Telephonecountrycode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
             //        Telephonenumber = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
-            //        Emailaddress = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
+            //        Emailaddress = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+            //        Registered = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //        LastModified = table.Column<DateTime>(type: "datetime2", nullable: false)
             //    },
             //    constraints: table =>
             //    {
             //        table.PrimaryKey("PK_Customers", x => x.CustomerId);
             //    });
+
+            migrationBuilder.CreateTable(
+                name: "Person",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    StreetAddress = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    CountryCode = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
+                    Registered = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Age = table.Column<int>(type: "int", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Person", x => x.Id);
+                });
 
             //migrationBuilder.CreateTable(
             //    name: "User",
@@ -429,6 +454,9 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "PermenentOrder");
+
+            migrationBuilder.DropTable(
+                name: "Person");
 
             migrationBuilder.DropTable(
                 name: "Transactions");

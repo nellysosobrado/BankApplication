@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(BankAppDataContext))]
-    [Migration("20250406194128_UpdateCustomerModel")]
-    partial class UpdateCustomerModel
+    [Migration("20250508160436_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
