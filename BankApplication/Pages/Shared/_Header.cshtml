@@ -1,4 +1,4 @@
-﻿<!-- Pages/Shared/_Header.cshtml -->
+﻿
 <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
         <a asp-page="/Index" class="logo d-flex align-items-center me-auto">
@@ -6,13 +6,7 @@
         </a>
         <nav id="navmenu" class="navmenu">
             <ul>
-                <li><a asp-page="/Index" class="@(Context.Request.Path == "/" ? "active" : "")">Home</a></li>
-                <li>
-                    <a asp-page="/Customers"
-                       class="@(Context.Request.Path == "/Customers" ? "active" : "")">
-                        Customers
-                    </a>
-                </li>
+
                 <partial name="_LoginPartial" />
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>

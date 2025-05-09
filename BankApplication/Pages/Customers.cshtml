@@ -12,7 +12,7 @@
     <form method="get" class="mb-4">
         <div class="input-group">
             <input type="text" class="form-control" asp-for="SearchTerm" placeholder="Search on CustomerId, Name or City">
-            <button type="submit" class="btn btn-primary">Sök</button>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
 
@@ -37,23 +37,6 @@
                             <i class="fas fa-angle-down @(Model.SortColumn == "CustomerId" && Model.SortOrder == "desc" ? "text-white" : "text-muted")"></i>
                         </a>
                     </th>
-                    @* <th scope="col"> *@
-                    @*     Personnummer *@
-                    @*     <a asp-page="/Customers" *@
-                    @*        asp-route-searchTerm="@Model.SearchTerm" *@
-                    @*        asp-route-sortColumn="Personnummer" *@
-                    @*        asp-route-sortOrder="asc" *@
-                    @*        class="sort-link"> *@
-                    @*         <i class="fas fa-angle-up @(Model.SortColumn == "Personnummer" && Model.SortOrder == "asc" ? "text-white" : "text-muted")"></i> *@
-                    @*     </a> *@
-                    @*     <a asp-page="/Customers" *@
-                    @*        asp-route-searchTerm="@Model.SearchTerm" *@
-                    @*        asp-route-sortColumn="Personnummer" *@
-                    @*        asp-route-sortOrder="desc" *@
-                    @*        class="sort-link"> *@
-                    @*         <i class="fas fa-angle-down @(Model.SortColumn == "Personnummer" && Model.SortOrder == "desc" ? "text-white" : "text-muted")"></i> *@
-                    @*     </a> *@
-                    @* </th> *@
                     <th scope="col">
                         Name
                         <a asp-page="/Customers"
@@ -71,40 +54,6 @@
                             <i class="fas fa-angle-down @(Model.SortColumn == "Name" && Model.SortOrder == "desc" ? "text-white" : "text-muted")"></i>
                         </a>
                     </th>
-                    @* <th scope="col"> *@
-                    @*     Adress *@
-                    @*     <a asp-page="/Customers" *@
-                    @*        asp-route-searchTerm="@Model.SearchTerm" *@
-                    @*        asp-route-sortColumn="Address" *@
-                    @*        asp-route-sortOrder="asc" *@
-                    @*        class="sort-link"> *@
-                    @*         <i class="fas fa-angle-up @(Model.SortColumn == "Address" && Model.SortOrder == "asc" ? "text-white" : "text-muted")"></i> *@
-                    @*     </a> *@
-                    @*     <a asp-page="/Customers" *@
-                    @*        asp-route-searchTerm="@Model.SearchTerm" *@
-                    @*        asp-route-sortColumn="Address" *@
-                    @*        asp-route-sortOrder="desc" *@
-                    @*        class="sort-link"> *@
-                    @*         <i class="fas fa-angle-down @(Model.SortColumn == "Address" && Model.SortOrder == "desc" ? "text-white" : "text-muted")"></i> *@
-                    @*     </a> *@
-                    @* </th> *@
-                    @* <th scope="col"> *@
-                    @*     Stad *@
-                    @*     <a asp-page="/Customers" *@
-                    @*        asp-route-searchTerm="@Model.SearchTerm" *@
-                    @*        asp-route-sortColumn="City" *@
-                    @*        asp-route-sortOrder="asc" *@
-                    @*        class="sort-link"> *@
-                    @*         <i class="fas fa-angle-up @(Model.SortColumn == "City" && Model.SortOrder == "asc" ? "text-white" : "text-muted")"></i> *@
-                    @*     </a> *@
-                    @*     <a asp-page="/Customers" *@
-                    @*        asp-route-searchTerm="@Model.SearchTerm" *@
-                    @*        asp-route-sortColumn="City" *@
-                    @*        asp-route-sortOrder="desc" *@
-                    @*        class="sort-link"> *@
-                    @*         <i class="fas fa-angle-down @(Model.SortColumn == "City" && Model.SortOrder == "desc" ? "text-white" : "text-muted")"></i> *@
-                    @*     </a> *@
-                    @* </th> *@
                     <th scope="col">Info</th>
                 </tr>
             </thead>
@@ -127,7 +76,6 @@
         var prevDisabled = !Model.Customers.HasPreviousPage ? "disabled" : "";
         var nextDisabled = !Model.Customers.HasNextPage ? "disabled" : "";
     }
-
     <div class="d-flex justify-content-between align-items-center mt-3">
         <a asp-page="./Customers"
            asp-route-searchTerm="@Model.SearchTerm"
@@ -135,7 +83,7 @@
            asp-route-sortOrder="@Model.SortOrder"
            asp-route-pageIndex="@(Model.Customers.PageIndex - 1)"
            class="btn btn-primary @prevDisabled">
-            <i class="fas fa-chevron-left"></i> Föregående
+            <i class="fas fa-chevron-left"></i> Previous
         </a>
         <span class="text-muted">Sida @Model.Customers.PageIndex av @Model.Customers.TotalPages</span>
         <a asp-page="./Customers"
@@ -144,7 +92,7 @@
            asp-route-sortOrder="@Model.SortOrder"
            asp-route-pageIndex="@(Model.Customers.PageIndex + 1)"
            class="btn btn-primary @nextDisabled">
-            Nästa <i class="fas fa-chevron-right"></i>
+            Next <i class="fas fa-chevron-right"></i>
         </a>
     </div>
 </div>

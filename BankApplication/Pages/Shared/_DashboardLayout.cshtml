@@ -14,7 +14,6 @@
 </head>
 <body>
     <div class="grid-container">
-        <!-- Header -->
         <header class="header">
             <div class="header__avatar">
                 <i class='bx bx-user-circle'></i>
@@ -22,7 +21,6 @@
             </div>
         </header>
 
-        <!-- Sidebar -->
         <aside class="sidenav">
             <div class="sidenav__logo">
                 <i class='bx bxs-dashboard'></i>
@@ -75,18 +73,15 @@
 
         </aside>
 
-        <!-- Main Content -->
         <main class="main">
             @RenderBody()
         </main>
 
-        <!-- Footer -->
         <footer class="footer">
             <div>&copy; @DateTime.Now.Year Your Company</div>
         </footer>
     </div>
 
-    <!-- Globala JS-filer -->
     <script src="~/asset2/js/site.js" asp-append-version="true"></script>
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 

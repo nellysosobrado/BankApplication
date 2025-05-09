@@ -8,7 +8,7 @@ using Services;
 
 namespace BankApplication.Pages
 {
-    [Authorize]
+    [Authorize(Roles = "Cashier,Admin")]
     public class CustomersModel : PageModel
     {
         private readonly ICustomerQueryService _customerService;
