@@ -59,7 +59,19 @@
                             Manage Accounts
                         </a>
                     </li>
+
+
                 }
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <li class="sidenav__list-item">
+                        <a asp-area="Admin" asp-page="/Users/Index">
+                            <i class="bx bx-shield-quarter"></i>
+                            <span>Adminpanel</span>
+                        </a>
+                    </li>
+                }
+
 
                 <li class="sidenav__list-item">
                     <a asp-area="Identity" asp-page="/Account/Manage/Index">
