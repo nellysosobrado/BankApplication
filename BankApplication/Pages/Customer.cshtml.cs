@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using BankApplication.ViewModels;
 using Services.Interface;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BankApplication.Pages
 {
+    [Authorize(Roles = "Cashier,Admin")]
     public class CustomerModel : PageModel
     {
-        //private readonly ICustomerService _customerService;
         private readonly ICustomerQueryService _customerService;
         private readonly ILogger<CustomerModel> _logger;
 
@@ -21,7 +22,6 @@ namespace BankApplication.Pages
 
         public CustomerModel( ILogger<CustomerModel> logger, ICustomerQueryService customerService)
         {
-            //_customerService = customerService;
             _customerService = customerService;
 
             _logger = logger;
@@ -31,7 +31,7 @@ namespace BankApplication.Pages
         {
             if (!int.TryParse(id, out int customerId))
             {
-                TempData["ErrorMessage"] = "Ogiltigt kund-ID";
+                TempData["ErrorMessage"] = "Invalid Customer ID";
                 return RedirectToPage("/Customers");
             }
 
@@ -41,7 +41,7 @@ namespace BankApplication.Pages
 
                 if (Customer == null)
                 {
-                    TempData["ErrorMessage"] = "Kunden hittades inte";
+                    TempData["ErrorMessage"] = "Customer not found";
                     return RedirectToPage("/Customers");
                 }
 
@@ -53,8 +53,8 @@ namespace BankApplication.Pages
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Fel vid hämtning av kunddata");
-                TempData["ErrorMessage"] = "Ett fel uppstod vid hämtning av kundinformation";
+                _logger.LogError(ex, "Error on fetching");
+                TempData["ErrorMessage"] = "Error fetching data";
                 return RedirectToPage("/Customers");
             }
         }

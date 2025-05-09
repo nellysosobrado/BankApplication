@@ -1,64 +1,57 @@
 ﻿@page
 @model CustomerModel
 @{
-    ViewData["Title"] = "Kunddetaljer";
+    ViewData["Title"] = "Customer Detail Information";
     Layout = "_DashboardLayout";
 }
 <link rel="stylesheet" href="~/asset2/css/site.css" />
 
 <div class="container mt-4">
     <div class="card shadow mx-auto" style="max-width: 1000px;">
-        <div class="card-header bg-primary text-white">
-            <h2 class="mb-0">Kundinformation</h2>
-        </div>
         <div class="card-body">
-            <!-- Kundnamn och saldo -->
             <div class="row mb-4">
                 <div class="col-md-8">
                     <h4 class="mb-1">@Model.Customer.Name</h4>
-                    <p class="text-muted">Kundnummer: @Model.Customer.CustomerId</p>
+                    <p class="text-muted">Customer Number: @Model.Customer.CustomerId</p>
                 </div>
                 <div class="col-md-4 text-md-end">
                     <div class="alert alert-success py-2 px-3 d-inline-block">
-                        <strong>Totalt saldo:</strong> @Model.TotalBalance.ToString("C")
+                        <strong>Total Balance:</strong> @Model.TotalBalance.ToString("C")
                     </div>
                 </div>
             </div>
 
-            <!-- Delad info i två kolumner -->
             <div class="row mb-4">
                 <div class="col-md-6">
                     <dl class="row">
-                        <dt class="col-sm-5">Personnummer</dt>
+                        <dt class="col-sm-5">Person numberr</dt>
                         <dd class="col-sm-7">@Model.Customer.Personnummer</dd>
 
                         <dt class="col-sm-5">Adress</dt>
                         <dd class="col-sm-7">@Model.Customer.Address</dd>
 
-                        <dt class="col-sm-5">Postnummer</dt>
+                        <dt class="col-sm-5">Postal Code</dt>
                         <dd class="col-sm-7">@Model.Customer.PostalCode</dd>
 
-                        <dt class="col-sm-5">Ort</dt>
+                        <dt class="col-sm-5">City</dt>
                         <dd class="col-sm-7">@Model.Customer.City</dd>
                     </dl>
                 </div>
                 <div class="col-md-6">
                     <dl class="row">
-                        <dt class="col-sm-5">Land</dt>
+                        <dt class="col-sm-5">Country</dt>
                         <dd class="col-sm-7">@Model.Customer.Country</dd>
 
-                        <dt class="col-sm-5">Telefon</dt>
+                        <dt class="col-sm-5">Phone Number</dt>
                         <dd class="col-sm-7">@Model.Customer.Phone</dd>
 
-                        <dt class="col-sm-5">E-post</dt>
+                        <dt class="col-sm-5">Email</dt>
                         <dd class="col-sm-7">@Model.Customer.EmailAddress</dd>
                     </dl>
                 </div>
             </div>
-
-            <!-- Kontoöversikt -->
             <div class="d-flex align-items-center gap-2 mb-2">
-                <h4 class="mb-0">Konton</h4>
+                <h4 class="mb-0">Accounts</h4>
                 <span class="badge bg-primary">@Model.Customer.Dispositions.Count()</span>
             </div>
 
@@ -68,11 +61,11 @@
                     <table class="table table-bordered table-striped">
                         <thead class="table-light">
                             <tr>
-                                <th>Kontonummer</th>
+                                <th>Account Number</th>
                                 <th>Frequency</th>
                                 <th>Saldo</th>
-                                <th>Kontostatus</th>
-                                <th>Skapat datum</th>
+                                <th>Account status</th>
+                                <th>Created</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -96,14 +89,8 @@
             }
             else
             {
-                <div class="alert alert-info">Inga konton finns registrerade</div>
+                <div class="alert alert-info">No Accounts Registered</div>
             }
-
-            <div class="mt-4">
-                <a asp-page="/Customers" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Tillbaka till kundlistan
-                </a>
-            </div>
         </div>
     </div>
 </div>
