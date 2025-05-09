@@ -20,6 +20,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddRoles<IdentityRole>() // Implements Role-based authorization
     .AddEntityFrameworkStores<BankAppDataContext>();
 
+
+
 //builder.Services.ConfigureApplicationCookie(options =>
 //{
 //    options.LoginPath = "/Identity/Account/Login";

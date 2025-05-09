@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace DAL.Models;
 
-public partial class BankAppDataContext : IdentityDbContext
+public partial class BankAppDataContext : IdentityDbContext<IdentityUser>
 {
     public BankAppDataContext()
     {
