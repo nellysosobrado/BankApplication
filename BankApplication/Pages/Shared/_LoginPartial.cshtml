@@ -9,14 +9,14 @@
         <a href="#" class="nav-auth-link dropdown-toggle" data-bs-toggle="dropdown">
             <i class="bi bi-person-circle"></i>
             <span class="nav-auth-text d-none d-lg-inline">@User.Identity?.Name</span>
-            <i class="bi bi-chevron-down d-none d-lg-inline ms-1"></i>
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
             <li>
-                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
-                    <i class="bi bi-person me-2"></i>Min profil
+                <a class="dropdown-item" asp-page="/Customers">
+                    <i class="bi bi-person me-2"></i>Dashboard
                 </a>
             </li>
+
             <li><hr class="dropdown-divider"></li>
             <li>
                 <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index")" method="post">
@@ -31,12 +31,6 @@
 }
 else
 {
-    @* <li class="nav-auth-item"> *@
-    @*     <a asp-area="Identity" asp-page="/Account/Register" class="nav-auth-link"> *@
-    @*         <i class="bi bi-person-plus"></i> *@
-    @*         <span class="nav-auth-text d-none d-lg-inline">Registrera</span> *@
-    @*     </a> *@
-    @* </li> *@
     <li class="nav-auth-item">
         <a asp-area="Identity" asp-page="/Account/Login" class="nav-auth-link">
             <i class="bi bi-box-arrow-in-right"></i>
