@@ -21,7 +21,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BankApplication.Areas.Identity.Pages.Account.Manage
 {
-    [Authorize(Roles = "Admin")]
+   [Authorize(Roles = "Admin")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;

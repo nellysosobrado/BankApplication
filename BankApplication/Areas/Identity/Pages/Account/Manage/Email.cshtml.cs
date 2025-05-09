@@ -10,9 +10,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BankApplication.Areas.Identity.Pages.Account.Manage
 {
+    [Authorize(Roles = "Admin")]
     public class EmailModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;

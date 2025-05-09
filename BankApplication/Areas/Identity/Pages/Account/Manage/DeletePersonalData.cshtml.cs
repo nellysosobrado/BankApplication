@@ -1,17 +1,15 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-#nullable disable
-
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BankApplication.Areas.Identity.Pages.Account.Manage
 {
+    [Authorize(Roles = "Admin")]
     public class DeletePersonalDataModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -28,36 +26,25 @@ namespace BankApplication.Areas.Identity.Pages.Account.Manage
             _logger = logger;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Required]
-            [DataType(DataType.Password)]
             public string Password { get; set; }
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public bool RequirePassword { get; set; }
 
-        public async Task<IActionResult> OnGet()
+        // Ny egenskap för att lagra användarna
+        public IList<IdentityUser> Users { get; set; }
+
+        public async Task<IActionResult> OnGetAsync()
         {
+            // Hämta alla användare
+            Users = _userManager.Users.ToList();
+
+            // Hämta den aktuella inloggade användaren
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -67,6 +54,45 @@ namespace BankApplication.Areas.Identity.Pages.Account.Manage
             RequirePassword = await _userManager.HasPasswordAsync(user);
             return Page();
         }
+
+        public async Task<IActionResult> OnPostDeleteAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{userId}'.");
+            }
+
+            // Ta bort användarens roller
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                await _userManager.RemoveFromRoleAsync(user, role);
+            }
+
+            // Ta bort användaren
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException($"Unexpected error occurred deleting user.");
+            }
+
+            // Logga ut användaren om den raderade användaren är samma som den inloggade användaren
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                return NotFound("Unable to retrieve the current logged-in user.");
+            }
+
+            if (userId == await _userManager.GetUserIdAsync(currentUser))
+            {
+                await _signInManager.SignOutAsync();
+            }
+
+            _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
+            return RedirectToPage("./DeletePersonalData");
+        }
+
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -93,6 +119,7 @@ namespace BankApplication.Areas.Identity.Pages.Account.Manage
                 throw new InvalidOperationException($"Unexpected error occurred deleting user.");
             }
 
+            // Logga ut användaren om den raderade användaren är samma som den inloggade användaren
             await _signInManager.SignOutAsync();
 
             _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);

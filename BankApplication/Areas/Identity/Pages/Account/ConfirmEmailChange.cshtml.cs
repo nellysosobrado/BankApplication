@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace BankApplication.Areas.Identity.Pages.Account
 {
+    [Authorize(Roles = "Admin")]
     public class ConfirmEmailChangeModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
