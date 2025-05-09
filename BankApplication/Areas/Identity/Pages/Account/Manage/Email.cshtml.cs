@@ -1,8 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-#nullable disable
-
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -12,6 +8,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BankApplication.Areas.Identity.Pages.Account.Manage
 {
@@ -32,90 +30,62 @@ namespace BankApplication.Areas.Identity.Pages.Account.Manage
         }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// List of all email addresses to be displayed and updated by the admin
         /// </summary>
-        public string Email { get; set; }
+        public List<UserEmailModel> UserEmails { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
-        public bool IsEmailConfirmed { get; set; }
-
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [Required]
             [EmailAddress]
             [Display(Name = "New email")]
             public string NewEmail { get; set; }
         }
 
-        private async Task LoadAsync(IdentityUser user)
+        public class UserEmailModel
         {
-            var email = await _userManager.GetEmailAsync(user);
-            Email = email;
+            public string UserId { get; set; }
+            public string CurrentEmail { get; set; }
+        }
 
-            Input = new InputModel
+        private async Task LoadAsync()
+        {
+            var users = _userManager.Users.ToList();
+            UserEmails = users.Select(user => new UserEmailModel
             {
-                NewEmail = email,
-            };
-
-            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+                UserId = user.Id,
+                CurrentEmail = user.Email
+            }).ToList();
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            await LoadAsync(user);
+            await LoadAsync();
             return Page();
         }
 
-        public async Task<IActionResult> OnPostChangeEmailAsync()
+        public async Task<IActionResult> OnPostChangeEmailAsync(string userId)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Unable to load user with ID '{userId}'.");
             }
 
             if (!ModelState.IsValid)
             {
-                await LoadAsync(user);
+                await LoadAsync();
                 return Page();
             }
 
-            var email = await _userManager.GetEmailAsync(user);
-            if (Input.NewEmail != email)
+            if (Input.NewEmail != user.Email)
             {
-                var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.Page(
@@ -124,37 +94,27 @@ namespace BankApplication.Areas.Identity.Pages.Account.Manage
                     values: new { area = "Identity", userId = userId, email = Input.NewEmail, code = code },
                     protocol: Request.Scheme);
 
-                // Skickar e-post med bekräftelselänk
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
                     "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                // Här lägger vi till bekräftelselänken i statusmeddelandet
-                StatusMessage = $"Confirmation link to change email sent. Please check your email. If you don't see the email, check your spam folder. <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Click here to confirm your email change</a>.";
+                StatusMessage = $"Verification email sent. Please check your email. If you don't see the email, check your spam folder. <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Click here to confirm your email change</a>.";
                 return RedirectToPage();
             }
 
-            StatusMessage = "Your email is unchanged.";
+            StatusMessage = "The email is unchanged.";
             return RedirectToPage();
         }
 
-        public async Task<IActionResult> OnPostSendVerificationEmailAsync()
+        public async Task<IActionResult> OnPostSendVerificationEmailAsync(string userId)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Unable to load user with ID '{userId}'.");
             }
 
-            if (!ModelState.IsValid)
-            {
-                await LoadAsync(user);
-                return Page();
-            }
-
-            var userId = await _userManager.GetUserIdAsync(user);
-            var email = await _userManager.GetEmailAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             var callbackUrl = Url.Page(
@@ -163,7 +123,7 @@ namespace BankApplication.Areas.Identity.Pages.Account.Manage
                 values: new { area = "Identity", userId = userId, code = code },
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
-                email,
+                user.Email,
                 "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
