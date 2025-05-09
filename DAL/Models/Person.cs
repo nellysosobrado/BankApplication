@@ -26,7 +26,7 @@ namespace DAL.Models
 
         public decimal Salary { get; set; }
 
-        public int Age { get; set; } //Krysta fram ett int-usecase
+        public int Age { get; set; } 
         [StringLength(50)]
         public string City { get; set; }
         [StringLength(150)]

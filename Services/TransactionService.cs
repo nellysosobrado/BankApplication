@@ -16,12 +16,10 @@ namespace Services
         {
             _context = context;
         }
-
-        // Metod för att lägga till en transaktion
         public void AddTransaction(Transaction transaction)
         {
             _context.Transactions.Add(transaction);
-            _context.SaveChanges();  // Spara transaktionen i databasen
+            _context.SaveChanges();  
         }
     }
 }

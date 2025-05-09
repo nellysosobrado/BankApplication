@@ -1,4 +1,4 @@
-﻿// Services/StatsService.cs
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using Services.Interface;
 
 namespace Services
 {
-    //here we are using the BankAppDataContext to get the data from the database
+
     public class StatsService : IStatsService
     {
         private readonly BankAppDataContext _context;

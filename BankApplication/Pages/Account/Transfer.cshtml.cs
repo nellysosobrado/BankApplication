@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Services.Interface;
@@ -5,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BankApplication.Pages.Account
 {
+    [Authorize(Roles = "Cashier,Admin")]
     [BindProperties]
     public class TransferModel : PageModel
     {

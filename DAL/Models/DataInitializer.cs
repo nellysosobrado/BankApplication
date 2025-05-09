@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    public class DataInitializer //This class is used to seed the database with initial data
+    public class DataInitializer 
     {
         private readonly BankAppDataContext _dbContext;
         private readonly UserManager<IdentityUser> _userManager;
@@ -26,18 +26,16 @@ namespace DAL.Models
         }
 
 
-        //Here you can update your user login credentials
         private void SeedUsers()
         {
-            //AddUserIfNotExists("richard.chalk@systementor.se", "Hejsan123#", new string[] { "Admin" });
+
             AddUserIfNotExists("richard.chalk@admin.se", "Abc123#", new string[] { "Admin" });
 
             AddUserIfNotExists("richard.chalk@cashier.se", "Abc123#", new string[] { "Cashier" });
-            //AddUserIfNotExists("richard.chalk@customer.systementor.se", "Hejsan123#", new string[] { "Cashier" });
-            //AddUserIfNotExists("richard.chalk@customertest.systementor.se", "Hejsan123#", new string[] { "Cashier" });
+           
         }
 
-        //Here you can update your user roles
+
         private void SeedRoles()
         {
             AddRoleIfNotExisting("Admin");

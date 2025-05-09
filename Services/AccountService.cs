@@ -17,7 +17,6 @@ namespace Services
             _transactionService = transactionService;
         }
 
-        // Metod för att hantera uttag och skapa transaktion
         public bool TryWithdraw(int accountId, decimal amount, out string errorMessage)
         {
             var account = GetAccount(accountId);
@@ -39,43 +38,38 @@ namespace Services
                 return false;
             }
 
-            // Subtrahera beloppet från kontots saldo
+
             account.Balance -= amount;
 
-            // Skapa en transaktion för uttaget och spara den
             var transaction = new Transaction
             {
                 AccountId = accountId,
-                Type = "Debit",  // För uttag används "Debit"
-                Operation = "Debit",  // Uttag är en debitering
+                Type = "Debit",  
+                Operation = "Debit",  
                 Amount = amount,
-                Balance = account.Balance,  // Nytt saldo efter uttag
-                Date = DateOnly.FromDateTime(DateTime.Now)  // Sätt aktuellt datum
+                Balance = account.Balance, 
+                Date = DateOnly.FromDateTime(DateTime.Now)  
             };
 
-            // Spara transaktionen genom TransactionService
             _transactionService.AddTransaction(transaction);
 
-            // Uppdatera kontot i databasen
             Update(account);
 
             errorMessage = null;
             return true;
         }
 
-        // Lägg till en transaktion i databasen
+
         public void AddTransaction(Transaction transaction)
         {
-            _transactionService.AddTransaction(transaction); // Anropa ITransactionService för att spara transaktionen
+            _transactionService.AddTransaction(transaction); 
         }
 
-        // Hämta alla konton (Account)
         public List<Account> GetAccounts()
         {
             return _dbContext.Accounts.ToList();
         }
 
-        // Hämta alla konton som AccountViewModels
         public List<AccountViewModel> GetAccountViewModels()
         {
             return _dbContext.Accounts
@@ -87,12 +81,10 @@ namespace Services
                 .ToList();
         }
 
-        // Hämta ett specifikt konto
         public Account GetAccount(int accountId)
         {
             return _dbContext.Accounts.First(a => a.AccountId == accountId);
         }
-
 
         public void Update(Account account)
         {
