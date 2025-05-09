@@ -1,8 +1,12 @@
-Bank application
+## Bank application
 
 Project for managing a bank.
 It is built with ASP.NET Core using Razor Pages. Uses SQL Server as a database to store the data
 
+## Azure
+Link to live website on Azure: razorcrudazur250509.azurewebsites.net
+
+## Description
 This system is for **bank employees only** (not customers).  
 There are two roles:
 
@@ -15,13 +19,11 @@ Two users are automatically added when the app starts:
 
 ##  Features
 
-- View customers and their accounts
-- View account transactions
+- View customers,view account transactions and their accounts (CRUD)
 - Deposit, withdraw, and transfer money
 - Search customers by name and city (with paging)
-- Admin can manage system users
+- Admin can manage system users (CRUD)
 - Start page shows statistics (open to everyone)
 - AJAX "load more" for transactions
-- Console app checks for suspicious transactions
 
-Link to live website: razorcrudazur250509.azurewebsites.net
+
