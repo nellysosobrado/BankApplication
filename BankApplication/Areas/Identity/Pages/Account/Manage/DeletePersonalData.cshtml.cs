@@ -39,6 +39,9 @@ namespace BankApplication.Areas.Identity.Pages.Account.Manage
         // Ny egenskap för att lagra användarna
         public IList<IdentityUser> Users { get; set; }
 
+        // Egenskap för att hålla ID för den inloggade användaren
+        public string CurrentUserId { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             // Hämta alla användare
@@ -51,9 +54,44 @@ namespace BankApplication.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            // Sätt CurrentUserId för att markera den inloggade användaren
+            CurrentUserId = user.Id;
+
             RequirePassword = await _userManager.HasPasswordAsync(user);
             return Page();
         }
+
+        // Hantera "Delete my Account" funktionalitet
+        public async Task<IActionResult> OnPostDeleteMyAccountAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            // Ta bort användarens roller
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                await _userManager.RemoveFromRoleAsync(user, role);
+            }
+
+            // Ta bort användaren
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException($"Unexpected error occurred deleting user.");
+            }
+
+            // Logga ut användaren
+            await _signInManager.SignOutAsync();
+
+            _logger.LogInformation("User with ID '{UserId}' deleted their account.", user.Id);
+
+            return RedirectToPage("/Index"); // Omdirigera till startsidan eller annan sida
+        }
+
 
         public async Task<IActionResult> OnPostDeleteAsync(string userId)
         {
@@ -92,7 +130,6 @@ namespace BankApplication.Areas.Identity.Pages.Account.Manage
             _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
             return RedirectToPage("./DeletePersonalData");
         }
-
 
         public async Task<IActionResult> OnPostAsync()
         {
