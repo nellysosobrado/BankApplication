@@ -9,7 +9,6 @@
 
 <h3>@ViewData["Title"]</h3>
 
-<!-- Tabell för att visa alla användare -->
 <table class="table">
     <thead>
         <tr>
@@ -34,7 +33,6 @@
     </tbody>
 </table>
 
-<!-- Om den inloggade användaren är på sidan, visa knappen "Delete my Account" -->
 @if (Model.CurrentUserId != null)
 {
     <div class="mt-3">

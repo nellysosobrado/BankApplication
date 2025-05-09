@@ -1,11 +1,14 @@
 ﻿using BankApplication.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Services; 
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BankApplication.Pages.Person
 {
+    [Authorize(Roles = "Cashier,Admin")]
     public class IndexModel : PageModel
     {
         private readonly ICustomerQueryService _customerQueryService;

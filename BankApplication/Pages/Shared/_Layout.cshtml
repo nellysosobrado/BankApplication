@@ -8,28 +8,20 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
 
-  
-
-
-
-    <!-- Favicons -->
+ 
     <link href="~/assets/img/favicon.png" rel="icon">
     <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-    <!-- Vendor CSS Files -->
     <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="~/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="~/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
-    <!-- Main CSS File -->
     <link href="~/assets/css/main.css" rel="stylesheet">
 
 
@@ -48,39 +40,8 @@
 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                    <li><a asp-page="/Index" class="@(Context.Request.Path == "/" ? "active" : "")">Home</a></li>
-                    <li>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                        <li>
-                            <a asp-page="/Customers"
-                               class="@(Context.Request.Path == "/Customers" ? "active" : "")">
-                                Customers
-                            </a>
-                        </li>
-                        <li>
-                            <a asp-page="/Dashboard"
-                               class="@(Context.Request.Path == "/Customers" ? "active" : "")">
-                                Dashboard
-                            </a>
-                        </li>
-                       
-   
-                        }
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                        {
-                        <li class="nav-auth-item">
-                            <a asp-area="Identity" asp-page="/Account/Register" class="nav-auth-link">
-                                <i class="bi bi-person-plus"></i>
-                                <span class="nav-auth-text d-none d-lg-inline">Registrera</span>
-                            </a>
-                        </li>
-
-
-                        }
-                       
-                    </li>
-
+                 
+                    
 
 
                     <partial name="_LoginPartial" />

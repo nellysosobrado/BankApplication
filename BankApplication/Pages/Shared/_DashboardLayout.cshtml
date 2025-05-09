@@ -30,24 +30,27 @@
             </div>
             <ul class="sidenav__list">
 
-                <li class="sidenav__list-item">
-                    <a asp-page="/Customers">
-                        <i class="bx bx-pie-chart-alt-2"></i>
-                        Search Customer
-                    </a>
-                </li>
-                <li class="sidenav__list-item">
-                    <a asp-page="/Account/Index">
-                        <i class="bx bx-pie-chart-alt-2"></i>
-                        Manage Account
-                    </a>
-                </li>
-                <li class="sidenav__list-item">
-                    <a asp-page="/Person/Index">
-                        <i class="bx bx-pie-chart-alt-2"></i>
-                        Update Customer Info
-                    </a>
-                </li>
+                @if (User.IsInRole("Admin") || User.IsInRole("Cashier"))
+                {
+                    <li class="sidenav__list-item">
+                        <a asp-page="/Customers">
+                            <i class="bx bx-pie-chart-alt-2"></i>
+                            Search Customer
+                        </a>
+                    </li>
+                    <li class="sidenav__list-item">
+                        <a asp-page="/Account/Index">
+                            <i class="bx bx-pie-chart-alt-2"></i>
+                            Manage Account
+                        </a>
+                    </li>
+                    <li class="sidenav__list-item">
+                        <a asp-page="/Person/Index">
+                            <i class="bx bx-pie-chart-alt-2"></i>
+                            Update Customer Info
+                        </a>
+                    </li>
+                }
 
 
                 @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))

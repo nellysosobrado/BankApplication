@@ -32,9 +32,9 @@ namespace BankApplication.Areas.Identity.Pages.Admin.Users
 
             foreach (var user in users)
             {
-                // Hämtar användarens roll(er)
+    
                 var roles = await _userManager.GetRolesAsync(user);
-                var role = roles.FirstOrDefault() ?? "Ingen roll";  // Om ingen roll finns, sätt "Ingen roll"
+                var role = roles.FirstOrDefault() ?? "Ingen roll";  
 
                 userViewModels.Add(new UserViewModel
                 {

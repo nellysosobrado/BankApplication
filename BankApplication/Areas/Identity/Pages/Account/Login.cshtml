@@ -2,18 +2,15 @@
 @model LoginModel
 @{
 
-    ViewData["Title"] = "Logga in";
+    ViewData["Title"] = "Login";
+    Layout = "_DashboardLayout";
 }
-
-
 
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5">
             <div class="card shadow-lg">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="text-center mb-0"><i class="bi bi-box-arrow-in-right me-2"></i>Logga in</h3>
-                </div>
+                
                 <div class="card-body p-4">
                     <form id="account" method="post">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
@@ -21,7 +18,7 @@
                         <div class="mb-3">
                             <label asp-for="Input.Email" class="form-label">E-post</label>
                             <div class="input-group">
-                                <input asp-for="Input.Email" class="form-control" placeholder="ange@din-epost.se" />
+                                <input asp-for="Input.Email" class="form-control" placeholder="Enter your Email" />
                             </div>
                             <span asp-validation-for="Input.Email" class="text-danger small"></span>
                         </div>
@@ -30,26 +27,18 @@
                             <label asp-for="Input.Password" class="form-label">Lösenord</label>
                             <div class="input-group">
      
-                                <input asp-for="Input.Password" class="form-control" placeholder="Ditt lösenord" />
+                                <input asp-for="Input.Password" class="form-control" placeholder="Your Password" />
                             </div>
                             <span asp-validation-for="Input.Password" class="text-danger small"></span>
                         </div>
 
                         <div class="d-grid gap-2 mb-3">
                             <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="bi bi-box-arrow-in-right me-2"></i>Logga in
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Logg in
                             </button>
                         </div>
 
-                        <div class="text-center">
-                            @* <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none"> *@
-                            @*     Skapa nytt konto *@
-                            @* </a> *@
-                            <span class="mx-2">|</span>
-                            <a asp-page="./ForgotPassword" class="text-decoration-none">
-                                Glömt lösenord?
-                            </a>
-                        </div>
+                        
                     </form>
                 </div>
             </div>

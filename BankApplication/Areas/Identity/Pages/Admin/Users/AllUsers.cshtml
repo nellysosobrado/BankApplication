@@ -1,14 +1,14 @@
 ﻿@page
 @model BankApplication.Areas.Identity.Pages.Admin.Users.AllUsersModel
 @{
-    ViewData["Title"] = "Alla Användare";
-    Layout = "_DashboardLayout";  // Eller vilken layout du än använder
+    ViewData["Title"] = "ALl Users";
+    Layout = "_DashboardLayout";  
 }
 
-<h1>Alla Användare</h1>
+<h1>Users</h1>
 
 <div class="card-body">
-    <div class="btn-group-vertical w-100" role="group" aria-label="Användaralternativ">
+    <div class="btn-group-vertical w-100" role="group">
 
         <a asp-area="Identity" asp-page="/Account/Manage/Email" class="btn btn-warning btn-sm">Change Email</a>
         <a asp-area="Identity" asp-page="/Account/Manage/ChangePassword"class="btn btn-warning btn-sm">Change Password</a>
@@ -40,3 +40,4 @@
         }
     </tbody>
 </table>
+
