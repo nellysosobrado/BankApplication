@@ -1,8 +1,7 @@
 Bank application
 
 Project for managing a bank.
-It is built with ASP.NET Core using Razor Pages, which helps create web pages with C# and HTML together. 
-The project also connects to a real SQL Server database.
+It is built with ASP.NET Core using Razor Pages. Uses SQL Server as a database to store the data
 
 This system is for **bank employees only** (not customers).  
 There are two roles:
