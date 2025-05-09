@@ -16,10 +16,6 @@
     <div class="grid-container">
         <!-- Header -->
         <header class="header">
-            <div class="header__search">
-                <input type="text" placeholder="Search..." id="globalSearch">
-                <i class="bx bx-search"></i>
-            </div>
             <div class="header__avatar">
                 <i class='bx bx-user-circle'></i>
                 <span class="nav-auth-text d-none d-lg-inline">@User.Identity?.Name</span>
@@ -39,18 +35,6 @@
                         <span>Hem</span>
                     </a>
                 </li>
-                @* <li class="sidenav__list-item @(ViewContext.RouteData.Values["Page"]?.ToString() == "/Person/Index" ? "active" : "")"> *@
-                @*     <a asp-page="/Person/Index"> *@
-                @*         <i class='bx bx-user'></i> *@
-                @*         <span>Personer</span> *@
-                @*     </a> *@
-                @* </li> *@
-                <li class="sidenav__list-item">
-                    <a asp-page="/Account/Index">
-                        <i class="bx bx-pie-chart-alt-2"></i>
-                        Accounts
-                    </a>
-                </li>
 
                 <li class="sidenav__list-item">
                     <a asp-page="/Customers">
@@ -58,6 +42,14 @@
                         Customers
                     </a>
                 </li>
+                <li class="sidenav__list-item">
+                    <a asp-page="/Account/Index">
+                        <i class="bx bx-pie-chart-alt-2"></i>
+                        Manage Customers Accounts
+                    </a>
+                </li>
+
+                
                 @* Admin can use the CRUD function *@
                 @if (User.IsInRole("Admin"))
                 {
