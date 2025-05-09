@@ -123,12 +123,15 @@ namespace BankApplication.Areas.Identity.Pages.Account.Manage
                     pageHandler: null,
                     values: new { area = "Identity", userId = userId, email = Input.NewEmail, code = code },
                     protocol: Request.Scheme);
+
+                // Skickar e-post med bekräftelselänk
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
                     "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                // Här lägger vi till bekräftelselänken i statusmeddelandet
+                StatusMessage = $"Confirmation link to change email sent. Please check your email. If you don't see the email, check your spam folder. <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Click here to confirm your email change</a>.";
                 return RedirectToPage();
             }
 
