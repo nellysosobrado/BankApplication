@@ -51,11 +51,24 @@ builder.Services.AddTransient<IAccountService, AccountService>();//Register the 
 
 var app = builder.Build();
 
-
+// Behövs för Azure!
 using (var scope = app.Services.CreateScope())
 {
+    var dbContext = scope.ServiceProvider.
+         GetRequiredService<BankAppDataContext>();
+    if (dbContext.Database.IsRelational())
+    {
+        dbContext.Database.Migrate();
+    }
     scope.ServiceProvider.GetService<DataInitializer>().SeedData();
 }
+
+
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    scope.ServiceProvider.GetService<DataInitializer>().SeedData();
+//}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
