@@ -8,7 +8,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h1>Ny kund</h1>
+        <h1>Update Customer Details</h1>
     </div>
     <div class="card-body">
         <form method="post">
@@ -29,11 +29,10 @@
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="Gender">Kön</label>
+                <label asp-for="Gender">Gender</label>
                 <select class="form-control" asp-for="Gender">
                     <option value="Male">Man</option>
-                    <option value="Female">Kvinna</option>
-                    <option value="Other">Annat</option>
+                    <option value="Female">Woman</option>
                 </select>
                 <span asp-validation-for="Gender" class="field-validation-error"></span>
             </div>

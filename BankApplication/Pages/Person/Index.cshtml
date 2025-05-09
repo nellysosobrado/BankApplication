@@ -1,20 +1,20 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Manage Accounts";
+    ViewData["Title"] = "Manage Customer Details";
     Layout = "_DashboardLayout";
 }
 
 <form method="get" class="mb-4">
     <div class="input-group">
         <input type="text" class="form-control" asp-for="SearchTerm" placeholder="Search on CustomerId, Name or City">
-        <button type="submit" class="btn btn-primary">Sök</button>
+        <button type="submit" class="btn btn-primary">Search</button>
     </div>
 </form>
 
 <div class="card">
     <div class="card-header">
-        <h1>Manage Accounts</h1>
+        <h1>Manage Customer Details</h1>
     </div>
     <div class="card-body">
         <table class="table">
@@ -32,9 +32,7 @@
                         <a asp-page="/Customer/Update" asp-route-CustomerId="@customer.CustomerId"><i class='bx bx-edit'></i></a>
                     </td>
 
-                    <td>
-                        <a asp-page="/Customer" asp-route-id="@customer.CustomerId"><i class='bx bx-info-circle'></i></a>
-                    </td>
+                    
                 </tr>
             }
         </table>

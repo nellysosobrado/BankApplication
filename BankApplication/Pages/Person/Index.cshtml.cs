@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Services; 
+using Services;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 
@@ -64,7 +64,7 @@ namespace BankApplication.Pages.Person
                 allCustomers = allCustomers
                     .Where(c =>
 
-                        (int.TryParse(SearchTerm, out var id) && c.CustomerId == id) ||
+                        int.TryParse(SearchTerm, out var id) && c.CustomerId == id ||
                         c.Givenname.Equals(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
                         c.Surname.Equals(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
                         c.City.Equals(SearchTerm, StringComparison.OrdinalIgnoreCase)
