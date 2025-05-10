@@ -4,13 +4,14 @@
     ViewData["Title"] = "Home page";
 }
 
-
 <section id="hero" class="hero section dark-background">
     <div class="container">
         <div class="row gy-4">
             <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="zoom-out">
                 <h1>Your Complete Banking Workstation</h1>
                 <p>Advanced tools for account management, transactions, and customer service</p>
+
+               
             </div>
             <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
                 <img src="assets/img/hero-img.png" class="img-fluid animated" alt="">
@@ -19,60 +20,7 @@
     </div>
 </section>
 
-<section id="clients" class="clients section light-background">
-    <div class="container" data-aos="zoom-in">
-        <div class="swiper init-swiper">
-            <script type="application/json" class="swiper-config">
-                {
-                  "loop": true,
-                  "speed": 600,
-                  "autoplay": {
-                    "delay": 5000
-                  },
-                  "slidesPerView": "auto",
-                  "pagination": {
-                    "el": ".swiper-pagination",
-                    "type": "bullets",
-                    "clickable": true
-                  },
-                  "breakpoints": {
-                    "320": {
-                      "slidesPerView": 2,
-                      "spaceBetween": 40
-                    },
-                    "480": {
-                      "slidesPerView": 3,
-                      "spaceBetween": 60
-                    },
-                    "640": {
-                      "slidesPerView": 4,
-                      "spaceBetween": 80
-                    },
-                    "992": {
-                      "slidesPerView": 5,
-                      "spaceBetween": 120
-                    },
-                    "1200": {
-                      "slidesPerView": 6,
-                      "spaceBetween": 120
-                    }
-                  }
-                }
-            </script>
-            <div class="swiper-wrapper align-items-center">
-                <div class="swiper-slide"><img src="assets/img/clients/clients-1.webp" class="img-fluid" alt=""></div>
-                <div class="swiper-slide"><img src="assets/img/clients/clients-2.webp" class="img-fluid" alt=""></div>
-                <div class="swiper-slide"><img src="assets/img/clients/clients-3.webp" class="img-fluid" alt=""></div>
-                <div class="swiper-slide"><img src="assets/img/clients/clients-4.webp" class="img-fluid" alt=""></div>
-                <div class="swiper-slide"><img src="assets/img/clients/clients-5.webp" class="img-fluid" alt=""></div>
-                <div class="swiper-slide"><img src="assets/img/clients/clients-6.webp" class="img-fluid" alt=""></div>
-                <div class="swiper-slide"><img src="assets/img/clients/clients-7.webp" class="img-fluid" alt=""></div>
-                <div class="swiper-slide"><img src="assets/img/clients/clients-8.webp" class="img-fluid" alt=""></div>
-            </div>
-        </div>
-    </div>
-</section>
-
+<!-- 👇 resten av din sida, t.ex. statsen -->
 <section id="stats" class="stats section light-background">
     <div class="container" data-aos="zoom-in">
 
@@ -96,18 +44,9 @@
                     "clickable": true
                   },
                   "breakpoints": {
-                    "320": {
-                      "slidesPerView": 1,
-                      "spaceBetween": 20
-                    },
-                    "480": {
-                      "slidesPerView": 2,
-                      "spaceBetween": 30
-                    },
-                    "768": {
-                      "slidesPerView": 3,
-                      "spaceBetween": 40
-                    }
+                    "320": { "slidesPerView": 1, "spaceBetween": 20 },
+                    "480": { "slidesPerView": 2, "spaceBetween": 30 },
+                    "768": { "slidesPerView": 3, "spaceBetween": 40 }
                   }
                 }
             </script>
@@ -115,34 +54,37 @@
                 @foreach (var country in Model.CountryStats)
                 {
                     <div class="swiper-slide">
-                        <div class="stat-card">
-                            <div class="country-flag">
-                                <img src="https://flagcdn.com/w40/@(country.CountryCode).png" alt="@country.CountryName flag" class="img-fluid">
-                                <h3>@country.CountryName</h3>
+                        <a asp-page="/TopCustomers/TopCustomers" asp-route-country="@country.CountryName" class="text-decoration-none text-dark">
+                            <div class="stat-card">
+                                <div class="country-flag">
+                                    <img src="https://flagcdn.com/w40/@(country.CountryCode).png" alt="@country.CountryName flag" class="img-fluid">
+                                    <h3>@country.CountryName</h3>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">@country.CustomerCount.ToString("N0")</span>
+                                    <span class="stat-label">Kunder</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">@country.AccountCount.ToString("N0")</span>
+                                    <span class="stat-label">Konton</span>
+                                </div>
+                                <div class="stat-item">
+                                    @{
+                                        var formattedBalance = country.TotalBalance switch
+                                        {
+                                            > 1000000000 => $"{(country.TotalBalance / 1000000000):0.0} miljarder",
+                                            > 1000000 => $"{(country.TotalBalance / 1000000):0.0} miljoner",
+                                            _ => country.TotalBalance.ToString("N0")
+                                        };
+                                    }
+                                    <span class="stat-number">@formattedBalance @country.Currency</span>
+                                    <span class="stat-label">Totalt saldo</span>
+                                </div>
                             </div>
-                            <div class="stat-item">
-                                <span class="stat-number">@country.CustomerCount.ToString("N0")</span>
-                                <span class="stat-label">Kunder</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number">@country.AccountCount.ToString("N0")</span>
-                                <span class="stat-label">Konton</span>
-                            </div>
-                            <div class="stat-item">
-                                @{
-                                    var formattedBalance = country.TotalBalance switch
-                                    {
-                                        > 1000000000 => $"{(country.TotalBalance / 1000000000):0.0} miljarder",
-                                        > 1000000 => $"{(country.TotalBalance / 1000000):0.0} miljoner",
-                                        _ => country.TotalBalance.ToString("N0")
-                                    };
-                                }
-                                <span class="stat-number">@formattedBalance @country.Currency</span>
-                                <span class="stat-label">Totalt saldo</span>
-                            </div>
-                        </div>
+                        </a>
                     </div>
                 }
+
             </div>
         </div>
     </div>

@@ -32,7 +32,7 @@ builder.Services.AddScoped<ICustomerCommandService, CustomerCommandService>();
 builder.Services.AddScoped<ICustomerSorter, CustomerSorter>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-
+builder.Services.AddResponseCaching();
 
 
 
@@ -70,6 +70,7 @@ else
     app.UseHsts(); // HTTP Strict Transport Security
 }
 
+app.UseResponseCaching();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -82,5 +83,33 @@ app.UseAuthorization();
 app.MapStaticAssets(); 
 app.MapRazorPages()
    .WithStaticAssets();
+
+app.MapGet("/TopCustomers", async (HttpContext http, string country, BankAppDataContext db) =>
+{
+    http.Response.GetTypedHeaders().CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+    {
+        Public = true,
+        MaxAge = TimeSpan.FromMinutes(1)
+    };
+
+    http.Response.Headers["Vary"] = "country";
+
+    var topCustomers = await db.Customers
+        .Where(c => c.Country == country)
+        .Select(c => new
+        {
+            Name = c.Givenname + " " + c.Surname,
+            TotalBalance = c.Dispositions
+                .Select(d => d.Account)
+                .Sum(a => (decimal?)a.Balance ?? 0)
+        })
+        .OrderByDescending(c => c.TotalBalance)
+        .Take(10)
+        .ToListAsync();
+
+    return Results.Ok(topCustomers);
+});
+
+
 
 app.Run();
