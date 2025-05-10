@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace Services
 {
@@ -15,11 +17,14 @@ namespace Services
     {
         private readonly BankAppDataContext _context;
         private readonly ICustomerSorter _sorter;
+        private readonly IMapper _mapper;
 
-        public CustomerQueryService(BankAppDataContext context, ICustomerSorter sorter)
+        public CustomerQueryService(BankAppDataContext context, ICustomerSorter sorter, IMapper mapper)
+
         {
             _context = context;
             _sorter = sorter;
+            _mapper = mapper;
         }
 
 
@@ -146,7 +151,7 @@ namespace Services
                 .ToListAsync();
         }
         public async Task<PaginatedList<CustomerViewModel>> SearchCustomersAsync(
-       string searchTerm, string sortColumn, string sortOrder, int pageIndex, int pageSize)
+    string searchTerm, string sortColumn, string sortOrder, int pageIndex, int pageSize)
         {
             var query = _context.Customers.AsNoTracking();
 
@@ -164,19 +169,17 @@ namespace Services
             query = _sorter.ApplySorting(query, sortColumn, sortOrder);
 
             var totalCount = await query.CountAsync();
-            var items = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize)
-                .Select(c => new CustomerViewModel
-                {
-                    CustomerId = c.CustomerId.ToString(),
-                    Personnummer = c.NationalId ?? "N/A",
-                    Name = c.Givenname + " " + c.Surname,
-                    Address = c.Streetaddress,
-                    City = c.City,
-                    Phone = c.Telephonenumber ?? "N/A"
-                }).ToListAsync();
+
+            // 💡 Här mappas direkt till CustomerViewModel med AutoMapper
+            var items = await query
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ProjectTo<CustomerViewModel>(_mapper.ConfigurationProvider)
+                .ToListAsync();
 
             return new PaginatedList<CustomerViewModel>(items, totalCount, pageIndex, pageSize);
         }
+
 
     }
 }

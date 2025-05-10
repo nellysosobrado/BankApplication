@@ -4,6 +4,7 @@ using DAL.Models;
 using Services;
 using Services.Interface;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Services.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,8 @@ builder.Services.AddScoped<ICustomerQueryService, CustomerQueryService>();
 builder.Services.AddScoped<ICustomerCommandService, CustomerCommandService>();
 builder.Services.AddScoped<ICustomerSorter, CustomerSorter>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 
 
 
