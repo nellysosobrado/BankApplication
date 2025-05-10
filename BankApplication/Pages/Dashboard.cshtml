@@ -8,40 +8,30 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-<div class="container py-5">
+<div class="container mt-5">
     <div class="text-center mb-5">
-        <h1 class="display-4 fw-semibold text-primary">Välkommen, @userName 👋</h1>
-        <p class="lead text-secondary">Du är inloggad i bankens medarbetarportal</p>
+        <h1 class="display-5 fw-bold text-dark">Welcome, @userName 👋</h1>
+        <p class="text-muted fs-5">You're logged in to the Bank Employee Portal</p>
     </div>
 
-    <div class="row g-4 justify-content-center">
-        <div class="col-md-4">
-            <div class="card border-0 shadow h-100">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-info shadow-sm">
                 <div class="card-body text-center">
-                    <i class="fas fa-search fa-3x text-primary mb-3"></i>
-                    <h5 class="card-title">Sök kunder</h5>
-                    <p class="card-text text-muted">Hitta och hantera kundinformation och konton.</p>
-                    <a href="/Customers" class="btn btn-outline-primary w-100">
-                        <i class="fas fa-magnifying-glass me-1"></i> Gå till sökning
+                    <i class="fas fa-users fa-2x text-info mb-3"></i>
+                    <h4 class="card-title mb-2">Customer Management</h4>
+                    <p class="text-muted">Search and manage customer details and their accounts.</p>
+
+                    <a href="/Customer/Index" class="btn btn-info text-white">
+                        <i class="fas fa-search me-1"></i> Search Customers
+                    </a>
+
+                    <a href="/Customer/Create" class="btn btn-success mt-2">
+                        <i class="fas fa-user-plus me-1"></i> Skapa ny kund
                     </a>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-4">
-            <div class="card border-0 shadow h-100">
-                <div class="card-body text-center">
-                    <i class="fas fa-user-plus fa-3x text-success mb-3"></i>
-                    <h5 class="card-title">Skapa ny kund</h5>
-                    <p class="card-text text-muted">Registrera en ny kund och skapa ett transaktionskonto.</p>
-                    <a href="/Customer/Create" class="btn btn-success w-100">
-                        <i class="fas fa-plus-circle me-1"></i> Skapa kund
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Du kan lägga till fler kort här, t.ex. statistik eller rapporter -->
     </div>
 
     <div class="text-center mt-5">

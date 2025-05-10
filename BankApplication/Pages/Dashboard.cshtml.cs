@@ -1,14 +1,17 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 
 namespace BankApplication.Pages
 {
-    [Authorize]// only for logged in people
+    [Authorize] // Only for logged-in users
     public class DashboardModel : PageModel
     {
+
         public void OnGet()
         {
+        
         }
     }
 }
