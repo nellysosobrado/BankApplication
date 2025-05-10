@@ -77,7 +77,7 @@ namespace BankApplication.Pages.Customer
 
             _commandService.UpdateCustomer(customer);
 
-            return RedirectToPage("/Customer", new { id = CustomerId }); 
+            return RedirectToPage("/Customer/Details", new { id = CustomerId }); 
         }
 
     }

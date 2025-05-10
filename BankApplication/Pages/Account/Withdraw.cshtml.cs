@@ -42,7 +42,7 @@ namespace BankApplication.Pages.Account
                 return Page();
             }
 
-            return RedirectToPage("/Customer", new { id = customerId });
+            return RedirectToPage("/Customer/Details", new { id = customerId });
         }
 
 

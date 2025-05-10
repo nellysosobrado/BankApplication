@@ -5,6 +5,7 @@ using Services;
 using Services.Interface;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Services.Profiles;
+using Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

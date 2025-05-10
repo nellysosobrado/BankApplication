@@ -55,7 +55,7 @@ namespace BankApplication.Pages.Customer
             {
                 _logger.LogError(ex, "Error on fetching");
                 TempData["ErrorMessage"] = "Error fetching data";
-                return RedirectToPage("/Customers");
+                return RedirectToPage("/Customer/index");
             }
         }
     }

@@ -71,7 +71,7 @@ namespace BankApplication.Pages.Account
             _accountService.Update(sourceAccount);
             _accountService.Update(targetAccount);
 
-            return RedirectToPage("/Customer", new { id = CustomerId });
+            return RedirectToPage("/Customer/Details", new { id = CustomerId });
         }
     }
 }
