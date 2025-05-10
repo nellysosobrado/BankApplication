@@ -28,7 +28,7 @@ namespace Services.Profiles
                 .ForMember(dest => dest.TotalBalance, opt => opt.MapFrom(src =>
                     src.Dispositions.Where(d => d.Account != null).Sum(d => d.Account.Balance)));
 
-
+            CreateMap<CustomerCreateViewModel, Customer>();
         }
     }
 }

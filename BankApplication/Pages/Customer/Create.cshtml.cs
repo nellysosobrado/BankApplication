@@ -1,87 +1,75 @@
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.AspNetCore.Mvc.RazorPages;
-//using Services.Interface;
-//using System.ComponentModel.DataAnnotations;
-//using DAL.Models;
-//using Services;
-
-//namespace BankApplication.Pages.Customer
-//{
-//    [BindProperties]
-//    public class CreateModel : PageModel
-//    {
-//        private readonly ICustomerCommandService _customerService;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using DAL.Models;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using Account = DAL.Models.Account;
+using BankApplication.ViewModels;
+using Services.ViewModels;
 
 
-//        public CreateModel(ICustomerCommandService customerService)
-//        {
-//            _customerService = customerService;
-//        }
-//        [MaxLength(100)]
-//        [Required(ErrorMessage = "Please enter Givenname")]
-//        public string Givenname { get; set; }
 
-//        [MaxLength(100)]
-//        [Required(ErrorMessage = "Please enter Surname")]
-//        public string Surname { get; set; }
+namespace BankApplication.Pages.Customer;
 
-//        [Required(ErrorMessage = "Please enter gender")]
-//        public string Gender { get; set; } = "Male"; 
+[Authorize(Roles = "Cashier")]
+public class CreateModel : PageModel
+{
+    private readonly BankAppDataContext _context;
+    private readonly IMapper _mapper;
 
-//        [DataType(DataType.Date)]
-//        public DateOnly? Birthday { get; set; }
+    public CreateModel(BankAppDataContext context, IMapper mapper)
+    {
+        _context = context;
+        _mapper = mapper;
+    }
 
-//        [StringLength(100)]
-//        [Required(ErrorMessage = "Please enter adress")]
-//        public string Streetaddress { get; set; }
+    [BindProperty]
+    public CustomerCreateViewModel Input { get; set; } = new();
 
-//        [StringLength(10)]
-//        [Required(ErrorMessage = "Please enter ZipCode")]
-//        public string Zipcode { get; set; }
 
-//        [StringLength(50)]
-//        [Required(ErrorMessage = "Please enter a city")]
-//        public string City { get; set; }
+    public IActionResult OnGet()
+    {
+        return Page();
+    }
 
-//        [Required(ErrorMessage = "Please enter a city")]
-//        public string Country { get; set; } = "Sweden"; 
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
+            return Page();
 
-//        [StringLength(2, MinimumLength = 2, ErrorMessage = "Country code must be 2 letters")]
-//        [Required(ErrorMessage = "Pleas eneter country code")]
-//        public string CountryCode { get; set; } = "SE"; 
-//        [StringLength(150)]
-//        [EmailAddress(ErrorMessage = "Invalid Email")]
-//        public string? Emailaddress { get; set; }
+        var newCustomerId = await _context.Customers.MaxAsync(c => (int?)c.CustomerId) ?? 0;
+        newCustomerId += 1;
 
-//        public void OnGet()
-//        {
-//        }
+        var customer = _mapper.Map<DAL.Models.Customer>(Input);
+        customer.Registered = DateTime.Now;
+        customer.LastModified = DateTime.Now;
 
-//        public IActionResult OnPost()
-//        {
-//            Console.WriteLine($"Error: {ModelState.IsValid}");
-//            if (ModelState.IsValid)
-//            {
-//                var customer = new DAL.Models.Customer
-//                {
-//                    Givenname = Givenname,
-//                    Surname = Surname,
-//                    Gender = Gender,
-//                    Streetaddress = Streetaddress,
-//                    Zipcode = Zipcode,
-//                    City = City,
-//                    Country = Country,
-//                    CountryCode = CountryCode,
-//                    Emailaddress = Emailaddress,
-//                    Birthday = Birthday,
-//                    Registered = DateTime.UtcNow,
-//                    LastModified = DateTime.UtcNow
-//                };
 
-//                _customerService.CreateCustomer(customer);
-//                return RedirectToPage("/Person/Index");
-//            }
-//            return Page();
-//        }
-//    }
-//}
+        _context.Customers.Add(customer);
+
+        var account = new DAL.Models.Account
+
+        {
+            Frequency = "Monthly",
+            Created = DateOnly.FromDateTime(DateTime.Now),
+            Balance = 0
+        };
+
+        _context.Accounts.Add(account);
+
+        var disposition = new Disposition
+        {
+            Customer = customer,
+            Account = account,
+            Type = "OWNER"
+        };
+
+        _context.Dispositions.Add(disposition);
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage("/Customer/Index");
+    }
+}
