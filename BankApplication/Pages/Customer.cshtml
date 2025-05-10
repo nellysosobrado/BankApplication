@@ -13,6 +13,15 @@
         <small class="text-muted">Customer ID: @Model.Customer.CustomerId</small>
     </div>
 
+    <div class="text-end mt-2">
+        <a asp-page="/Customer/Update"
+           asp-route-id="@Model.Customer.CustomerId"
+           class="btn btn-outline-primary">
+            <i class="fas fa-edit"></i> Edit / Update information
+        </a>
+    </div>
+
+
     <div class="card-body">
         <div class="row mb-3">
             <div class="col-md-6">

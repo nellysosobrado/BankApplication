@@ -34,9 +34,9 @@ namespace BankApplication.Pages.Customer
         [StringLength(50)][Required] public string City { get; set; }
         [StringLength(150)][EmailAddress] public string Emailaddress { get; set; }
 
-        public IActionResult OnGet(int customerId)
+        public IActionResult OnGet(int id)
         {
-            var customer = _commandService.GetCustomer(customerId);
+            var customer = _commandService.GetCustomer(id);
             if (customer == null) return NotFound();
 
             CustomerId = customer.CustomerId;
@@ -53,6 +53,7 @@ namespace BankApplication.Pages.Customer
 
             return Page();
         }
+
 
         public IActionResult OnPost()
         {
@@ -76,7 +77,8 @@ namespace BankApplication.Pages.Customer
 
             _commandService.UpdateCustomer(customer);
 
-            return RedirectToPage("/Person/Index");
+            return RedirectToPage("/Customer", new { id = CustomerId }); 
         }
+
     }
 }
