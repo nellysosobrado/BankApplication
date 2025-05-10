@@ -52,7 +52,7 @@ namespace BankApplication.Pages
                     Operation = t.Operation,
                     Amount = t.Amount,
                     Balance = t.Balance,
-                    Date = t.Date.ToDateTime(new TimeOnly(0, 0))
+                    Date = t.Date
                 })
                 .ToListAsync();
 
@@ -87,7 +87,7 @@ namespace BankApplication.Pages
                     Operation = t.Operation,
                     Amount = t.Amount,
                     Balance = t.Balance,
-                    Date = t.Date.ToDateTime(new TimeOnly(0, 0))
+                    Date = t.Date
                 })
                 .ToListAsync();
 

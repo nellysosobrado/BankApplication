@@ -27,41 +27,51 @@ namespace BankApplication.Pages.Account
 
         public decimal Balance { get; set; }
 
-        public void OnGet(int accountId)
+        [BindProperty(SupportsGet = true)]
+        public int FromAccountId { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int CustomerId { get; set; }
+
+        public void OnGet()
         {
-            Balance = _accountService.GetAccount(accountId).Balance;
+            var source = _accountService.GetAccount(FromAccountId);
+            Balance = source?.Balance ?? 0;
         }
 
-        public IActionResult OnPost(int accountId)
+        public IActionResult OnPost()
         {
-            var sourceAccount = _accountService.GetAccount(accountId);
+            var sourceAccount = _accountService.GetAccount(FromAccountId);
             var targetAccount = _accountService.GetAccount(TargetAccountId);
+
+            if (sourceAccount == null)
+            {
+                ModelState.AddModelError(string.Empty, "Source account not found.");
+            }
 
             if (targetAccount == null)
             {
-                ModelState.AddModelError("TargetAccountId", "Recipient account not found");
+                ModelState.AddModelError("TargetAccountId", "Recipient account not found.");
             }
 
-            if (sourceAccount.Balance < Amount)
+            if (sourceAccount != null && sourceAccount.Balance < Amount)
             {
-                ModelState.AddModelError("Amount", "Insufficient funds");
+                ModelState.AddModelError("Amount", "Insufficient funds.");
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                // Perform the transfer
-                sourceAccount.Balance -= Amount;
-                targetAccount.Balance += Amount;
-
-                _accountService.Update(sourceAccount);
-                _accountService.Update(targetAccount);
-
-                return RedirectToPage("Index");
+                Balance = sourceAccount?.Balance ?? 0;
+                return Page();
             }
 
-            // Reload balance if validation fails
-            Balance = _accountService.GetAccount(accountId).Balance;
-            return Page();
+            sourceAccount.Balance -= Amount;
+            targetAccount.Balance += Amount;
+
+            _accountService.Update(sourceAccount);
+            _accountService.Update(targetAccount);
+
+            return RedirectToPage("/Customer", new { id = CustomerId });
         }
     }
 }

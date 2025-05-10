@@ -23,13 +23,14 @@ namespace BankApplication.Pages.Account
 
         public decimal Balance { get; set; }
 
-        public void OnGet(int accountId)
+        public void OnGet(int accountId, int customerId)
         {
             var accountDb = _accountService.GetAccount(accountId);
             Balance = accountDb.Balance;
+            ViewData["CustomerId"] = customerId;
         }
 
-        public IActionResult OnPost(int accountId)
+        public IActionResult OnPost(int accountId, int customerId)
         {
             if (!ModelState.IsValid)
                 return Page();
@@ -37,12 +38,13 @@ namespace BankApplication.Pages.Account
             if (!_accountService.TryWithdraw(accountId, Amount, out string errorMessage))
             {
                 ModelState.AddModelError(nameof(Amount), errorMessage);
-                OnGet(accountId);
+                OnGet(accountId, customerId);
                 return Page();
             }
 
-            return RedirectToPage("Index");
+            return RedirectToPage("/Customer", new { id = customerId });
         }
+
 
 
     }

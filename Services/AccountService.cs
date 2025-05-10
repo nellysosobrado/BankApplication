@@ -17,6 +17,7 @@ namespace Services
             _transactionService = transactionService;
         }
 
+
         public bool TryWithdraw(int accountId, decimal amount, out string errorMessage)
         {
             var account = GetAccount(accountId);
@@ -47,8 +48,9 @@ namespace Services
                 Type = "Debit",  
                 Operation = "Debit",  
                 Amount = amount,
-                Balance = account.Balance, 
-                Date = DateOnly.FromDateTime(DateTime.Now)  
+                Balance = account.Balance,
+                Date = DateTime.Now
+
             };
 
             _transactionService.AddTransaction(transaction);

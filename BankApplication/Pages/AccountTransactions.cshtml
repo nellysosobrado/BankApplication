@@ -32,12 +32,14 @@
                 @foreach (var t in Model.Transactions)
                 {
                     <tr>
-                        <td>@t.Date.ToString("yyyy-MM-dd")</td>
+                        <td>@t.Date.ToString("yyyy-MM-dd HH:mm:ss")</td>
+
                         <td>@t.Type</td>
                         <td>@t.Operation</td>
-                        <td>@t.Amount.ToString("C")</td>
+                        <td class="@t.CssClass">@t.DisplayAmount</td>
                     </tr>
                 }
+
             </tbody>
         </table>
 

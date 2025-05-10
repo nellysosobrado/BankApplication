@@ -8,49 +8,78 @@ namespace BankApplication.Pages.Account
 {
     [Authorize(Roles = "Cashier,Admin")]
     [BindProperties]
-
     public class DepositModel : PageModel
     {
         private readonly IAccountService _accountService;
+        private readonly ITransactionService _transactionService;
 
-        public DepositModel(IAccountService accountService)
+
+        public DepositModel(IAccountService accountService, ITransactionService transactionService)
         {
             _accountService = accountService;
+            _transactionService = transactionService;
         }
 
-        [Range(100, 10000)]
 
+        [Range(100, 10000, ErrorMessage = "Amount must be between 100 and 10,000")]
         public decimal Amount { get; set; }
-        public DateTime DepositDate { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime DepositDate { get; set; } = DateTime.Now.AddHours(1);
 
         [Required(ErrorMessage = "You forgot to write a comment!")]
         [MinLength(5, ErrorMessage = "Comments must be at least 5 characters long")]
-        [MaxLength(250, ErrorMessage = "OK, thats just too many words")]
+        [MaxLength(250, ErrorMessage = "OK, that's just too many words")]
         public string Comment { get; set; }
 
-        public void OnGet(int accountId)
+        [BindProperty(SupportsGet = true)]
+        public int CustomerId { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int AccountId { get; set; }
+
+        public void OnGet()
         {
-            DepositDate = DateTime.Now.AddHours(1);
+
         }
-        public IActionResult OnPost(int accountId)
+
+        public IActionResult OnPost()
         {
             if (DepositDate < DateTime.Now)
             {
-                ModelState.AddModelError(
-        "DepositDate", "Cannot Deposit money in the past!");
+                ModelState.AddModelError("DepositDate", "Cannot deposit money in the past!");
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var accountDb = _accountService.GetAccount(accountId);
-                accountDb.Balance += Amount;
-                _accountService.Update(accountDb);
-                return RedirectToPage("Index");
+                return Page();
             }
-            return Page();
+
+            var accountDb = _accountService.GetAccount(AccountId);
+            if (accountDb == null)
+            {
+                ModelState.AddModelError("", "Account not found.");
+                return Page();
+            }
+            var newBalance = accountDb.Balance + Amount;
+            accountDb.Balance = newBalance;
+            _accountService.Update(accountDb);
+
+            var transaction = new DAL.Models.Transaction
+            {
+                AccountId = accountDb.AccountId,
+                Amount = Amount,
+                Balance = newBalance,
+                Date = DepositDate,
+                Type = "Credit",              
+                Operation = "Deposit",          
+            };
+            _transactionService.AddTransaction(transaction);
+
+            return RedirectToPage("/Customer", new { id = CustomerId });
         }
 
 
     }
-
 }
