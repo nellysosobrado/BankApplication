@@ -27,8 +27,7 @@
                 <span class="sidenav__logo_name">Bank</span>
             </div>
             <ul class="sidenav__list">
-
-                @if (User.IsInRole("Admin") || User.IsInRole("Cashier"))
+                @if ( User.IsInRole("Cashier"))
                 {
                     <li class="sidenav__list-item">
                         <a asp-page="/Customers">
@@ -49,7 +48,6 @@
                         </a>
                     </li>
                 }
-
 
                 @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                 {
