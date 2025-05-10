@@ -21,7 +21,7 @@ namespace BankApplication.Pages.Account
         }
 
 
-        [Range(100, 10000, ErrorMessage = "Amount must be between 100 and 10,000")]
+        [Range(100, 1000000, ErrorMessage = "Amount must be between 100 and 1,000,000")]
         public decimal Amount { get; set; }
 
         [Required]

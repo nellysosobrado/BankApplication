@@ -8,7 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models;
 
-public partial class BankAppDataContext : IdentityDbContext<IdentityUser>
+public partial class BankAppDataContext : IdentityDbContext
+
+
+
+
 {
     public BankAppDataContext()
     {
@@ -33,6 +37,9 @@ public partial class BankAppDataContext : IdentityDbContext<IdentityUser>
 
     public virtual DbSet<Transaction> Transactions { get; set; }
     public DbSet<Person> Person { get; set; }
+
+    //ublic DbSet<ApplicationUser> Users { get; set; }
+
 
     //public virtual DbSet<User> Users { get; set; }
 
