@@ -1,19 +1,17 @@
+using BankApplication.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Services.Interface;
-using BankApplication.ViewModels;
-using System.Threading.Tasks;
 using Services;
 
-namespace BankApplication.Pages
+namespace BankApplication.Pages.Customer
 {
     [Authorize(Roles = "Cashier,Admin")]
-    public class CustomersModel : PageModel
+    public class IndexModel : PageModel
     {
         private readonly ICustomerQueryService _customerService;
 
-        public CustomersModel(ICustomerQueryService customerService)
+        public IndexModel(ICustomerQueryService customerService)
         {
             _customerService = customerService;
         }

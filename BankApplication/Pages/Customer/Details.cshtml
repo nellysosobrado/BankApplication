@@ -1,5 +1,5 @@
 ﻿@page
-@model CustomerModel
+@model DetailsModel
 @{
     ViewData["Title"] = "Customer Details";
     Layout = "_DashboardLayout";
@@ -84,7 +84,7 @@
                                 <td>@disp.Type</td>
                                 <td>@disp.Account.CreatedDate.ToString("yyyy-MM-dd")</td>
                                 <td>
-                                    <a asp-page="/AccountTransactions" asp-route-accountId="@disp.Account.AccountId" class="btn btn-sm btn-outline-primary">
+                                    <a asp-page="/Account/AccountTransactions" asp-route-accountId="@disp.Account.AccountId" class="btn btn-sm btn-outline-primary">
                                         Visa
                                     </a>
                                     <a asp-page="/Account/Withdraw"

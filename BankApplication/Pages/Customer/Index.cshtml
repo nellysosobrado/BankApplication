@@ -1,10 +1,9 @@
 ﻿@page
-@model Pages.CustomersModel
+@model BankApplication.Pages.Customer.IndexModel
 @{
     ViewData["Title"] = "Customer List";
     Layout = "_DashboardLayout";
 }
-
 
 <div class="container mt-4">
     <h1>Customers</h1>
@@ -82,7 +81,7 @@
                         <td>@customer.Name</td>
                         <td>@customer.City</td>
                         <td>
-                            <a asp-page="/Customer" asp-route-id="@customer.CustomerId"><i class='bx bx-info-circle'></i></a>
+                            <a asp-page="/Customer/Details" asp-route-id="@customer.CustomerId"><i class='bx bx-info-circle'></i></a>
                         </td>
                     </tr>
                 }

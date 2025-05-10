@@ -8,19 +8,19 @@ using Services.Interface;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 
-namespace BankApplication.Pages
+namespace BankApplication.Pages.Customer
 {
     [Authorize(Roles = "Cashier,Admin")]
-    public class CustomerModel : PageModel
+    public class DetailsModel : PageModel
     {
         private readonly ICustomerQueryService _customerService;
-        private readonly ILogger<CustomerModel> _logger;
+        private readonly ILogger<DetailsModel> _logger;
 
 
         public CustomerDetailViewModel Customer { get; set; }
         public decimal TotalBalance { get; set; }
 
-        public CustomerModel( ILogger<CustomerModel> logger, ICustomerQueryService customerService)
+        public DetailsModel( ILogger<DetailsModel> logger, ICustomerQueryService customerService)
         {
             _customerService = customerService;
 
