@@ -59,10 +59,10 @@
                         <tr>
                             <th>Account ID</th>
                             <th>Frequency</th>
-                            <th>Saldo</th>
+                            <th>Balance</th>
                             <th>Status</th>
-                            <th>Skapat</th>
-                            <th>Transaktioner</th>
+                            <th>Created</th>
+                            <th>Transactions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -88,7 +88,7 @@
                                     <a asp-page="/Account/Deposit"
                                        asp-route-accountId="@disp.Account.AccountId"
                                        asp-route-customerId="@Model.Customer.CustomerId"
-                                       class="btn btn-sm btn-outline-success" title="Insättning">
+                                       class="btn btn-sm btn-outline-success" title="Deposit">
                                         <i class='bx bx-plus-circle'></i>
                                     </a>
                                     <a asp-page="/Account/Transfer"
