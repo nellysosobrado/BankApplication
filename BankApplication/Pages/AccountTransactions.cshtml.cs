@@ -66,7 +66,7 @@ namespace BankApplication.Pages
             return Page();
         }
 
-  
+
         public async Task<IActionResult> OnGetLoadMoreAsync(int accountId, int skip)
         {
             const int pageSize = 20;
