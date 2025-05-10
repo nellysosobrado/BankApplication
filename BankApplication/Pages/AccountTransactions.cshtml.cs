@@ -1,4 +1,4 @@
-using DAL.Models;
+ï»¿using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -8,11 +8,11 @@ using Services;
 
 namespace BankApplication.Pages
 {
-    public class AccountModel : PageModel
+    public class AccountTransactionsModel : PageModel
     {
         private readonly BankAppDataContext _bankAppDataContext;
 
-        public AccountModel(BankAppDataContext bankAppDataContext)
+        public AccountTransactionsModel(BankAppDataContext bankAppDataContext)
         {
             _bankAppDataContext = bankAppDataContext;
         }
@@ -21,9 +21,9 @@ namespace BankApplication.Pages
         public int AccountId { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public int PageIndex { get; set; } = 1; // Default page index
+        public int PageIndex { get; set; } = 1;
 
-        public int PageSize { get; set; } = 20; // Number of transactions per page
+        public int PageSize { get; set; } = 20;
         public AccountViewModel Account { get; set; }
         public List<TransactionViewModel> Transactions { get; set; }
         public int TotalTransactions { get; set; }
@@ -40,7 +40,6 @@ namespace BankApplication.Pages
                 .Where(t => t.AccountId == AccountId)
                 .CountAsync();
 
-            // Konvertera DateOnly till DateTime (sätt tiden till 00:00:00)
             Transactions = await _bankAppDataContext.Transactions
                 .Where(t => t.AccountId == AccountId)
                 .OrderByDescending(t => t.Date)
@@ -53,8 +52,9 @@ namespace BankApplication.Pages
                     Operation = t.Operation,
                     Amount = t.Amount,
                     Balance = t.Balance,
-                    Date = t.Date.ToDateTime(new TimeOnly(0, 0)) // Omvandla DateOnly till DateTime
-                }).ToListAsync();
+                    Date = t.Date.ToDateTime(new TimeOnly(0, 0))
+                })
+                .ToListAsync();
 
             Account = new AccountViewModel
             {
@@ -66,7 +66,8 @@ namespace BankApplication.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnGetLoadMore(int accountId, int skip)
+  
+        public async Task<IActionResult> OnGetLoadMoreAsync(int accountId, int skip)
         {
             const int pageSize = 20;
 
@@ -75,11 +76,24 @@ namespace BankApplication.Pages
                 .OrderByDescending(t => t.Date);
 
             var totalCount = await query.CountAsync();
-            var transactions = await query.Skip(skip).Take(pageSize).ToListAsync();
 
-            var paginatedTransactions = new PaginatedList<Transaction>(transactions, totalCount, skip / pageSize + 1, pageSize);
+            var transactions = await query
+                .Skip(skip)
+                .Take(pageSize)
+                .Select(t => new TransactionViewModel
+                {
+                    TransactionId = t.TransactionId,
+                    Type = t.Type,
+                    Operation = t.Operation,
+                    Amount = t.Amount,
+                    Balance = t.Balance,
+                    Date = t.Date.ToDateTime(new TimeOnly(0, 0))
+                })
+                .ToListAsync();
 
-            return new JsonResult(new { transactions = paginatedTransactions.Items, hasMore = paginatedTransactions.HasNextPage });
+            bool hasMore = totalCount > skip + pageSize;
+
+            return new JsonResult(new { transactions, hasMore });
         }
     }
 }

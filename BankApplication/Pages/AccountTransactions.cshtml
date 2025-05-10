@@ -1,7 +1,7 @@
 ﻿@page
-@model BankApplication.Pages.AccountModel
+@model BankApplication.Pages.AccountTransactionsModel
 @{
-    ViewData["Title"] = "Kontoinformation";
+    ViewData["Title"] = "Account Transactions";
     Layout = "_DashboardLayout";
 }
 
@@ -16,16 +16,16 @@
 
 <div class="card shadow mb-4">
     <div class="card-header bg-light">
-        <h5 class="mb-0">Transaktioner</h5>
+        <h5 class="mb-0">Transactions</h5>
     </div>
     <div class="card-body">
         <table class="table table-striped" id="transactionTable">
             <thead>
                 <tr>
-                    <th>Datum</th>
-                    <th>Typ</th>
+                    <th>Date</th>
+                    <th>Type</th>
                     <th>Operation</th>
-                    <th>Belopp</th>
+                    <th>Balance</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,13 +41,20 @@
             </tbody>
         </table>
 
-        <!-- Ladda fler-knapp -->
         @if (Model.Transactions.Count == Model.PageSize)
         {
-            <button id="loadMoreBtn" class="btn btn-primary" data-skip="@Model.PageSize">
-                Ladda fler
-            </button>
+            <div class="text-center">
+                <button id="loadMoreBtn" class="btn btn-primary" data-skip="@Model.PageSize">
+                    Show more
+                </button>
+            </div>
         }
+
+        <div id="loadingSpinner" class="text-center mt-3" style="display:none;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -55,10 +62,11 @@
     <script>
         document.getElementById('loadMoreBtn')?.addEventListener('click', function () {
             let skip = parseInt(this.getAttribute('data-skip'));
-            let accountId = @Model.Account.AccountId;
+            let accountId = "@Model.Account.AccountId";
 
-            // Ladda fler transaktioner via AJAX
-            fetch(`/Account?handler=LoadMore&accountId=${accountId}&skip=${skip}`)
+            document.getElementById('loadingSpinner').style.display = 'block';
+
+            fetch(`/AccountTransactions?handler=LoadMore&accountId=${accountId}&skip=${skip}`)
                 .then(response => response.json())
                 .then(data => {
                     const tbody = document.querySelector('#transactionTable tbody');
@@ -73,14 +81,16 @@
                         tbody.appendChild(row);
                     });
 
-                    // Uppdatera knappen med nya skip-värdet
                     if (!data.hasMore) {
                         document.getElementById('loadMoreBtn').style.display = 'none';
                     } else {
                         document.getElementById('loadMoreBtn').setAttribute('data-skip', skip + 20);
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => console.error('Error:', error))
+                .finally(() => {
+                    document.getElementById('loadingSpinner').style.display = 'none';
+                });
         });
     </script>
 }
