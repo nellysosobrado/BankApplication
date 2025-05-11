@@ -26,6 +26,8 @@ namespace Services
         int CreateCustomer(Customer customer);
         void UpdateCustomer(Customer customer);
         Customer GetCustomer(int id);
+        Task<bool> DeleteCustomerAsync(int customerId);
+
     }
 
 }

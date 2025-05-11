@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,25 @@ namespace Services
 
             return customer.CustomerId;
         }
+        public async Task<bool> DeleteCustomerAsync(int customerId)
+        {
+            var customer = await _context.Customers
+                .Include(c => c.Dispositions)
+                .ThenInclude(d => d.Account)
+                .FirstOrDefaultAsync(c => c.CustomerId == customerId);
+
+            if (customer == null)
+                return false;
+
+
+            _context.Dispositions.RemoveRange(customer.Dispositions);
+
+            _context.Customers.Remove(customer);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+
 
         public void UpdateCustomer(Customer customer)
         {

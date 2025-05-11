@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Services;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using BankApplication.ViewModels;
 using Services.Interface;
@@ -14,16 +15,19 @@ namespace BankApplication.Pages.Customer
     public class DetailsModel : PageModel
     {
         private readonly ICustomerQueryService _customerService;
+        private readonly ICustomerCommandService _customerCommandService;
         private readonly ILogger<DetailsModel> _logger;
-
 
         public CustomerDetailViewModel Customer { get; set; }
         public decimal TotalBalance { get; set; }
 
-        public DetailsModel( ILogger<DetailsModel> logger, ICustomerQueryService customerService)
+        public DetailsModel(
+            ILogger<DetailsModel> logger,
+            ICustomerQueryService customerService,
+            ICustomerCommandService customerCommandService)
         {
             _customerService = customerService;
-
+            _customerCommandService = customerCommandService;
             _logger = logger;
         }
 
@@ -56,6 +60,30 @@ namespace BankApplication.Pages.Customer
                 _logger.LogError(ex, "Error on fetching");
                 TempData["ErrorMessage"] = "Error fetching data";
                 return RedirectToPage("/Customer/index");
+            }
+        }
+
+        // ?? Här är delete-metoden du lägger till
+        public async Task<IActionResult> OnPostDeleteAsync(int CustomerId)
+        {
+            try
+            {
+                var deleted = await _customerCommandService.DeleteCustomerAsync(CustomerId);
+
+                if (!deleted)
+                {
+                    TempData["ErrorMessage"] = "Customer could not be deleted (maybe has accounts?).";
+                    return RedirectToPage(new { id = CustomerId });
+                }
+
+                TempData["SuccessMessage"] = "Customer deleted successfully.";
+                return RedirectToPage("/Customer/Index");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting customer");
+                TempData["ErrorMessage"] = "An error occurred while deleting the customer.";
+                return RedirectToPage(new { id = CustomerId });
             }
         }
     }
