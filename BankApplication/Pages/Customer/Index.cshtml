@@ -17,19 +17,18 @@
 
     <div class="table-responsive">
         <table class="table table-striped table-hover">
+
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">
                         CustomerId
-                        <a asp-page="/Customers"
-                           asp-route-searchTerm="@Model.SearchTerm"
+                        <a asp-route-searchTerm="@Model.SearchTerm"
                            asp-route-sortColumn="CustomerId"
                            asp-route-sortOrder="asc"
                            class="sort-link">
                             <i class="fas fa-angle-up @(Model.SortColumn == "CustomerId" && Model.SortOrder == "asc" ? "text-white" : "text-muted")"></i>
                         </a>
-                        <a asp-page="/Customers"
-                           asp-route-searchTerm="@Model.SearchTerm"
+                        <a asp-route-searchTerm="@Model.SearchTerm"
                            asp-route-sortColumn="CustomerId"
                            asp-route-sortOrder="desc"
                            class="sort-link">
@@ -38,15 +37,13 @@
                     </th>
                     <th scope="col">
                         Name
-                        <a asp-page="/Customers"
-                           asp-route-searchTerm="@Model.SearchTerm"
+                        <a asp-route-searchTerm="@Model.SearchTerm"
                            asp-route-sortColumn="Name"
                            asp-route-sortOrder="asc"
                            class="sort-link">
                             <i class="fas fa-angle-up @(Model.SortColumn == "Name" && Model.SortOrder == "asc" ? "text-white" : "text-muted")"></i>
                         </a>
-                        <a asp-page="/Customers"
-                           asp-route-searchTerm="@Model.SearchTerm"
+                        <a asp-route-searchTerm="@Model.SearchTerm"
                            asp-route-sortColumn="Name"
                            asp-route-sortOrder="desc"
                            class="sort-link">
@@ -55,24 +52,24 @@
                     </th>
                     <th scope="col">
                         City
-                        <a asp-page="/Customers"
-                           asp-route-searchTerm="@Model.SearchTerm"
-                           asp-route-sortColumn="Name"
+                        <a asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-sortColumn="City"
                            asp-route-sortOrder="asc"
                            class="sort-link">
-                            <i class="fas fa-angle-up @(Model.SortColumn == "Name" && Model.SortOrder == "asc" ? "text-white" : "text-muted")"></i>
+                            <i class="fas fa-angle-up @(Model.SortColumn == "City" && Model.SortOrder == "asc" ? "text-white" : "text-muted")"></i>
                         </a>
-                        <a asp-page="/Customers"
-                           asp-route-searchTerm="@Model.SearchTerm"
-                           asp-route-sortColumn="Name"
+                        <a asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-sortColumn="City"
                            asp-route-sortOrder="desc"
                            class="sort-link">
-                            <i class="fas fa-angle-down @(Model.SortColumn == "Name" && Model.SortOrder == "desc" ? "text-white" : "text-muted")"></i>
+                            <i class="fas fa-angle-down @(Model.SortColumn == "City" && Model.SortOrder == "desc" ? "text-white" : "text-muted")"></i>
                         </a>
                     </th>
                     <th scope="col">Info</th>
                 </tr>
             </thead>
+
+            
             <tbody>
                 @foreach (var customer in Model.Customers.Items)
                 {
