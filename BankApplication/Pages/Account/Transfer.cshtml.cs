@@ -17,7 +17,8 @@ namespace BankApplication.Pages.Account
             _accountService = accountService;
         }
 
-        [Range(1, 10000, ErrorMessage = "Amount must be between 1 and 10,000")]
+
+        [Range(100, 1000000, ErrorMessage = "Amount must be between 100 and 1,000,000")]
         public decimal Amount { get; set; }
 
         [Required(ErrorMessage = "Recipient account number is required")]
