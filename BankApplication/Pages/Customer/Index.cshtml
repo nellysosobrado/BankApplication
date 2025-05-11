@@ -7,14 +7,12 @@
 
 <div class="container mt-4">
 
-    <div class="mb-3">
-        <a onclick="history.back()" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left"></i> Back to previous page
-        </a>
-    </div>
+  
 
     <div class="card shadow">
         <div class="card-body">
+            
+
 
             <h1 class="card-title">Customers</h1>
 
@@ -98,17 +96,26 @@
                 var nextDisabled = !Model.Customers.HasNextPage ? "disabled" : "";
             }
             <div class="d-flex justify-content-between align-items-center mt-3">
-                <a asp-page="./Customers"
-                   asp-route-searchTerm="@Model.SearchTerm"
-                   asp-route-sortColumn="@Model.SortColumn"
-                   asp-route-sortOrder="@Model.SortOrder"
-                   asp-route-pageIndex="@(Model.Customers.PageIndex - 1)"
-                   class="btn btn-primary @prevDisabled">
-                    <i class="fas fa-chevron-left"></i> Previous
-                </a>
+                @if (Model.Customers.PageIndex > 1)
+                {
+                    <a asp-route-searchTerm="@Model.SearchTerm"
+                       asp-route-sortColumn="@Model.SortColumn"
+                       asp-route-sortOrder="@Model.SortOrder"
+                       asp-route-pageIndex="@(Model.Customers.PageIndex - 1)"
+                       class="btn btn-primary">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </a>
+                }
+                else
+                {
+                    <span class="btn btn-secondary disabled">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </span>
+                }
+
                 <span class="text-muted">Sida @Model.Customers.PageIndex av @Model.Customers.TotalPages</span>
-                <a asp-page="./Customers"
-                   asp-route-searchTerm="@Model.SearchTerm"
+
+                <a asp-route-searchTerm="@Model.SearchTerm"
                    asp-route-sortColumn="@Model.SortColumn"
                    asp-route-sortOrder="@Model.SortOrder"
                    asp-route-pageIndex="@(Model.Customers.PageIndex + 1)"
@@ -117,6 +124,7 @@
                 </a>
             </div>
 
+
             <div class="text-end mt-4">
                 <button onclick="scrollToTop()" id="scrollTopBtn">
                     <i class="fas fa-arrow-up"></i>
@@ -124,6 +132,11 @@
 
 
             </div>
+            <button onclick="history.back()" id="backPrevBtnWithText">
+                <i class="fas fa-arrow-left me-1"></i> Back to previous page
+            </button>
+
+
 
         </div>
     </div>
