@@ -270,3 +270,27 @@ small {
 td i {
     font-size: 30px;
 }
+/*back tro top button*/
+#scrollTopBtn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: none;
+    z-index: 999;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    padding: 12px 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+    #scrollTopBtn i {
+        color: #333;
+    }
+
+    #scrollTopBtn:hover {
+        background: #f1f1f1;
+        transform: scale(1.1);
+    }
