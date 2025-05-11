@@ -4,7 +4,7 @@ Project for managing a bank.
 It is built with ASP.NET Core using Razor Pages. Uses SQL Server as a database to store the data
 
 ## Azure
-Link to live website on Azure: razorcrudazur250509.azurewebsites.net
+LIVE SERVER ON AZURE: https://bankapp20250511-hkcke7gsgzc8atbz.swedencentral-01.azurewebsites.net/
 
 ## Description
 This system is for **bank employees only** (not customers).  
