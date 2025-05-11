@@ -28,7 +28,7 @@ namespace FraudDetectionConsoleApp.Services
 
             await File.WriteAllLinesAsync(reportFilePath, report);
 
-            Console.WriteLine($"Rapport för {countryCode} sparad på: {reportFilePath}");
+            Console.WriteLine($"Repport for {countryCode} saved at: {reportFilePath}");
         }
     }
 }

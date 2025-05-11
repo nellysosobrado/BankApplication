@@ -10,10 +10,18 @@ namespace FraudDetectionConsoleApp.Services
 {
     public static class ProcessLogService
     {
-        private static readonly string logPath = Path.Combine("Logs", "process_log.json");
+       // private static readonly string logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Logs", "process_log.json");
+        private static readonly string logPath = Path.Combine(
+        AppDomain.CurrentDomain.BaseDirectory,
+        "Logs",
+        "process_log.json");
+
+
+
 
         public static List<ProcessLog> LoadLogs()
         {
+            Directory.CreateDirectory(Path.GetDirectoryName(logPath)!); 
             if (!File.Exists(logPath)) return new();
             var json = File.ReadAllText(logPath);
             return JsonSerializer.Deserialize<List<ProcessLog>>(json) ?? new();
@@ -21,7 +29,7 @@ namespace FraudDetectionConsoleApp.Services
 
         public static void SaveLogs(List<ProcessLog> logs)
         {
-            Directory.CreateDirectory("Logs");
+            Directory.CreateDirectory(Path.GetDirectoryName(logPath)!); 
             var json = JsonSerializer.Serialize(logs, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(logPath, json);
         }
@@ -44,4 +52,6 @@ namespace FraudDetectionConsoleApp.Services
             SaveLogs(logs);
         }
     }
+
+
 }
