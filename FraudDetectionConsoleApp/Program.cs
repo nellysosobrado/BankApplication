@@ -14,15 +14,16 @@ class Program
             await ProcessCountryAsync(country);
         }
 
-        Console.WriteLine("Klart!");
+        Console.WriteLine("Finished!");
     }
 
     static async Task ProcessCountryAsync(string countryCode)
     {
-        var lastRun = DateTime.MinValue; // tvingar igenom allt
+        var lastRun = ProcessLogService.GetLastProcessed(countryCode);
+
         var newLastRun = DateTime.UtcNow;
 
-        var report = new List<string>(); // ✅ Nu är report deklarerad
+        var report = new List<string>();
 
         using var db = new BankAppDataContext();
 
@@ -36,7 +37,7 @@ class Program
         foreach (var customer in customers)
         {
             var accounts = customer.Dispositions
-                .Where(d => d.Type == "OWNER") // filtrera om du vill
+                .Where(d => d.Type == "OWNER")
                 .Select(d => d.Account);
 
             foreach (var account in accounts)
@@ -48,16 +49,16 @@ class Program
                     .OrderBy(t => t.Date)
                     .ToList();
 
-                Console.WriteLine($"🧾 Konto {account.AccountId} har {account.Transactions.Count} transaktioner (total)");
+                Console.WriteLine($"Account {account.AccountId} has {transactions.Count} new  transaction after {lastRun})");
 
                 foreach (var tx in transactions)
                 {
-                    Console.WriteLine($"🔍 Kollar TX {tx.TransactionId} på {tx.Amount} kr, typ: {tx.Type}, datum: {tx.Date}");
+                    Console.WriteLine($" Analyzing {tx.TransactionId} on {tx.Amount} kr, type: {tx.Type}, date: {tx.Date}");
 
                     if (FraudDetectionRules.IsSuspiciousTransaction(tx) ||
                         FraudDetectionRules.HasSuspiciousRecentActivity(account.Transactions.ToList(), tx.Date))
                     {
-                        Console.WriteLine($"🚨 MISSTÄNKT transaktion: {tx.TransactionId}");
+                        Console.WriteLine($"🚨 Suspicious transaction: {tx.TransactionId}");
                         suspicious.Add(tx.TransactionId);
                     }
                 }
@@ -74,14 +75,18 @@ class Program
 
         if (report.Any())
         {
-            var reportService = new ReportService(); // Skapa en instans av ReportService
-            await reportService.SaveReportAsync(countryCode, report); // Anropa den asynkrona metoden via instansen
-            Console.WriteLine($"📄 Rapport sparad för {countryCode}");
+            var reportService = new ReportService();
+            await reportService.SaveReportAsync(countryCode, report);
+            Console.WriteLine($"Repport saved for: {countryCode}");
         }
         else
         {
-            Console.WriteLine($"✅ Inga misstänkta transaktioner för {countryCode}");
+            Console.WriteLine($"No sus transactions for {countryCode}");
         }
-    }
 
+        ProcessLogService.UpdateLog(countryCode, newLastRun);
+        Console.WriteLine($" Logg updated for {countryCode}: {newLastRun}");
+
+        Console.WriteLine($"Logfile saved on: {Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs", "process_log.json")}");
+    }
 }

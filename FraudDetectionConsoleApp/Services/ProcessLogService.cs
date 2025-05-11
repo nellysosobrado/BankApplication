@@ -10,12 +10,7 @@ namespace FraudDetectionConsoleApp.Services
 {
     public static class ProcessLogService
     {
-       // private static readonly string logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Logs", "process_log.json");
-        private static readonly string logPath = Path.Combine(
-        AppDomain.CurrentDomain.BaseDirectory,
-        "Logs",
-        "process_log.json");
-
+        private static readonly string logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Logs", "process_log.json");
 
 
 
