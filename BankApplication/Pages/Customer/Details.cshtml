@@ -71,7 +71,6 @@
                             <th>Balance</th>
                             <th>Status</th>
                             <th>Created</th>
-                            <th>Transactions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -113,10 +112,17 @@
                     </tbody>
                 </table>
             </div>
+            
         }
         else
         {
-            <div class="alert alert-info mt-3">Kunden har inga konton registrerade.</div>
+            <div class="alert alert-info mt-3">Customer does not have any registered accounts.</div>
         }
+        <button onclick="history.back()" id="backPrevBtnWithText">
+            <i class="fas fa-arrow-left me-1"></i> Back to previous page
+        </button>
     </div>
 </div>
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+}
