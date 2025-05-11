@@ -7,7 +7,7 @@
 
 <div class="card shadow mb-4">
     <div class="card-header bg-primary text-white">
-        <h2 class="mb-0">Konto: @Model.Account.AccountId</h2>
+        <h2 class="mb-0">Account number: @Model.Account.AccountId</h2>
     </div>
     <div class="card-body">
         <p><strong>Saldo:</strong> @Model.Account.Balance.ToString("C")</p>
@@ -59,9 +59,35 @@
         </div>
     </div>
 </div>
+<div class="text-end mt-4">
+    <button onclick="scrollToTop()" id="scrollTopBtn" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+</div>
+
+<div class="mt-2">
+    <button onclick="history.back()" id="backPrevBtnWithText" class="btn btn-outline-dark">
+        <i class="fas fa-arrow-left me-1"></i> Back to previous page
+    </button>
+</div>
 
 @section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
     <script>
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('scroll', function () {
+            var btn = document.getElementById('scrollTopBtn');
+            if (window.scrollY > 300) {
+                btn.style.display = 'inline-block';
+            } else {
+                btn.style.display = 'none';
+            }
+        });
+
         document.getElementById('loadMoreBtn')?.addEventListener('click', function () {
             let skip = parseInt(this.getAttribute('data-skip'));
             let accountId = "@Model.Account.AccountId";
