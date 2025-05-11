@@ -10,7 +10,7 @@ Link to live website on Azure: razorcrudazur250509.azurewebsites.net
 This system is for **bank employees only** (not customers).  
 There are two roles:
 
-- **Admin**: Can manage users, customers, and accounts
+- **Admin**: Can manage users
 - **Cashier**: Can manage customers and accounts
 
 Two users are automatically added when the app starts:
