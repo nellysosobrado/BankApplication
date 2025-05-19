@@ -5,7 +5,7 @@ using Services;
 using Services.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 
-namespace BankApplication.Pages.Account
+namespace BankApplication.Pages.AccountPages
 {
     [Authorize(Roles = "Cashier,Admin")]
     public class IndexModel : PageModel

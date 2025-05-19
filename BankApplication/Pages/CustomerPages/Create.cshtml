@@ -1,0 +1,144 @@
+﻿@page
+@model BankApplication.Pages.CustomerPages.CreateModel
+@{
+    ViewData["Title"] = "Create Customer";
+    Layout = "_DashboardLayout";
+}
+
+<link rel="stylesheet" href="~/asset2/css/site.css">
+
+<div class="card">
+    <div class="card-header">
+        <h1>Create New Customer</h1>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Input.Givenname"></label>
+                        <input class="form-control" asp-for="Input.Givenname" />
+                        <span asp-validation-for="Input.Givenname" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Input.Surname"></label>
+                        <input class="form-control" asp-for="Input.Surname" />
+                        <span asp-validation-for="Input.Surname" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.Gender"></label>
+                <select class="form-control" asp-for="Input.Gender">
+                    <option value="">-- Select --</option>
+                    <option value="Male">Man</option>
+                    <option value="Female">Woman</option>
+                </select>
+                <span asp-validation-for="Input.Gender" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.Emailaddress"></label>
+                <input class="form-control" asp-for="Input.Emailaddress" type="email" />
+                <span asp-validation-for="Input.Emailaddress" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.Streetaddress"></label>
+                <input class="form-control" asp-for="Input.Streetaddress" />
+                <span asp-validation-for="Input.Streetaddress" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Input.Zipcode"></label>
+                        <input class="form-control" asp-for="Input.Zipcode" />
+                        <span asp-validation-for="Input.Zipcode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label asp-for="Input.City"></label>
+                        <input class="form-control" asp-for="Input.City" />
+                        <span asp-validation-for="Input.City" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Input.CountryCode"></label>
+                <select class="form-control" asp-for="Input.CountryCode">
+                    <option value="">-- Select --</option>
+                    <option value="SE">SE (Sweden)</option>
+                    <option value="NO">NO (Norway)</option>
+                    <option value="DK">DK (Denmark)</option>
+                    <option value="FI">FI (Finland)</option>
+                </select>
+                <span asp-validation-for="Input.CountryCode" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Input.Country"></label>
+                <select class="form-control" asp-for="Input.Country">
+                    <option value="">-- Select --</option>
+                    <option value="Sweden">Sweden</option>
+                    <option value="Norway">Norway</option>
+                    <option value="Denmark">Denmark</option>
+                    <option value="Finland">Finland</option>
+                </select>
+                <span asp-validation-for="Input.Country" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.Birthday"></label>
+                <input class="form-control" asp-for="Input.Birthday" type="date" />
+                <span asp-validation-for="Input.Birthday" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.NationalId"></label>
+                <input class="form-control" asp-for="Input.NationalId" />
+                <span asp-validation-for="Input.NationalId" class="text-danger"></span>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Input.Telephonecountrycode"></label>
+                        <select class="form-control" asp-for="Input.Telephonecountrycode">
+                            <option value="">-- Select --</option>
+                            <option value="+46">+46 (Sweden)</option>
+                            <option value="+47">+47 (Norway)</option>
+                            <option value="+45">+45 (Denmark)</option>
+                            <option value="+358">+358 (Finland)</option>
+                        </select>
+                        <span asp-validation-for="Input.Telephonecountrycode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label asp-for="Input.Telephonenumber"></label>
+                        <input class="form-control" asp-for="Input.Telephonenumber" />
+                        <span asp-validation-for="Input.Telephonenumber" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success mt-3">Create</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+<script src="~/asset2/js/site.js"></script>

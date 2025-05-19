@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Services.Interface;
 using System.ComponentModel.DataAnnotations;
 
-namespace BankApplication.Pages.Account
+namespace BankApplication.Pages.AccountPages
 {
     [Authorize(Roles = "Cashier,Admin")]
     [BindProperties]
