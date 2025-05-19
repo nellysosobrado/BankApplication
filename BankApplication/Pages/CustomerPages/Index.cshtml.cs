@@ -6,7 +6,7 @@ using Services;
 
 namespace BankApplication.Pages.CustomerPages;
 
-[Authorize(Roles = "Cashier,Admin")]
+[Authorize(Roles = "Cashier")]
 public class IndexModel : PageModel
 {
     private readonly ICustomerQueryService _customerService;

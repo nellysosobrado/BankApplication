@@ -1,12 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Services;
-using System.ComponentModel.DataAnnotations;
-using DAL.Models;
+using Services.Interface;
+using Services.ViewModels;
+
 
 namespace BankApplication.Pages.CustomerPages;
-
-[BindProperties]
+[Authorize(Roles = "Cashier")]
 public class UpdateModel : PageModel
 {
     private readonly ICustomerCommandService _commandService;
@@ -16,68 +17,60 @@ public class UpdateModel : PageModel
         _commandService = commandService;
     }
 
-    [HiddenInput]
-    public int CustomerId { get; set; }
-
-    [MaxLength(100)][Required] public string Givenname { get; set; }
-    [MaxLength(100)][Required] public string Surname { get; set; }
-    [StringLength(100)] public string Gender { get; set; }
-
-    [StringLength(100)] public string Streetaddress { get; set; }
-    [StringLength(10)] public string Zipcode { get; set; }
-    [StringLength(2)] public string CountryCode { get; set; }
-    public string Country { get; set; }
-
-    [DataType(DataType.Date)]
-    public DateOnly? Birthday { get; set; }
-
-    [StringLength(50)][Required] public string City { get; set; }
-    [StringLength(150)][EmailAddress] public string Emailaddress { get; set; }
+    [BindProperty]
+    public CustomerInputModel Input { get; set; }
 
     public IActionResult OnGet(int id)
     {
         var customer = _commandService.GetCustomer(id);
         if (customer == null) return NotFound();
 
-        CustomerId = customer.CustomerId;
-        Givenname = customer.Givenname;
-        Surname = customer.Surname;
-        Gender = customer.Gender;
-        Birthday = customer.Birthday;
-        City = customer.City;
-        CountryCode = customer.CountryCode;
-        Country = customer.Country;
-        Emailaddress = customer.Emailaddress;
-        Zipcode = customer.Zipcode;
-        Streetaddress = customer.Streetaddress;
+        Input = new CustomerInputModel
+        {
+            CustomerId = customer.CustomerId,
+            Givenname = customer.Givenname,
+            Surname = customer.Surname,
+            Gender = customer.Gender,
+            Birthday = customer.Birthday,
+            City = customer.City,
+            CountryCode = customer.CountryCode,
+            Country = customer.Country,
+            Emailaddress = customer.Emailaddress,
+            Zipcode = customer.Zipcode,
+            Streetaddress = customer.Streetaddress,
+            NationalId = customer.NationalId,
+            Telephonecountrycode = customer.Telephonecountrycode,
+            Telephonenumber = customer.Telephonenumber
+        };
 
         return Page();
     }
-
 
     public IActionResult OnPost()
     {
         if (!ModelState.IsValid)
             return Page();
 
-        var customer = _commandService.GetCustomer(CustomerId);
+        var customer = _commandService.GetCustomer(Input.CustomerId);
         if (customer == null) return NotFound();
 
-        customer.Givenname = Givenname;
-        customer.Surname = Surname;
-        customer.Gender = Gender;
-        customer.Birthday = Birthday;
-        customer.City = City;
-        customer.CountryCode = CountryCode;
-        customer.Emailaddress = Emailaddress;
-        customer.Zipcode = Zipcode;
-        customer.Streetaddress = Streetaddress;
-        customer.Country = Country;
-        customer.LastModified = DateTime.UtcNow;
+
+        customer.Givenname = Input.Givenname;
+        customer.Surname = Input.Surname;
+        customer.Gender = Input.Gender;
+        customer.Birthday = Input.Birthday;
+        customer.City = Input.City;
+        customer.CountryCode = Input.CountryCode;
+        customer.Country = Input.Country;
+        customer.Emailaddress = Input.Emailaddress;
+        customer.Zipcode = Input.Zipcode;
+        customer.Streetaddress = Input.Streetaddress;
+        customer.NationalId = Input.NationalId;
+        customer.Telephonecountrycode = Input.Telephonecountrycode;
+        customer.Telephonenumber = Input.Telephonenumber;
 
         _commandService.UpdateCustomer(customer);
 
-        return RedirectToPage("/Customer/Details", new { id = CustomerId }); 
+        return RedirectToPage("/CustomerPages/Details", new { id = Input.CustomerId });
     }
-
 }

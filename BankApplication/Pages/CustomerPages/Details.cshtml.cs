@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BankApplication.Pages.CustomerPages;
 
-[Authorize(Roles = "Cashier,Admin")]
+[Authorize(Roles = "Cashier")]
 public class DetailsModel : PageModel
 {
     private readonly ICustomerQueryService _customerService;
@@ -63,7 +63,7 @@ public class DetailsModel : PageModel
         }
     }
 
-    // ?? Här är delete-metoden du lägger till
+
     public async Task<IActionResult> OnPostDeleteAsync(int CustomerId)
     {
         try
@@ -77,7 +77,7 @@ public class DetailsModel : PageModel
             }
 
             TempData["SuccessMessage"] = "Customer deleted successfully.";
-            return RedirectToPage("/Customer/Index");
+            return RedirectToPage("/CustomerPages/Index");
         }
         catch (Exception ex)
         {
