@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace BankApplication.Areas.Identity.Pages.Account.Manage
 {
@@ -15,26 +16,22 @@ namespace BankApplication.Areas.Identity.Pages.Account.Manage
     public class ChangePasswordModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
 
         public ChangePasswordModel(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
             ILogger<ChangePasswordModel> logger)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _logger = logger;
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputModel Input { get; set; } = new();
 
         [TempData]
         public string StatusMessage { get; set; }
 
-        // List of users for the admin to select from
         public SelectList Users { get; set; }
 
         public class InputModel
@@ -42,11 +39,6 @@ namespace BankApplication.Areas.Identity.Pages.Account.Manage
             [Required]
             [Display(Name = "Select a user")]
             public string UserId { get; set; }
-
-            [Required]
-            [DataType(DataType.Password)]
-            [Display(Name = "Current password")]
-            public string OldPassword { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -60,27 +52,21 @@ namespace BankApplication.Areas.Identity.Pages.Account.Manage
             public string ConfirmPassword { get; set; }
         }
 
-        // Load users for the admin to select from
         public async Task<IActionResult> OnGetAsync()
         {
-            // Only load if the user is an Admin
-            if (!User.IsInRole("Admin"))
-            {
-                return Unauthorized();
-            }
+            var users = await _userManager.Users
+                .Select(u => new { u.Id, u.UserName })
+                .ToListAsync();
 
-            // Get all users for the dropdown
-            var users = _userManager.Users.Select(u => new { u.Id, u.UserName }).ToList();
             Users = new SelectList(users, "Id", "UserName");
-
             return Page();
         }
 
-        // Handle password change for the selected user
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
+                await LoadUsersAsync();
                 return Page();
             }
 
@@ -90,21 +76,34 @@ namespace BankApplication.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{Input.UserId}'.");
             }
 
-            // Change password for the selected user
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
-            if (!changePasswordResult.Succeeded)
+            // Generate reset token
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            // Reset the password without knowing the old one
+            var resetResult = await _userManager.ResetPasswordAsync(user, token, Input.NewPassword);
+            if (!resetResult.Succeeded)
             {
-                foreach (var error in changePasswordResult.Errors)
+                foreach (var error in resetResult.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
+
+                await LoadUsersAsync();
                 return Page();
             }
 
-            _logger.LogInformation("Admin changed the password successfully for user {UserId}.", Input.UserId);
-            StatusMessage = "The password has been changed successfully.";
-
+            _logger.LogInformation("Admin successfully reset the password for user {UserId}.", Input.UserId);
+            StatusMessage = "Password was changed successfully.";
             return RedirectToPage();
+        }
+
+        private async Task LoadUsersAsync()
+        {
+            var users = await _userManager.Users
+                .Select(u => new { u.Id, u.UserName })
+                .ToListAsync();
+
+            Users = new SelectList(users, "Id", "UserName");
         }
     }
 }

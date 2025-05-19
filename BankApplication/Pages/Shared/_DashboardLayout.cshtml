@@ -31,12 +31,7 @@
             <ul class="sidenav__list">
                 @if ( User.IsInRole("Cashier"))
                 {
-                    <li class="sidenav__list-item">
-                        <a asp-page="/Dashboard">
-                            <i class="bx bx-pie-chart-alt-2"></i>
-                            Dashboard
-                        </a>
-                    </li>
+                    
 
                     <li class="sidenav__list-item">
                         <a asp-page="/CustomerPages/Index">
@@ -46,6 +41,12 @@
                     </li>
                    
                 }
+                <li class="sidenav__list-item">
+                    <a asp-page="/Dashboard">
+                        <i class="bx bx-pie-chart-alt-2"></i>
+                        Dashboard
+                    </a>
+                </li>
 
                 @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                 {
@@ -72,7 +73,7 @@
                     <li class="sidenav__list-item">
                         <a asp-area="Identity" asp-page="/Account/Login">
                             <i class="bx bx-log-in"></i>
-                            Logga in
+                            Log in
                         </a>
                     </li>
                 }
@@ -88,6 +89,7 @@
             <div>&copy; @DateTime.Now.Year Bank</div>
         </footer>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="~/asset2/js/site.js" asp-append-version="true"></script>
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>

@@ -1,9 +1,12 @@
 ﻿@page
 @model BankApplication.Pages.DashboardModel
+@using Microsoft.AspNetCore.Identity
 @{
     ViewData["Title"] = "Dashboard";
     Layout = "_DashboardLayout";
     var userName = User.Identity?.Name ?? "Employee";
+    var isAdmin = User.IsInRole("Admin");
+    var isCashier = User.IsInRole("Cashier");
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -15,23 +18,69 @@
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card border-info shadow-sm">
-                <div class="card-body text-center">
-                    <i class="fas fa-users fa-2x text-info mb-3"></i>
-                    <h4 class="card-title mb-2">Customer Management</h4>
-                    <p class="text-muted">Search and manage customer details and their accounts.</p>
+        @if (isCashier)
+        {
+            <div class="col-md-6">
+                <div class="card border-info shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-2x text-info mb-3"></i>
+                        <h4 class="card-title mb-2">Customer Management</h4>
+                        <p class="text-muted">Search and manage customer details and their accounts.</p>
 
-                    <a href="/CustomerPages/Index" class="btn btn-info text-white">
-                        <i class="fas fa-search me-1"></i> Search Customers
-                    </a>
+                        <a href="/CustomerPages/Index" class="btn btn-info text-white">
+                            <i class="fas fa-search me-1"></i> Search Customers
+                        </a>
 
-                    <a href="/CustomerPages/Create" class="btn btn-success mt-2">
-                        <i class="fas fa-user-plus me-1"></i> Skapa ny kund
-                    </a>
+                        <a href="/CustomerPages/Create" class="btn btn-success mt-2">
+                            <i class="fas fa-user-plus me-1"></i> Create New Customer
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
+
+        @if (isAdmin)
+        {
+            <div class="col-md-6 mt-4 mt-md-0">
+                <div class="card border-primary shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-user-shield fa-2x text-primary mb-3"></i>
+                        <h4 class="card-title mb-2">Admin Panel</h4>
+                        <p class="text-muted">Manage users and system access.</p>
+
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-tools me-1"></i> Admin Actions
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li>
+                                    <a class="dropdown-item" asp-area="Identity" asp-page="/Admin/Users/AllUsers">
+                                        <i class="fas fa-users me-1"></i> All Users
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Register">
+                                        <i class="fas fa-user-plus me-1"></i> Register New User
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Email">
+                                        <i class="fas fa-envelope me-1"></i> Change Email
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">
+                                        <i class="fas fa-key me-1"></i> Change Password
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider" /></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 
     <div class="text-center mt-5">

@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 namespace BankApplication.Pages
 {
-    [Authorize] // Only for logged-in users
+    [Authorize] 
     public class DashboardModel : PageModel
     {
 
