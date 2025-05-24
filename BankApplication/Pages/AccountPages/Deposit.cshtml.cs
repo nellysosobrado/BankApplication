@@ -77,7 +77,7 @@ namespace BankApplication.Pages.AccountPages
             };
             _transactionService.AddTransaction(transaction);
 
-            return RedirectToPage("/Customer/Details", new { id = CustomerId });
+            return RedirectToPage("/CustomerPages/Details", new { id = CustomerId });
         }
 
 

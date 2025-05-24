@@ -94,20 +94,20 @@
                                     <a asp-page="/AccountTransactions" asp-route-accountId="@disp.Account.AccountId" class="btn btn-sm btn-outline-primary">
                                         Transactions
                                     </a>
-                                    <a asp-page="/Account/Withdraw"
+                                    <a asp-page="/AccountPages/Withdraw"
                                        asp-route-accountId="@disp.Account.AccountId"
                                        asp-route-customerId="@Model.Customer.CustomerId"
                                        class="btn btn-sm btn-outline-warning" title="Withdraw">
                                         <i class='bx bx-money-withdraw'></i>
                                     </a>
 
-                                    <a asp-page="/Account/Deposit"
+                                    <a asp-page="/AccountPages/Deposit"
                                        asp-route-accountId="@disp.Account.AccountId"
                                        asp-route-customerId="@Model.Customer.CustomerId"
                                        class="btn btn-sm btn-outline-success" title="Deposit">
                                         <i class='bx bx-plus-circle'></i>
                                     </a>
-                                    <a asp-page="/Account/Transfer"
+                                    <a asp-page="/AccountPages/Transfer"
                                        asp-route-fromAccountId="@disp.Account.AccountId"
                                        asp-route-customerId="@Model.Customer.CustomerId"
                                        class="btn btn-sm btn-outline-info" title="Transfer">

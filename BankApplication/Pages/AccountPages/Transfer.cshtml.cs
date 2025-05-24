@@ -1,3 +1,4 @@
+using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -21,8 +22,12 @@ namespace BankApplication.Pages.AccountPages
         [Range(100, 1000000, ErrorMessage = "Amount must be between 100 and 1,000,000")]
         public decimal Amount { get; set; }
 
-        [Required(ErrorMessage = "Recipient account number is required")]
-        public int TargetAccountId { get; set; }
+
+        [BindProperty]
+        [Required(ErrorMessage = "Please enter account number")]
+        public int? TargetAccountId { get; set; }
+
+
 
         public string? Comment { get; set; }
 
@@ -43,16 +48,24 @@ namespace BankApplication.Pages.AccountPages
         public IActionResult OnPost()
         {
             var sourceAccount = _accountService.GetAccount(FromAccountId);
-            var targetAccount = _accountService.GetAccount(TargetAccountId);
+            Account? targetAccount = null;
+
+            if (TargetAccountId == null)
+            {
+                ModelState.AddModelError("TargetAccountId", "Please enter account number.");
+            }
+            else
+            {
+                targetAccount = _accountService.GetAccount(TargetAccountId.Value);
+                if (targetAccount == null)
+                {
+                    ModelState.AddModelError("TargetAccountId", "Recipient account not found.");
+                }
+            }
 
             if (sourceAccount == null)
             {
                 ModelState.AddModelError(string.Empty, "Source account not found.");
-            }
-
-            if (targetAccount == null)
-            {
-                ModelState.AddModelError("TargetAccountId", "Recipient account not found.");
             }
 
             if (sourceAccount != null && sourceAccount.Balance < Amount)
@@ -67,12 +80,13 @@ namespace BankApplication.Pages.AccountPages
             }
 
             sourceAccount.Balance -= Amount;
-            targetAccount.Balance += Amount;
+            targetAccount!.Balance += Amount; // targetAccount är säkert inte null här
 
             _accountService.Update(sourceAccount);
             _accountService.Update(targetAccount);
 
-            return RedirectToPage("/Customer/Details", new { id = CustomerId });
+            return RedirectToPage("/CustomerPages/Details", new { id = CustomerId });
         }
+
     }
 }
