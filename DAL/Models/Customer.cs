@@ -37,5 +37,7 @@ public partial class Customer
 
     public DateTime Registered { get; set; }  
     public DateTime LastModified { get; set; }
+    public bool IsDeleted { get; set; } = false;
+
 
 }

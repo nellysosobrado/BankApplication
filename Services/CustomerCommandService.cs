@@ -1,9 +1,7 @@
 ﻿using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Services
@@ -21,31 +19,24 @@ namespace Services
         {
             customer.Registered = DateTime.UtcNow;
             customer.LastModified = DateTime.UtcNow;
-
             _context.Customers.Add(customer);
             _context.SaveChanges();
-
             return customer.CustomerId;
         }
+
         public async Task<bool> DeleteCustomerAsync(int customerId)
         {
-            var customer = await _context.Customers
-                .Include(c => c.Dispositions)
-                .ThenInclude(d => d.Account)
-                .FirstOrDefaultAsync(c => c.CustomerId == customerId);
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.CustomerId == customerId);
 
             if (customer == null)
                 return false;
 
+            customer.IsDeleted = true;
+            customer.LastModified = DateTime.UtcNow;
 
-            _context.Dispositions.RemoveRange(customer.Dispositions);
-
-            _context.Customers.Remove(customer);
             await _context.SaveChangesAsync();
             return true;
         }
-
-
 
         public void UpdateCustomer(Customer customer)
         {
@@ -55,8 +46,7 @@ namespace Services
 
         public Customer GetCustomer(int id)
         {
-            return _context.Customers.FirstOrDefault(c => c.CustomerId == id);
+            return _context.Customers.FirstOrDefault(c => c.CustomerId == id && !c.IsDeleted);
         }
     }
-
 }

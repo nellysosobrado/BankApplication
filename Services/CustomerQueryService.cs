@@ -155,6 +155,8 @@ namespace Services
         {
             var query = _context.Customers.AsNoTracking();
 
+            query = query.Where(c => !c.IsDeleted); 
+
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 query = int.TryParse(searchTerm, out int id)
@@ -170,7 +172,6 @@ namespace Services
 
             var totalCount = await query.CountAsync();
 
-            // 💡 Här mappas direkt till CustomerViewModel med AutoMapper
             var items = await query
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
@@ -179,6 +180,7 @@ namespace Services
 
             return new PaginatedList<CustomerViewModel>(items, totalCount, pageIndex, pageSize);
         }
+
 
 
     }
