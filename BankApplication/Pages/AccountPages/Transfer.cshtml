@@ -10,6 +10,14 @@
 <h1>Transfer</h1>
 <h3>Current Balance: @Model.Balance kr</h3>
 
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success">
+        @Model.SuccessMessage
+    </div>
+}
+
+
 <form method="post">
     <div class="form-group">
         <label asp-for="Amount">Amount</label>
