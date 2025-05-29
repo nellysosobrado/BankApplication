@@ -45,7 +45,12 @@ namespace FraudDetectionConsoleApp.Services
                 log.LastProcessed = time;
 
             SaveLogs(logs);
+
+            Console.WriteLine($" Log updated for {country}: {time:yyyy-MM-dd HH:mm}");
+            Console.WriteLine($" Log file saved at: {Path.GetFullPath(logPath)}");
         }
+
+
     }
 
 
