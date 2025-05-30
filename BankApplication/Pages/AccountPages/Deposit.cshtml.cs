@@ -13,13 +13,11 @@ namespace BankApplication.Pages.AccountPages
         private readonly IAccountService _accountService;
         private readonly ITransactionService _transactionService;
 
-
         public DepositModel(IAccountService accountService, ITransactionService transactionService)
         {
             _accountService = accountService;
             _transactionService = transactionService;
         }
-
 
         [Range(100, 1000000, ErrorMessage = "Amount must be between 100 and 1,000,000")]
         public decimal Amount { get; set; }
@@ -39,9 +37,10 @@ namespace BankApplication.Pages.AccountPages
         [BindProperty(SupportsGet = true)]
         public int AccountId { get; set; }
 
+        public string? SuccessMessage { get; set; }
+
         public void OnGet()
         {
-
         }
 
         public IActionResult OnPost()
@@ -62,6 +61,7 @@ namespace BankApplication.Pages.AccountPages
                 ModelState.AddModelError("", "Account not found.");
                 return Page();
             }
+
             var newBalance = accountDb.Balance + Amount;
             accountDb.Balance = newBalance;
             _accountService.Update(accountDb);
@@ -72,14 +72,20 @@ namespace BankApplication.Pages.AccountPages
                 Amount = Amount,
                 Balance = newBalance,
                 Date = DepositDate,
-                Type = "Credit",              
-                Operation = "Deposit",          
+                Type = "Credit",
+                Operation = "Deposit",
             };
             _transactionService.AddTransaction(transaction);
 
-            return RedirectToPage("/CustomerPages/Details", new { id = CustomerId });
+            SuccessMessage = $"Successfully deposited {Amount} kr to account {AccountId}.";
+
+            // Nollställ formulärdata
+            Amount = 0;
+            Comment = string.Empty;
+            DepositDate = DateTime.Now.AddHours(1);
+            ModelState.Clear();
+
+            return Page();
         }
-
-
     }
 }

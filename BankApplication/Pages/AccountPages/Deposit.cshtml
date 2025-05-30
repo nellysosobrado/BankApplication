@@ -7,6 +7,15 @@
 <link rel="stylesheet" href="~/assets2/css/din-fil.css">
 <script src="~/assets2/js/din-fil.js"></script>
 
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success">
+        @Model.SuccessMessage
+    </div>
+}
+
+
+
 <h1>Deposit</h1>
 <form method="post">
     <div class="form-group">

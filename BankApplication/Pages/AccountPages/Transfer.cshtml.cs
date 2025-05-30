@@ -28,6 +28,8 @@ namespace BankApplication.Pages.AccountPages
         [Required(ErrorMessage = "Please enter account number")]
         public int? TargetAccountId { get; set; }
 
+
+
         public string? Comment { get; set; }
 
         public decimal Balance { get; set; }
