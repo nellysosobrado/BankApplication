@@ -14,25 +14,32 @@
     </div>
 }
 
-
-
 <h1>Deposit</h1>
-<form method="post">
+
+<form method="post" novalidate>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <div class="form-group">
-        <label asp-for="Amount">Amount</label>
+        <label asp-for="Amount"></label>
         <input class="form-control" asp-for="Amount" />
-        <span class="field-validation-error" asp-validation-for="Amount"></span>
+        <span class="text-danger" asp-validation-for="Amount"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="DepositDate">Date</label>
+        <label asp-for="DepositDate"></label>
         <input class="form-control" asp-for="DepositDate" />
-        <span class="field-validation-error" asp-validation-for="DepositDate"></span>
+        <span class="text-danger" asp-validation-for="DepositDate"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="Comment">Comment</label>
+        <label asp-for="Comment"></label>
         <input class="form-control" asp-for="Comment" />
-        <span class="field-validation-error" asp-validation-for="Comment"></span>
+        <span class="text-danger" asp-validation-for="Comment"></span>
     </div>
+
     <button type="submit" class="btn btn-primary">Deposit</button>
 </form>
 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
